@@ -1,0 +1,18 @@
+<body>
+			<header>
+				<div class="navbar navbar-inverse">
+					<div class="navbar-inner">
+						<a class="brand" style="color: #d6d6d6; font-size: 20px" ref="/">The NewsPix</a>
+						<ul class="nav">
+							<li class="active"><a href="/">Home</a></li>
+							<li><a href="/welcome">Welcome</a></li>
+							<li><a href="/log">link two</a></li>
+						</ul>
+					</div>
+				</div>
+			</header>
+			<div class="container">
+				{% block content %}
+				{% endblock %}
+			</div>
+		</body>

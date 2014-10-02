@@ -1,0 +1,8 @@
+{% extends "template.html" %}
+{% block content %}
+	{% for user in online_users %}
+		<h1>{% user %}</h1>
+	{% endfor %}
+    <div><a href="/log"> Login </a></div>
+    <div><a href="/new">Want to add a new user?</a></div>
+{% endblock %}
