@@ -1,0 +1,26 @@
+body {
+	background: url("../images/news/crazyman.jpg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	margin: 0;
+}
+
+.container {
+	position: absolute;
+	width: 100%;
+	bottom: 10%;
+	background-color: rgba(0,0,0,0.5);
+}
+
+.headline {
+	text-align: center;
+	font-size: 36px;
+	padding: 20px;
+}
+
+.headline a {
+	color: #fff;
+	text-decoration: none;
+}

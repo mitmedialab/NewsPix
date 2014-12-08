@@ -1,17 +1,10 @@
 {
-    "name": "Drive Button",
-    "version": "1.0",
-    "manifest_version": 2,
-    "description": "Open Google Drive",
-    "browser_action": {
-        "default_icon": "icon.png"
-    },
-    "background": {
-        "scripts": [
-            "background.js"
-        ]
-    },
-    "permissions": [
-        "tabs"
-    ]
+	"manifest_version": 2,
+	"name": "NewsPix",
+	"description": "A news engagement project with the Future of News Initiative and the Emerson Engagement Lab",
+	"version": "1.0",
+
+	"chrome_url_overrides": {
+		"newtab": "newspix.html"
+	}
 }
