@@ -14,7 +14,6 @@ $.getJSON('json/stories.json', function (data) {
 	$('#backstretch').css('background-image', bg);
 	var path = 'images/news/';
 	$('#backstretch').css('background-image', 'url("' + path+bg + '")');
-	//$('#bg-image').attr('src', path+bg);
 
 	var headlineLink = '<a href="' + randStory['url'] + '">';
 	var headlineContent = headlineLink + randStory['headline'] + '</a>';
