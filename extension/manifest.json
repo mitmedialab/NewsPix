@@ -4,6 +4,11 @@
 	"description": "A news engagement project with the Future of News Initiative and the Emerson Engagement Lab",
 	"version": "1.0",
 
+	"background": {
+		"persistent": false,
+		"page": "newspix.html"
+	},
+
 	"chrome_url_overrides": {
 		"newtab": "newspix.html"
 	}

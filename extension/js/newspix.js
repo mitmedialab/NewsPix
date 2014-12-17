@@ -11,9 +11,10 @@ $.getJSON('json/stories.json', function (data) {
 	var randStory = stories[0][randInt.toString()];
 
 	var bg = randStory['image'];
-	$('body').css('background-image', bg);
-	var path = '../images/news/';
-	$('body').css('background-image', 'url("' + path+bg + '")');
+	$('#backstretch').css('background-image', bg);
+	var path = 'images/news/';
+	$('#backstretch').css('background-image', 'url("' + path+bg + '")');
+	//$('#bg-image').attr('src', path+bg);
 
 	var headlineLink = '<a href="' + randStory['url'] + '">';
 	var headlineContent = headlineLink + randStory['headline'] + '</a>';
