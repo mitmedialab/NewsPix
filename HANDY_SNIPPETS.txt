@@ -1,0 +1,9 @@
+
+WORKING WITH PYTHON VIRTUAL ENV
+
+sudo pip install virtualenv
+ virtualenv venv
+
+ACTIVATE: source venv/bin/activate
+
+DEACTIVATE: deactivate
