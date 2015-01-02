@@ -1,9 +1,17 @@
 
 WORKING WITH PYTHON VIRTUAL ENV
-
+-----------------------------------------------------
 sudo pip install virtualenv
  virtualenv venv
 
 ACTIVATE: source venv/bin/activate
-
 DEACTIVATE: deactivate
+
+DEPLOY CHANGES TO civicdev
+-----------------------------------------------------
+git fetch --all
+git reset --hard origin/master
+
+APACHE
+-----------------------------------------------------
+sudo /etc/init.d/apache2 reload
