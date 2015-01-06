@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>NewsPix Admin</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	</head>
+
+	<body class="bs-cover">
+		<div class="intro-header">
+			<div class="container">
+				<div class="row">
+					<h1>NewsPix Admin Panel</h1>
+				</div>
+			</div>
+		</div>
+
+		<!-- Add new story -->
+		<div class="content-section-a">
+			<div class="container">
+				<div class="row">
+					<h2>Add a new story</h2>
+					<form>
+						<div class="form-group">
+							<label for="inputCaption">Caption</label>
+							<input type="text" class="form-control input-lg" id="inputCaption" placeholder="Enter Caption">
+						</div>
+						<div class="form-group">
+							<label for="inputStory">Story</label>
+							<input type="url" class="form-control input-lg" id="inputStory" placeholder="Enter Story URL">
+						</div>
+						<div class="form-group">
+							<label for="inputImage">Image</label>
+							<input type="url" class="form-control input-lg" id="inputImage" placeholder="Enter Image URL">
+						</div>
+						<div class="form-group">
+							<label for="inputDate">Date</label>
+							    <div class="input-group date">
+								    <input type="text" class="form-control input-lg"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+							    </div>
+						</div>
+						<button type="submit" class="btn btn-default btn-lg">Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row" id="divider">
+			</div>
+		</div>
+
+		<!-- Review & edit old stories -->
+		<div class="content-section-b">
+			<div class="container">
+				<div class="row">
+					<h2>Review & edit old stories</h2>
+					<h2><small>01/01/15</small></h2>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Caption</th>
+								<th>Story URL</th>
+								<th>Image URL</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>1</th>
+								<th>Three new Bill Cosby accusers come forward at press conference</th>
+								<th>http://www.bostonherald.com/inside_track/celebrity_news/2014/12/three_new_bill_cosby_accusers_come_forward_at_press_conference</th>
+								<th>cosby.jpg</th>
+							</tr>
+							<tr>
+								<th>2</th>
+								<th>Full Court Press: Radio host Glenn Beck can't talk way out of Marathon suit</th>
+								<th>http://www.bostonherald.com/news_opinion/columnists/2014/12/full_court_press_radio_host_glenn_beck_can_t_talk_way_out_of</th>
+								<th>crazyman.jpg</th>
+							</tr>
+							<tr>
+								<th>3</th>
+								<th>Fitzgerald: We can’t let the names or sacrifice of Worcester firefighters fade</th>
+								<th>http://www.bostonherald.com/news_opinion/columnists/joe_fitzgerald/2014/12/fitzgerald_we_can_t_let_the_names_or_sacrifice_of</th>
+								<th>fitzgerald.jpg</th>
+							</tr>
+							<tr>
+								<th>4</th>
+								<th>Protests erupt as cop cleared; feds to investigate</th>
+								<th>http://www.bostonherald.com/news_opinion/national/2014/12/protests_erupt_as_cop_cleared_feds_to_investigate</th>
+								<th>garner.jpg</th>
+							</tr>
+							<tr>
+								<th>5</th>
+								<th>Heslam: Man accused of brutal triple homicide has long-awaited day in court</th>
+								<th>http://www.bostonherald.com/news_opinion/columnists/jessica_heslam/2014/12/heslam_man_accused_of_brutal_triple_homicide_has_long</th>
+								<th>heslam.jpg</th>
+							</tr>
+							<tr>
+								<th>6</th>
+								<th>Medicaid reforms pitched as way to help balance state’s budget</th>
+								<th>http://www.bostonherald.com/news_opinion/local_politics/2014/12/medicaid_reforms_pitched_as_way_to_help_balance_state_s_budget</th>
+								<th>medicaid.jpg</th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- Scripts -->
+		<script type="text/javascript" src="lib/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+		    $('.input-group.date').datepicker({
+		    	autoclose: true,
+		    	todayHighlight: true
+		    });
+	    </script>
+	</body>
+</html>
