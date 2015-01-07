@@ -29,6 +29,10 @@ app.db_jokes_collection = app.db[config.get('db','jokes_collection')]
 def home():
     return app.send_static_file('index.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('hello.html', name="Catherine")
+
 if __name__ == '__main__':
     app.run()
 
