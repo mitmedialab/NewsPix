@@ -58,7 +58,7 @@ def admin():
 		jsonHandler.add_story(story)
 
 		# update story list
-		stories = jsonHandler.get_stories()
+		stories = jsonHandler.get_stories(date)
 		noStories = len(stories) == 0
 
 	return render_template('admin.html', noStories=noStories, stories=stories, date=date)

@@ -47,11 +47,21 @@
                     "headline": "another test", 
                     "url": "http://google.com/", 
                     "image": "http://google.com/image.jpg"
-                },
+                }, 
                 {
                     "headline": "great fantastic wow", 
                     "url": "http://pytonh.com/", 
                     "image": "http://javsciptso.com/image.jpg"
+                }, 
+                {
+                    "headline": "a headline b", 
+                    "url": "http://google.com/", 
+                    "image": "http://google.com/image.jpg"
+                }, 
+                {
+                    "headline": "b headline c", 
+                    "url": "http://google.com/", 
+                    "image": "http://google.com/image.jpg"
                 }
             ]
         }
