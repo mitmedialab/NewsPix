@@ -2,6 +2,7 @@ import os
 import ConfigParser
 import requests
 import json
+import datetime
 from bson.json_util import dumps
 from flask import Flask,render_template,request
 from pymongo import MongoClient 
@@ -40,9 +41,15 @@ def hello():
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
 	
+	date = Date().get_date()
 	jsonHandler = JSONHandler()
-	story = Story()
+
+	# stories that get shown in a list
+	stories = jsonHandler.get_stories(date)
+	noStories = len(stories) == 0
 	
+	# adding a new story
+	story = Story()
 	if request.method == 'POST':
 		story.headline = request.form['headline']
 		story.storyURL = request.form['storyURL']
@@ -50,14 +57,18 @@ def admin():
 		story.date = request.form['date']
 		jsonHandler.add_story(story)
 
-	return render_template('admin.html')
+		# update story list
+		stories = jsonHandler.get_stories()
+		noStories = len(stories) == 0
+
+	return render_template('admin.html', noStories=noStories, stories=stories, date=date)
 
 class Story:
 
-	def __init__(self):
-		self.headline = ""
-		self.storyURL = ""
-		self.imageURL = ""
+	def __init__(self, headline="", storyURL="", imageURL=""):
+		self.headline = headline
+		self.storyURL = storyURL
+		self.imageURL = imageURL
 		self.date = ""
 
 	def format_for_json(self):
@@ -97,6 +108,34 @@ class JSONHandler:
 		self.stories_file.close()
 		with(open('stories.json', 'w')) as f:
 			json.dump(self.stories, f, ensure_ascii=False, indent=4)
+
+	def get_date_index(self, date):
+		dates = self.stories['dates']
+		for i in range(len(dates)):
+			if (dates[i]['date'] == date):
+				return i
+		return None
+
+	def get_stories(self, date):
+		stories = []
+		for story in self.stories['dates'][self.get_date_index(date)]['stories']:
+			stories.append(Story(story['headline'], story['url'], story['image']))
+		return stories
+
+class Date:
+
+	def __init__(self):
+		self.date = datetime.datetime.now()
+
+	def get_date(self):
+		month = self.date.month
+		if month < 10:
+			month = "0" + str(month)
+		day = self.date.day
+		if day < 10:
+			day = "0" + str(day)
+		year = self.date.year
+		return str(month) + "/" + str(day) + "/" + str(year)
 
 if __name__ == '__main__':
     app.run()

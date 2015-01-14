@@ -25,20 +25,20 @@
 					<form action="/admin" method="POST">
 						<div class="form-group" for="inputHeadline">
 							<label for="inputHeadline">Headline</label>
-							<input type="text" name="headline" class="form-control input-lg" id="inputHeadline" required placeholder="Enter Headline">
+							<input type="text" name="headline" class="form-control input-lg" id="inputHeadline" placeholder="Enter Headline" required>
 						</div>
 						<div class="form-group" for="inputStory">
 							<label for="inputStory">Story</label>
-							<input type="url" name="storyURL" class="form-control input-lg" id="inputStory" required placeholder="Enter Story URL">
+							<input type="url" name="storyURL" class="form-control input-lg" id="inputStory" placeholder="Enter Story URL" required>
 						</div>
 						<div class="form-group" for="inputImage">
 							<label for="inputImage">Image</label>
-							<input type="url" name="imageURL" class="form-control input-lg" id="inputImage" required placeholder="Enter Image URL">
+							<input type="url" name="imageURL" class="form-control input-lg" id="inputImage" placeholder="Enter Image URL" required>
 						</div>
 						<div class="form-group" for="inputDate">
 							<label for="inputDate">Date</label>
 						    <div class="input-group date">
-							    <input type="text" name="date" class="form-control input-lg" id="inputDate"required><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+							    <input type="text" name="date" class="form-control input-lg" id="inputDate" required value=''><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 						    </div>
 						</div>
 						<button type="submit" class="btn btn-default btn-lg">Submit</button>
@@ -57,55 +57,29 @@
 			<div class="container">
 				<div class="row">
 					<h2>Review & edit today's stories</h2>
-					<h3>01/01/15</h3>
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Caption</th>
-								<th>Story URL</th>
-								<th>Image URL</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>1</th>
-								<th>Three new Bill Cosby accusers come forward at press conference</th>
-								<th>http://www.bostonherald.com/inside_track/celebrity_news/2014/12/three_new_bill_cosby_accusers_come_forward_at_press_conference</th>
-								<th>cosby.jpg</th>
-							</tr>
-							<tr>
-								<th>2</th>
-								<th>Full Court Press: Radio host Glenn Beck can't talk way out of Marathon suit</th>
-								<th>http://www.bostonherald.com/news_opinion/columnists/2014/12/full_court_press_radio_host_glenn_beck_can_t_talk_way_out_of</th>
-								<th>crazyman.jpg</th>
-							</tr>
-							<tr>
-								<th>3</th>
-								<th>Fitzgerald: We can't let the names or sacrifice of Worcester firefighters fade</th>
-								<th>http://www.bostonherald.com/news_opinion/columnists/joe_fitzgerald/2014/12/fitzgerald_we_can_t_let_the_names_or_sacrifice_of</th>
-								<th>fitzgerald.jpg</th>
-							</tr>
-							<tr>
-								<th>4</th>
-								<th>Protests erupt as cop cleared; feds to investigate</th>
-								<th>http://www.bostonherald.com/news_opinion/national/2014/12/protests_erupt_as_cop_cleared_feds_to_investigate</th>
-								<th>garner.jpg</th>
-							</tr>
-							<tr>
-								<th>5</th>
-								<th>Heslam: Man accused of brutal triple homicide has long-awaited day in court</th>
-								<th>http://www.bostonherald.com/news_opinion/columnists/jessica_heslam/2014/12/heslam_man_accused_of_brutal_triple_homicide_has_long</th>
-								<th>heslam.jpg</th>
-							</tr>
-							<tr>
-								<th>6</th>
-								<th>Medicaid reforms pitched as way to help balance state's budget</th>
-								<th>http://www.bostonherald.com/news_opinion/local_politics/2014/12/medicaid_reforms_pitched_as_way_to_help_balance_state_s_budget</th>
-								<th>medicaid.jpg</th>
-							</tr>
-						</tbody>
-					</table>
+					{% if noStories %}
+						<p>No stories to display</p>
+					{% else %}
+						<h3>{{ date }}</h3>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Caption</th>
+									<th>Story URL</th>
+									<th>Image URL</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for story in stories %}
+								<tr>
+									<th>{{story.headline}}</th>
+									<th>{{story.storyURL}}</th>
+									<th>{{story.imageURL}}</th>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					{% endif %}
 				</div>
 				<div class="row">
 					<h2>Review past stories</h2>
@@ -155,6 +129,23 @@
 		    	todayHighlight: true
 		    });
 	    </script>
+	    <script>
+	    	(function () {
+	    		var date = new Date ();
+		    	var month = date.getMonth () + 1;
+		    	if (month < 10) {
+		    		month = "0" + month;
+		    	}
+		    	var day = date.getDate ();
+		    	if (day < 10) {
+		    		day = "0" + day;
+		    	}
+		    	var year = date.getFullYear ();
 
+		    	var formatted = month + "/" + day + "/" + year
+		    	console.log(formatted);
+		    	document.getElementById ('inputDate').value = formatted;
+		    })()
+	    </script>
 	</body>
 </html>
