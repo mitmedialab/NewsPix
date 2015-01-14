@@ -1,0 +1,39 @@
+{
+    "dates": [
+        {
+            "date": "01/01/2015", 
+            "stories": [
+                {
+                    "headline": "Three new Bill Cosby accusers come forward at press conference", 
+                    "url": "http://www.bostonherald.com/inside_track/celebrity_news/2014/12/three_new_bill_cosby_accusers_come_forward_at_press_conference", 
+                    "image": "cosby.jpg"
+                }, 
+                {
+                    "headline": "Full Court Press: Radio host Glenn Beck can't talk way out of Marathon suit", 
+                    "url": "http://www.bostonherald.com/news_opinion/columnists/2014/12/full_court_press_radio_host_glenn_beck_can_t_talk_way_out_of", 
+                    "image": "crazyman.jpg"
+                }, 
+                {
+                    "headline": "Fitzgerald: We can't let the names or sacrifice of Worcester firefighters fade", 
+                    "url": "http://www.bostonherald.com/news_opinion/columnists/joe_fitzgerald/2014/12/fitzgerald_we_can_t_let_the_names_or_sacrifice_of", 
+                    "image": "fitzgerald.jpg"
+                }, 
+                {
+                    "headline": "Protests erupt as cop cleared; feds to investigate", 
+                    "url": "http://www.bostonherald.com/news_opinion/national/2014/12/protests_erupt_as_cop_cleared_feds_to_investigate", 
+                    "image": "garner.jpg"
+                }, 
+                {
+                    "headline": "Heslam: Man accused of brutal triple homicide has long-awaited day in court", 
+                    "url": "http://www.bostonherald.com/news_opinion/columnists/jessica_heslam/2014/12/heslam_man_accused_of_brutal_triple_homicide_has_long", 
+                    "image": "heslam.jpg"
+                }, 
+                {
+                    "headline": "Medicaid reforms pitched as way to help balance state's budget", 
+                    "url": "http://www.bostonherald.com/news_opinion/local_politics/2014/12/medicaid_reforms_pitched_as_way_to_help_balance_state_s_budget", 
+                    "image": "medicaid.jpg"
+                }
+            ]
+        }
+    ]
+}
