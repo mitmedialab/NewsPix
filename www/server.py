@@ -118,7 +118,10 @@ class JSONHandler:
 
 	def get_stories(self, date):
 		stories = []
-		for story in self.stories['dates'][self.get_date_index(date)]['stories']:
+		index = self.get_date_index(date)
+		if index is None:
+			return stories
+		for story in self.stories['dates'][index]['stories']:
 			stories.append(Story(story['headline'], story['url'], story['image']))
 		return stories
 
