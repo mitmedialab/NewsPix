@@ -43,6 +43,7 @@ def admin():
 	
 	date = Date().get_date()
 	jsonHandler = JSONHandler()
+	mongoHandler = MongoHandler()
 
 	# stories that get shown in a list
 	stories = jsonHandler.get_stories(date)
@@ -139,6 +140,17 @@ class Date:
 			day = "0" + str(day)
 		year = self.date.year
 		return str(month) + "/" + str(day) + "/" + str(year)
+
+class MongoHandler:
+
+	def __init__(self):
+		client = MongoClient("localhost", 27017)
+		db = client.stories
+		collection = db.collection
+		story = Story("Three new Bill Cosby accusers come forward at press conference", "http://www.bostonherald.com/inside_track/celebrity_news/2014/12/three_new_bill_cosby_accusers_come_forward_at_press_conference", "cosby.jpg")
+		collection.save (story.format_for_json())
+		for s in collection.find():
+			print s
 
 if __name__ == '__main__':
     app.run()
