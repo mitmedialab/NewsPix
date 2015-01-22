@@ -10,7 +10,6 @@ from pymongo import MongoClient
 app = Flask(__name__)
 app.debug = True
 
-
 # constants
 CONFIG_FILENAME = 'app.config'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -31,107 +30,53 @@ app.db_jokes_collection = app.db[config.get('db','jokes_collection')]
 def home():
     return app.send_static_file('index.html')
 
-@app.route('/hello', methods=['GET', 'POST'])
-def hello():
-	name = "Forrest"
-	if request.method == 'POST':
-		name = request.form['enterName']
-	return render_template('hello.html', name=name)
-
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
 	
-	date = Date().get_date()
-	jsonHandler = JSONHandler()
+	dateHandler = Date()
+	date = dateHandler.get_todays_date()
 	mongoHandler = MongoHandler()
 
 	# stories that get shown in a list
-	stories = jsonHandler.get_stories(date)
-	noStories = len(stories) == 0
-	
-	# adding a new story
+	stories = mongoHandler.get_stories()
+		
 	story = Story()
 	if request.method == 'POST':
+
+		# get new story
 		story.headline = request.form['headline']
 		story.storyURL = request.form['storyURL']
 		story.imageURL = request.form['imageURL']
-		story.date = request.form['date']
-		jsonHandler.add_story(story)
+		story.date = dateHandler.date_to_datetime(request.form['date'])
+		mongoHandler.save_story(story)
 
 		# update story list
-		stories = jsonHandler.get_stories(date)
-		noStories = len(stories) == 0
+		stories = mongoHandler.get_stories()
 
-	return render_template('admin.html', noStories=noStories, stories=stories, date=date)
+	return render_template('admin.html', noStories=len(stories) == 0, stories=stories, date=date)
 
 class Story:
 
-	def __init__(self, headline="", storyURL="", imageURL=""):
+	def __init__(self, headline="", storyURL="", imageURL="", date=None):
 		self.headline = headline
 		self.storyURL = storyURL
 		self.imageURL = imageURL
-		self.date = ""
+		self.date = date
 
-	def format_for_json(self):
-		d = {}
-		d['headline'] = self.headline
-		d['url'] = self.storyURL
-		d['image'] = self.imageURL
-		return d;
-
-class JSONHandler:
-
-	def __init__(self):
-		self.stories_file = open('stories.json', 'r')
-		self.stories = json.load(self.stories_file)
-
-	def add_story(self, story):
-		date = self.get_date(story.date)
-		if date is None:
-			date = self.add_date(story)
-		date['stories'].append(story.format_for_json())
-		self.write_new_data()
-
-	def get_date(self, story_date):
-		for date in self.stories['dates']:
-			if date['date'] == story_date:
-				return date
-		return None
-
-	def add_date(self, story):
-		new_date = {}
-		new_date['date'] = story.date
-		new_date['stories'] = []
-		self.stories['dates'].append(new_date)
-		return self.get_date(story.date)
-
-	def write_new_data(self):
-		self.stories_file.close()
-		with(open('stories.json', 'w')) as f:
-			json.dump(self.stories, f, ensure_ascii=False, indent=4)
-
-	def get_date_index(self, date):
-		dates = self.stories['dates']
-		for i in range(len(dates)):
-			if (dates[i]['date'] == date):
-				return i
-		return None
-
-	def get_stories(self, date):
-		stories = []
-		index = self.get_date_index(date)
-		if index is None:
-			return stories
-		for story in self.stories['dates'][index]['stories']:
-			stories.append(Story(story['headline'], story['url'], story['image']))
-		return stories
+	def get_story_object(self):
+		return {
+			'headline': self.headline,
+			'url': self.storyURL,
+			'image': self.imageURL,
+			'date': self.date
+		}
 
 class Date:
 
 	def __init__(self):
 		self.date = datetime.datetime.now()
 
-	def get_date(self):
+	def get_todays_date(self):
 		month = self.date.month
 		if month < 10:
 			month = "0" + str(month)
@@ -141,16 +86,28 @@ class Date:
 		year = self.date.year
 		return str(month) + "/" + str(day) + "/" + str(year)
 
+	def date_to_datetime(self, date):
+		month = int(date[:2])
+		day = int(date[3:5])
+		year = int(date[6:])
+		return datetime.datetime(year, month, day, 0, 0)
+
 class MongoHandler:
 
 	def __init__(self):
-		client = MongoClient("localhost", 27017)
-		db = client.stories
-		collection = db.collection
-		story = Story("Three new Bill Cosby accusers come forward at press conference", "http://www.bostonherald.com/inside_track/celebrity_news/2014/12/three_new_bill_cosby_accusers_come_forward_at_press_conference", "cosby.jpg")
-		collection.save (story.format_for_json())
-		for s in collection.find():
-			print s
+		self.client = MongoClient("localhost", 27017)
+		self.db = self.client.stories
+		self.collection = self.db.collection
+
+	def save_story(self, story):
+		self.collection.save(story.get_story_object())
+
+	def get_stories(self):
+		stories = []
+		cursor = self.collection.find()
+		for story in cursor:
+			stories.append(Story(story['headline'], story['url'], story['image'], story['date']))
+		return stories
 
 if __name__ == '__main__':
     app.run()
