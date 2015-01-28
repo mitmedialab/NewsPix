@@ -38,7 +38,7 @@
 						<div class="form-group" for="inputDate">
 							<label for="inputDate">Date</label>
 						    <div class="input-group date">
-							    <input type="text" name="date" class="form-control input-lg" id="inputDate" required value={{ date }}><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+							    <input type="text" name="date" class="form-control input-lg" id="inputDate" required value={{ tomorrows_date }}><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 						    </div>
 						</div>
 						<button type="submit" class="btn btn-default btn-lg">Submit</button>
@@ -52,45 +52,24 @@
 			</div>
 		</div>
 
-		<!-- Review & edit old stories -->
+		<!-- Review & edit stories -->
 		<div class="content-section-b">
 			<div class="container">
-				<div class="row">
-					<h2>Review & edit today's stories</h2>
-					{% if noStories %}
-						<p>No stories to display</p>
-					{% else %}
-						<h3>{{ date }}</h3>
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th>Caption</th>
-									<th>Story URL</th>
-									<th>Image URL</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for story in stories %}
-								<tr>
-									<th>{{story.headline}}</th>
-									<th>{{story.storyURL}}</th>
-									<th>{{story.imageURL}}</th>
-								</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					{% endif %}
-				</div>
-				<div class="row">
+				{% import 'story-list.html' as storylist with context %}
+				{{ storylist.list ("Tomorrow's", tomorrows_stories, tomorrows_date) }}
+				{{ storylist.list ("Today's", todays_stories, todays_date) }}
+				<!-- <div class="row">
 					<h2>Review past stories</h2>
-					<form>
+					<form action="/admin" method="POST">
 						<div class="form-group">
 							<div class="input-group date">
 							    <input type="text" class="form-control input-lg" id="inputPastDate"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 						    </div>
 						</div>
+						<button type="submit" class="btn btn-default btn-lg">Submit</button>
 					</form>
 				</div>
+				{{ storylist.list ("00/00/0000's") }} -->
 			</div>
 		</div>
 

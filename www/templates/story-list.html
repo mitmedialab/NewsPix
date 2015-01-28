@@ -1,0 +1,28 @@
+{% macro list(title, stories, date) -%}
+<div class="row">
+	<h2>{{ title }} stories</h2>
+	{% if stories|length == 0 %}
+		<p>No stories to display</p>
+	{% else %}
+		<h3>{{ date }}</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Caption</th>
+					<th>Story URL</th>
+					<th>Image URL</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for story in stories %}
+				<tr>
+					<th>{{story.headline}}</th>
+					<th>{{story.storyURL}}</th>
+					<th>{{story.imageURL}}</th>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+</div>
+{%- endmacro %}

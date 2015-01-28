@@ -34,11 +34,13 @@ def home():
 def admin():
 	
 	dateHandler = Date()
-	date = dateHandler.get_todays_date()
+	today = dateHandler.format_date(dateHandler.today)
+	tomorrow = dateHandler.format_date(dateHandler.tomorrow)
 	mongoHandler = MongoHandler()
 
-	# stories that get shown in a list
-	stories = mongoHandler.get_stories()
+	# stories that get shown in the lists
+	tomorrows_stories = mongoHandler.get_stories(dateHandler.tomorrow)
+	todays_stories = mongoHandler.get_stories(dateHandler.today)
 		
 	story = Story()
 	if request.method == 'POST':
@@ -50,10 +52,11 @@ def admin():
 		story.date = dateHandler.date_to_datetime(request.form['date'])
 		mongoHandler.save_story(story)
 
-		# update story list
-		stories = mongoHandler.get_stories()
+		# update story lists
+		tomorrows_stories = mongoHandler.get_stories(dateHandler.tomorrow)
+		todays_stories = mongoHandler.get_stories(dateHandler.today)
 
-	return render_template('admin.html', noStories=len(stories) == 0, stories=stories, date=date)
+	return render_template('admin.html', tomorrows_stories=tomorrows_stories, todays_stories=todays_stories, todays_date=today, tomorrows_date=tomorrow)
 
 class Story:
 
@@ -74,23 +77,35 @@ class Story:
 class Date:
 
 	def __init__(self):
-		self.date = datetime.datetime.now()
+		now = datetime.datetime.now()
+		self.today = datetime.datetime(now.year, now.month, now.day)
+		self.tomorrow = self.today + datetime.timedelta(days=1)
 
-	def get_todays_date(self):
-		month = self.date.month
+	def format_todays_date(self):
+		month = self.today.month
 		if month < 10:
 			month = "0" + str(month)
-		day = self.date.day
+		day = self.today.day
 		if day < 10:
 			day = "0" + str(day)
-		year = self.date.year
+		year = self.today.year
+		return str(month) + "/" + str(day) + "/" + str(year)
+
+	def format_date(self, date):
+		month = date.month
+		if month < 10:
+			month = "0" + str(month)
+		day = date.day
+		if day < 10:
+			day = "0" + str(day)
+		year = date.year
 		return str(month) + "/" + str(day) + "/" + str(year)
 
 	def date_to_datetime(self, date):
 		month = int(date[:2])
 		day = int(date[3:5])
 		year = int(date[6:])
-		return datetime.datetime(year, month, day, 0, 0)
+		return datetime.datetime(year, month, day)
 
 class MongoHandler:
 
@@ -102,30 +117,15 @@ class MongoHandler:
 	def save_story(self, story):
 		self.collection.save(story.get_story_object())
 
-	def get_stories(self):
+	def get_stories(self, date):
 		stories = []
-		cursor = self.collection.find()
+		cursor = self.collection.find({"date": date})
 		for story in cursor:
 			stories.append(Story(story['headline'], story['url'], story['image'], story['date']))
 		return stories
 
 if __name__ == '__main__':
     app.run()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
