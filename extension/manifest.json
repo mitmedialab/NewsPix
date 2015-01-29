@@ -3,10 +3,14 @@
 	"name": "NewsPix",
 	"description": "A news engagement project with the Future of News Initiative and the Emerson Engagement Lab",
 	"version": "1.0",
+	"permissions": [
+		"activeTab",
+		"tabs"
+	],
 
 	"background": {
-		"persistent": false,
-		"page": "newspix.html"
+		"scripts": ["js/background.js", "extension.config.js"],
+		"persistent": false
 	},
 
 	"chrome_url_overrides": {

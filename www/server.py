@@ -3,12 +3,18 @@ import ConfigParser
 import requests
 import json
 import datetime
+from flask.ext.cors import CORS, cross_origin
+from bson import json_util
 from bson.json_util import dumps
 from flask import Flask,render_template,request
 from pymongo import MongoClient 
 
 app = Flask(__name__)
 app.debug = True
+app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
+app.config['CORS_RESOURCES'] = {r"/random_story/*": {"origins": "*"}}
+
+cors = CORS(app)
 
 # constants
 CONFIG_FILENAME = 'app.config'
@@ -58,6 +64,16 @@ def admin():
 
 	return render_template('admin.html', tomorrows_stories=tomorrows_stories, todays_stories=todays_stories, todays_date=today, tomorrows_date=tomorrow)
 
+@app.route('/random_story', methods=['GET', 'POST'])
+def random_story():
+	test = {
+		'headline': 'just a test',
+		'url': 'http://asgf.com/',
+		'image': 'http://asdfem.png',
+		'date': '01/29/3015'
+	}
+	return json.dumps(test, indent=4, default=json_util.default)
+
 class Story:
 
 	def __init__(self, headline="", storyURL="", imageURL="", date=None):
@@ -80,16 +96,6 @@ class Date:
 		now = datetime.datetime.now()
 		self.today = datetime.datetime(now.year, now.month, now.day)
 		self.tomorrow = self.today + datetime.timedelta(days=1)
-
-	def format_todays_date(self):
-		month = self.today.month
-		if month < 10:
-			month = "0" + str(month)
-		day = self.today.day
-		if day < 10:
-			day = "0" + str(day)
-		year = self.today.year
-		return str(month) + "/" + str(day) + "/" + str(year)
 
 	def format_date(self, date):
 		month = date.month
