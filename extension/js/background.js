@@ -7,7 +7,7 @@ function(request, sender, sendResponse) {
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
 				forms = JSON.parse(xhr.responseText);
-				sendResponse({farewell: forms});
+				sendResponse({story: forms});
 			}
 		}
 		xhr.send();

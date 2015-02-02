@@ -1,8 +1,4 @@
-import os
-import ConfigParser
-import requests
-import json
-import datetime
+import os, ConfigParser, random, requests, json, datetime
 from flask.ext.cors import CORS, cross_origin
 from bson import json_util
 from bson.json_util import dumps
@@ -66,13 +62,9 @@ def admin():
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
-	test = {
-		'headline': 'just a test',
-		'url': 'http://asgf.com/',
-		'image': 'http://asdfem.png',
-		'date': '01/29/3015'
-	}
-	return json.dumps(test, indent=4, default=json_util.default)
+	stories = MongoHandler().get_stories(Date().today)
+	random_index = random.randint(0, len(stories)-1)
+	return json.dumps(stories[random_index].get_story_object(), default=json_util.default)
 
 class Story:
 
