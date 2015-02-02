@@ -1,13 +1,16 @@
-chrome.tabs.onCreated.addListener(function(tab) {
+chrome.runtime.onMessage.addListener(
+function(request, sender, sendResponse) {
+	if (sender.tab) {
+		var forms;
 		var xhr = new XMLHttpRequest();
-		xhr.open("GET","http://127.0.0.1:5000/random_story", true);
+		xhr.open("GET", SERVER_URL + "/random_story", true);
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
 				forms = JSON.parse(xhr.responseText);
-				console.log(forms);
-				console.log("done");
+				sendResponse({farewell: forms});
 			}
 		}
 		xhr.send();
+		return true;
 	}
-);
+});

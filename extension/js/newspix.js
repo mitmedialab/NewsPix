@@ -20,3 +20,10 @@ $.getJSON('json/stories.json', function (data) {
 
 	$(headlineContent).appendTo('.headline');
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+	chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+		console.log(response.farewell);
+		console.log("received message");
+	});
+}, false);
