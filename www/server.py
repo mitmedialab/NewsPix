@@ -46,9 +46,6 @@ def admin():
 		
 	story = Story()
 	if request.method == 'POST':
-		print "BOO"
-		print request
-		print request.form.get('headline', None)
 		# get new story
 		story.headline = request.form.get('headline', None)
 		story.storyURL = request.form.get('storyURL', None)
