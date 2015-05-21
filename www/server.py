@@ -42,25 +42,34 @@ def admin():
 		
 	story = Story()
 	if request.method == 'POST':
-
 		# get new story
-		story.headline = request.form['headline']
-		story.storyURL = request.form['storyURL']
-		story.imageURL = request.form['imageURL']
-		story.date = dateHandler.date_to_datetime(request.form['date'])
-		mongoHandler.save_story(story)
+		story.headline = request.form.get('headline', None)
+		story.storyURL = request.form.get('storyURL', None)
+		story.imageURL = request.form.get('imageURL', None)
 
+		story.date = dateHandler.date_to_datetime(request.form.get('date', None))
+		
+
+		mongoHandler.save_story(story)
+		
 		# update story lists
 		tomorrows_stories = mongoHandler.get_stories(dateHandler.tomorrow)
 		todays_stories = mongoHandler.get_stories(dateHandler.today)
+		
 
 	return render_template('admin.html', tomorrows_stories=tomorrows_stories, todays_stories=todays_stories, todays_date=today, tomorrows_date=tomorrow)
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
 	stories = MongoHandler().get_stories(Date().today)
-	random_index = random.randint(0, len(stories)-1)
-	return json.dumps(stories[random_index].get_story_object(), default=json_util.default)
+	if len(stories) >  0:
+		random_index = random.randint(0, len(stories)-1)
+		result = stories[random_index].get_story_object()
+	else:
+		result = "no stories"
+
+	print "HEAAAY"
+	return json.dumps(result, default=json_util.default)
 
 class Story:
 
@@ -109,6 +118,7 @@ class MongoHandler:
 		self.collection = self.db.collection
 
 	def save_story(self, story):
+		print "SAVE STORY"
 		self.collection.save(story.get_story_object())
 
 	def get_stories(self, date):
