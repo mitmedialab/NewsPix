@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function buildPage(headline, url, image) {
 
 	$('#backstretch').css('background-image', 'url(' + image + ')');
+	$('#bs-url').attr ("href", url);
 	var headlineLink = '<a href="' + url + '">';
 	var headlineContent = headlineLink + headline + '</a>';
 

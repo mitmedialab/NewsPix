@@ -11,6 +11,7 @@
 					<th>Caption</th>
 					<th>Story URL</th>
 					<th>Image URL</th>
+					<th>Delete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -19,6 +20,11 @@
 					<th>{{story.headline}}</th>
 					<th>{{story.storyURL}}</th>
 					<th>{{story.imageURL}}</th>
+					<th>
+						<form name='Delete Story', method='POST' action='/delete_story/{{story._id}}'>
+						<button type='submit'>delete</button>
+						</form>
+					</th>
 				</tr>
 				{% endfor %}
 			</tbody>

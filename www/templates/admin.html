@@ -22,7 +22,7 @@
 			<div class="container">
 				<div class="row">
 					<h2>Add a new story</h2>
-					<form action="/admin" method="POST">
+					<form action="/admin" method="POST" id="submit-story">
 						<div class="form-group" for="inputHeadline">
 							<label for="inputHeadline">Headline</label>
 							<input type="text" name="headline" class="form-control input-lg" id="inputHeadline" placeholder="Enter Headline" required>
@@ -56,8 +56,8 @@
 		<div class="content-section-b">
 			<div class="container">
 				{% import 'story-list.html' as storylist with context %}
-				{{ storylist.list ("Tomorrow's", tomorrows_stories, tomorrows_date) }}
 				{{ storylist.list ("Today's", todays_stories, todays_date) }}
+				{{ storylist.list ("Tomorrow's", tomorrows_stories, tomorrows_date) }}
 				<!-- <div class="row">
 					<h2>Review past stories</h2>
 					<form action="/admin" method="POST">
@@ -92,7 +92,7 @@
 		<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../static/lib/jquery.validate.js"></script>
 		<script>
-			$("form").validate({
+			$("#submit-story").validate({
 				highlight: function(element, errorClass, validClass) {
 				$(element.form).find("div[for=" + element.id + "]").addClass(errorClass);
 				},
