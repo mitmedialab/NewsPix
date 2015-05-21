@@ -16,10 +16,6 @@ cors = CORS(app)
 CONFIG_FILENAME = 'app.config'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# read in app config
-config = ConfigParser.ConfigParser()
-config.read(os.path.join(BASE_DIR,CONFIG_FILENAME))
-
 # MongoDB & links to each collection
 '''uri = "mongodb://"+ config.get('db','user')+ ":"+ config.get('db','pass')+"@" +config.get('db','host') + ":" + config.get('db','port')+"/?authSource="+config.get('db','auth_db')
 print uri
