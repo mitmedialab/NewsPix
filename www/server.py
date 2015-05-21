@@ -34,6 +34,8 @@ def admin():
 	
 	dateHandler = Date()
 	mongoHandler = MongoHandler()
+	active_stories = None
+	upcoming_stories = None
 	tomorrows_stories = None
 	todays_stories = None
 		
@@ -43,18 +45,15 @@ def admin():
 		story.headline = request.form.get('headline', None)
 		story.storyURL = request.form.get('storyURL', None)
 		story.imageURL = request.form.get('imageURL', None)
-		story.date = dateHandler.date_to_datetime(request.form.get('date', None))
+		story.fromDate = dateHandler.date_to_datetime(request.form.get('date', None))
+		story.toDate = dateHandler.date_to_datetime(request.form.get('to_date', None))
 		mongoHandler.save_story(story)
 		
-		# update story lists
-		tomorrows_stories = mongoHandler.get_stories(dateHandler.tomorrow)
-		todays_stories = mongoHandler.get_stories(dateHandler.today)
-	
-	return render_admin_panel(tomorrows_stories, todays_stories)
+	return render_admin_panel()
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
-	stories = MongoHandler().get_stories(Date().today)
+	stories = MongoHandler().get_stories_before_date(Date().today)
 	if not stories:
 		result = "no stories"
 	else:
@@ -69,24 +68,23 @@ def delete_story(storyID):
 	MongoHandler().remove_story(storyID)
 	return render_admin_panel()
 
-def render_admin_panel(tomorrows_stories=None, todays_stories=None):
+def render_admin_panel():
 	mongoHandler = MongoHandler()
 	dateHandler = Date()
 	today = dateHandler.format_date(dateHandler.today)
 	tomorrow = dateHandler.format_date(dateHandler.tomorrow)
-	if not tomorrows_stories:
-		tomorrows_stories = mongoHandler.get_stories(dateHandler.tomorrow)
-	if not todays_stories:
-		todays_stories = mongoHandler.get_stories(dateHandler.today)
-	return render_template('admin.html', tomorrows_stories=tomorrows_stories, todays_stories=todays_stories, todays_date=today, tomorrows_date=tomorrow)
+	upcoming_stories = mongoHandler.get_stories_after_date(dateHandler.today)
+	active_stories = mongoHandler.get_stories_before_date(dateHandler.today)
+	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow)
 
 class Story:
 
-	def __init__(self, headline="", storyURL="", imageURL="", date=None, _id=None):
+	def __init__(self, headline="", storyURL="", imageURL="", fromDate=None, toDate=None, _id=None):
 		self.headline = headline
 		self.storyURL = storyURL
 		self.imageURL = imageURL
-		self.date = date
+		self.fromDate = fromDate
+		self.toDate = toDate
 		self._id = _id
 
 	def get_story_object(self):
@@ -94,7 +92,8 @@ class Story:
 		story['headline'] = self.headline
 		story['url'] = self.storyURL
 		story['image'] = self.imageURL
-		story['date'] = self.date
+		story['date'] = self.fromDate
+		story['to_date'] = self.toDate
 		if not self._id:
 			return story
 		else:
@@ -135,14 +134,25 @@ class MongoHandler:
 		self.collection.save(story.get_story_object())
 		print "SAVE STORY"
 
-	def get_stories(self, date):
+	def get_stories(self, cursor):
 		stories = []
-		cursor = self.collection.find({"date": date})
 		if cursor.count() == 0:
 			return stories
 		for story in cursor:
-			stories.append(Story(story['headline'], story['url'], story['image'], story['date'], story['_id']))
+			stories.append(Story(story['headline'], story['url'], story['image'], story['date'], story['to_date'], story['_id']))
 		return stories
+
+	def get_stories_on_date(self, date):
+		cursor = self.collection.find({"date": date})
+		return self.get_stories(cursor)
+
+	def get_stories_before_date(self, date):
+		cursor = self.collection.find({"date": {"$lte": date}})
+		return self.get_stories(cursor)
+
+	def get_stories_after_date(self, date):
+		cursor = self.collection.find({"date": {"$gt": date}})
+		return self.get_stories(cursor)
 
 	def remove_story(self, storyID):
 		self.collection.remove({"_id": ObjectId (storyID)})
