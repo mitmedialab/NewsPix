@@ -23,3 +23,10 @@
 .content-section-c footer {
 	padding: 40px 0;
 }
+
+.col-overflow {
+	max-width: 100px;
+	word-wrap: break-word;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

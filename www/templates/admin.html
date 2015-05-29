@@ -12,7 +12,9 @@
 		<div class="intro-header">
 			<div class="container">
 				<div class="row">
-					<h1>NewsPix Admin Panel</h1>
+					<div class="col-md-12">
+						<h1>NewsPix Admin Panel</h1>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -21,8 +23,11 @@
 		<div class="content-section-a">
 			<div class="container">
 				<div class="row">
-					<h2>Add a new story</h2>
+					<div class="col-md-12">
+						<h2>Add a new story</h2>
+					</div>
 					<form action="/admin" method="POST" id="submit-story">
+					<div class="col-md-12">
 						<div class="form-group" for="inputHeadline">
 							<label for="inputHeadline">Headline</label>
 							<input type="text" name="headline" class="form-control input-lg" id="inputHeadline" placeholder="Enter Headline" required>
@@ -35,19 +40,26 @@
 							<label for="inputImage">Image</label>
 							<input type="url" name="imageURL" class="form-control input-lg" id="inputImage" placeholder="Enter Image URL" required>
 						</div>
+					</div>
+					<div class="col-md-6">
 						<div class="form-group" for="inputDate">
 							<label for="inputDate">From date</label>
 						    <div class="input-group date">
 							    <input type="text" name="date" class="form-control input-lg" id="inputDate" required value={{ todays_date }}><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 						    </div>
 						</div>
+					</div>
+					<div class="col-md-6">
 						<div class="form-group" for="inputDate">
 							<label for="inputDate">To date</label>
 						    <div class="input-group date">
 							    <input type="text" name="to_date" class="form-control input-lg" id="inputDate" required value={{ tomorrows_date }}><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
 						    </div>
 						</div>
+					</div>
+					<div class="col-md-12">
 						<button type="submit" class="btn btn-default btn-lg">Submit</button>
+					</div>
 					</form>
 				</div>
 			</div>
@@ -82,13 +94,15 @@
 		<div class="content-section-c">
 			<div class="container">
 				<div class="row">
-					<footer>
-						<h3>NewsPix</h3>
-						<p>An Experimental News Engagement Platform</p>
-						<h3>Contact Us</h3>
-						<p>NewsPix is conceived and developed by Matt Carroll, Catherine D'Ignazio and Jay Vachon. </p>
-						<p>Copyright © MIT Media Lab & Emerson Engagement Lab 2015. All Rights Reserved</p>
-					</footer>
+					<div class="col-md-12">
+						<footer>
+							<h3>NewsPix</h3>
+							<p>An Experimental News Engagement Platform</p>
+							<h3>Contact Us</h3>
+							<p>NewsPix is conceived and developed by Matt Carroll, Catherine D'Ignazio and Jay Vachon. </p>
+							<p>Copyright © MIT Media Lab & Emerson Engagement Lab 2015. All Rights Reserved</p>
+						</footer>
+					</div>
 				</div>
 			</div>
 		</div>

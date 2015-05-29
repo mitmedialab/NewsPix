@@ -1,38 +1,47 @@
 {% macro list(title, stories, date) -%}
 <div class="row">
-	<h2>{{ title }} stories</h2>
-	{% if stories|length == 0 %}
+	<div class="col-md-12">
+		<h2>{{ title }} stories</h2>
+		{% if stories|length == 0 %}
 		<p>No stories to display</p>
-	{% else %}
-		<h3>{{ date }}</h3>
-		<!-- <table class="table table-striped"> -->
-		<!-- <table class="footable table"> -->
+		{% else %}
+		<!-- <h3>{{ date }}</h3> -->
 		<div class="table-responsive">
 			<table class="table table-striped">
+				<colgroup>
+					<col class="col-md-2">
+					<col class="col-md-2">
+					<col class="col-md-3">
+					<col class="col-md-3">
+					<col class="col-md-1">
+				</colgroup>
 				<thead>
 					<tr>
 						<th>Caption</th>
-						<th>Story URL</th>
-						<th>Image URL</th>
+						<th>Active dates</th>
+						<th class="col-overflow">Story URL</th>
+						<th class="col-overflow">Image URL</th>
 						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for story in stories %}
 					<tr>
-						<th>{{story.headline}}</th>
-						<th>{{story.storyURL}}</th>
-						<th>{{story.imageURL}}</th>
-						<th>
-							<form name='Delete Story', method='POST' action='/delete_story/{{story._id}}'>
+						<td>{{story.headline}}</td>
+						<td>{{story.formatedFromDate}} - {{story.formatedToDate}}</td>
+						<td class="col-overflow">{{story.storyURL}}</td>
+						<td class="col-overflow">{{story.imageURL}}</td>
+						<td>
+							<form name='Delete Story', method='POST' action='/delete_story/{{story._id}}' onsubmit='return confirm("Are you sure you want to delete this story?");'>
 							<button type='submit'>delete</button>
 							</form>
-						</th>
+						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
-	{% endif %}
+		{% endif %}
+	</div>
 </div>
 {%- endmacro %}

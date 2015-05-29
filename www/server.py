@@ -9,7 +9,10 @@ from pymongo import MongoClient
 app = Flask(__name__)
 app.debug = True
 app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
-app.config['CORS_RESOURCES'] = {r"/random_story/*": {"origins": "*"}}
+app.config['CORS_RESOURCES'] = {
+	r"/random_story/*": {"origins": "*"},
+	r"/register_click/*": {"origins": "*"}
+}
 
 cors = CORS(app)
 
@@ -53,12 +56,15 @@ def admin():
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
-	stories = MongoHandler().get_stories_before_date(Date().today)
+	mongo_handler = MongoHandler()
+	stories = mongo_handler.get_active_stories(Date().today)
 	if not stories:
 		result = "no stories"
 	else:
 		random_index = random.randint(0, len(stories)-1)
 		result = stories[random_index].get_story_object()
+
+	mongo_handler.register_load(result['_id'])
 
 	print "HEAAAY"
 	return json.dumps(result, default=json_util.default)
@@ -68,24 +74,34 @@ def delete_story(storyID):
 	MongoHandler().remove_story(storyID)
 	return render_admin_panel()
 
+@app.route('/register_click/<storyID>', methods=['GET', 'POST'])
+def register_click(storyID):
+	MongoHandler().register_click(storyID)
+	return render_template('register_click.html')
+
 def render_admin_panel():
 	mongoHandler = MongoHandler()
 	dateHandler = Date()
 	today = dateHandler.format_date(dateHandler.today)
 	tomorrow = dateHandler.format_date(dateHandler.tomorrow)
 	upcoming_stories = mongoHandler.get_stories_after_date(dateHandler.today)
-	active_stories = mongoHandler.get_stories_before_date(dateHandler.today)
+	active_stories = mongoHandler.get_active_stories(dateHandler.today)
 	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow)
 
 class Story:
 
 	def __init__(self, headline="", storyURL="", imageURL="", fromDate=None, toDate=None, _id=None):
+		dateHandler = Date()
 		self.headline = headline
 		self.storyURL = storyURL
 		self.imageURL = imageURL
 		self.fromDate = fromDate
 		self.toDate = toDate
 		self._id = _id
+		if fromDate is not None:
+			self.formatedFromDate = dateHandler.format_date(fromDate)
+		if toDate is not None:
+			self.formatedToDate = dateHandler.format_date(toDate)
 
 	def get_story_object(self):
 		story = {}
@@ -154,9 +170,19 @@ class MongoHandler:
 		cursor = self.collection.find({"date": {"$gt": date}})
 		return self.get_stories(cursor)
 
+	def get_active_stories(self, date):
+		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}})
+		return self.get_stories(cursor)
+
 	def remove_story(self, storyID):
-		self.collection.remove({"_id": ObjectId (storyID)})
+		self.collection.remove({"_id": ObjectId(storyID)})
 		print "REMOVE STORY"
+
+	def register_load(self, storyID):
+		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"load_count": 1}})
+
+	def register_click(self, storyID):
+		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"click_count": 1}})
 
 if __name__ == '__main__':
     app.run()
