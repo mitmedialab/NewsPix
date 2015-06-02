@@ -40,10 +40,20 @@ body.bs-cover {
 	color: #fff;
 }
 
-.about {
+#controls {
 	float: right;
 	padding: 10px 15px 0 0;
 	opacity: 0.7;
+}
+
+#controls ul {
+	margin: 0;
+	padding: 0;
+}
+
+#controls ul li {
+	display: inline;
+	padding: 0px 5px;
 }
 
 .content-bottom {
@@ -89,4 +99,15 @@ body.bs-cover {
 
 #logos ul li img {
 	max-width: 200px;
+}
+
+.help-box {
+	width: 300px;
+	background-color: #fff;
+	padding: 10px;
+	border-radius: 10px;
+	float: right;
+	margin-right: 20px;
+	margin-top: -100px;
+	display: none;
 }

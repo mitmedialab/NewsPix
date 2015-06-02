@@ -14,3 +14,11 @@ function(request, sender, sendResponse) {
 		return true;
 	}
 });
+
+chrome.runtime.onInstalled.addListener(function(details){
+    if (details.reason == "install") {
+    	chrome.tabs.create({url: SERVER_URL + "/oninstall"}, function(tab) {
+    		
+    	});
+    }
+});

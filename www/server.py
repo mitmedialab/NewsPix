@@ -32,6 +32,10 @@ app.db_jokes_collection = app.db[config.get('db','jokes_collection')]
 def home():
     return app.send_static_file('index.html')
 
+@app.route('/oninstall')
+def oninstall():
+	return render_template('oninstall.html')
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
 	

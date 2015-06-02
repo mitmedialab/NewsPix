@@ -1,11 +1,17 @@
-var SERVER_URL = "http://127.0.0.1:5000"; // TODO: why isn't this working from extension.config.js?
+// TODO: why isn't this working from extension.config.js?
+var SERVER_URL = "http://127.0.0.1:5000"; 
 var story;
 
 document.addEventListener('DOMContentLoaded', function() {
+	
 	chrome.runtime.sendMessage({msg: "requestStory"}, function(response) {
 		story = response.story;
 		buildPage (story["headline"], story["url"], story["image"]);
 	});
+
+	document.getElementById('uninstall').addEventListener('click', function() {
+        chrome.tabs.update({ url: 'chrome://chrome/extensions' });
+    });
 }, false);
 
 function buildPage(headline, url, image) {
@@ -24,6 +30,9 @@ $(document).ready(function() {
 	});
 	$('#bs-url').click(function () {
 		sendClick ();
+	});
+	$('.help').click(function () {
+		$('.help-box').toggle(200);
 	});
 });
 

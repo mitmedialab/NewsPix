@@ -1,4 +1,4 @@
-sud
+
 WORKING WITH PYTHON VIRTUAL ENV
 -----------------------------------------------------
 sudo pip install virtualenv

@@ -76,18 +76,6 @@
 				{% import 'story-list.html' as storylist with context %}
 				{{ storylist.list ("Active", todays_stories, todays_date) }}
 				{{ storylist.list ("Upcoming", tomorrows_stories, tomorrows_date) }}
-				<!-- <div class="row">
-					<h2>Review past stories</h2>
-					<form action="/admin" method="POST">
-						<div class="form-group">
-							<div class="input-group date">
-							    <input type="text" class="form-control input-lg" id="inputPastDate"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-						    </div>
-						</div>
-						<button type="submit" class="btn btn-default btn-lg">Submit</button>
-					</form>
-				</div>
-				{{ storylist.list ("00/00/0000's") }} -->
 			</div>
 		</div>
 
