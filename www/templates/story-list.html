@@ -29,8 +29,8 @@
 					<tr>
 						<td>{{story.headline}}</td>
 						<td>{{story.formatedFromDate}} - {{story.formatedToDate}}</td>
-						<td class="col-overflow">{{story.storyURL}}</td>
-						<td class="col-overflow">{{story.imageURL}}</td>
+						<td class="col-overflow"><a href="{{story.storyURL}}">{{story.storyURL}}</a></td>
+						<td class="col-overflow"><a href="{{story.imageURL}}">{{story.imageURL}}</a></td>
 						<td>
 							<form name='Delete Story', method='POST' action='/delete_story/{{story._id}}' onsubmit='return confirm("Are you sure you want to delete this story?");'>
 							<button type='submit'>delete</button>
