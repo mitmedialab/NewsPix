@@ -60,17 +60,17 @@ def admin():
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
+	
 	mongo_handler = MongoHandler()
 	stories = mongo_handler.get_active_stories(Date().today)
+	
 	if not stories:
-		result = "no stories"
+		return "no stories"
 	else:
 		random_index = random.randint(0, len(stories)-1)
 		result = stories[random_index].get_story_object()
+		mongo_handler.register_load(result['_id'])
 
-	mongo_handler.register_load(result['_id'])
-
-	print "HEAAAY"
 	return json.dumps(result, default=json_util.default)
 
 @app.route('/delete_story/<storyID>', methods=['GET', 'POST'])

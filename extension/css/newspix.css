@@ -3,6 +3,10 @@ body {
 	margin: 0;
 }
 
+a {
+	text-decoration: none;
+}
+
 body.bs-cover {
 	background-color: #333;
 	height: 100%;
@@ -66,17 +70,18 @@ body.bs-cover {
 	background: linear-gradient(rgba(0,0,0,0), #000);
 }
 
-#headline {
-	
+.headline {
+	padding: 0 10px;
 }
 
-#headline a {
+.headline > a {
 	color: #fff;
-	font-size: 36px;
+	font-size: 4.5em;
+	text-shadow: 2px 2px 3px rgba(1,1,1,0.6);
 }
 
 #social-media {
-	padding-top: 20px;
+	padding-top: 40px;
 }
 
 #social-media img {
@@ -104,10 +109,25 @@ body.bs-cover {
 .help-box {
 	width: 300px;
 	background-color: #fff;
-	padding: 10px;
+	padding: 0 15px 5px;
 	border-radius: 10px;
 	float: right;
 	margin-right: 20px;
-	margin-top: -100px;
+	margin-top: -40px;
 	display: none;
+	font-size: 15px;
+	color: #666;
+}
+
+.help-box > ul {
+	margin-left: -10px;
+}
+
+.help-box > ul > li {
+	padding-bottom: 5px;
+}
+
+.org-logo {
+	margin: 10px 10px 0;
+	height: 80px;
 }

@@ -1,0 +1,26 @@
+.intro-header {
+	padding: 50px 0;
+	text-align: center;
+}
+.intro-message {
+	padding: 15% 0;	
+}
+.intro-message > h1 {
+	margin: 0;
+	font-size: 5em;
+}
+.section-heading {
+	margin-bottom: 20px;
+}
+.content-section-a {
+	padding: 20px 0;
+	text-align: center;
+	color: #888;
+	font-size: 1.5em;
+}
+.list-inline > li > a > img {
+	height: 50px;
+}
+footer {
+	text-align: center;
+}
