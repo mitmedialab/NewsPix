@@ -44,18 +44,26 @@ def admin():
 	upcoming_stories = None
 	tomorrows_stories = None
 	todays_stories = None
-		
-	story = Story()
+	
 	if request.method == 'POST':
 		# get new story
-		story.headline = request.form.get('headline', None)
-		story.storyURL = request.form.get('storyURL', None)
-		story.imageURL = request.form.get('imageURL', None)
-		story.fromDate = date_handler.date_to_datetime(request.form.get('date', None))
-		story.toDate = date_handler.date_to_datetime(request.form.get('to_date', None))
+		story = Story (
+			request.form.get('headline', None),
+			request.form.get('storyURL', None),
+			request.form.get('imageURL', None),
+			date_handler.date_to_datetime(request.form.get('date', None)),
+			date_handler.date_to_datetime(request.form.get('to_date', None)),
+			None,
+			0,
+			0)
 		mongo_handler.save_story(story)
 		
 	return render_admin_panel()
+
+@app.route('/analytics', methods=['GET', 'POST'])
+def analytics():
+	all_stories = mongo_handler.get_all_stories()
+	return render_template('analytics.html', stories=all_stories)
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
@@ -98,7 +106,7 @@ def render_admin_panel():
 
 class Story:
 
-	def __init__(self, headline="", storyURL="", imageURL="", fromDate=None, toDate=None, _id=None):
+	def __init__(self, headline, storyURL, imageURL, fromDate, toDate, _id, loadCount, clickCount):
 		self.headline = headline
 		self.storyURL = storyURL
 		self.imageURL = imageURL
@@ -109,6 +117,12 @@ class Story:
 			self.formatedFromDate = date_handler.format_date(fromDate)
 		if toDate is not None:
 			self.formatedToDate = date_handler.format_date(toDate)
+		self.loadCount = loadCount
+		self.clickCount = clickCount
+		if loadCount == 0 or clickCount == 0:
+			self.clickthrough = 0
+		else:
+			self.clickthrough = loadCount / clickCount
 
 	def get_story_object(self):
 		story = {}
@@ -117,6 +131,9 @@ class Story:
 		story['image'] = self.imageURL
 		story['date'] = self.fromDate
 		story['to_date'] = self.toDate
+		story['load_count'] = self.loadCount
+		story['click_count'] = self.clickCount
+		story['clickthrough'] = self.clickthrough
 		if not self._id:
 			return story
 		else:
@@ -162,8 +179,11 @@ class MongoHandler:
 		if cursor.count() == 0:
 			return stories
 		for story in cursor:
-			stories.append(Story(story['headline'], story['url'], story['image'], story['date'], story['to_date'], story['_id']))
+			stories.append(Story(story['headline'], story['url'], story['image'], story['date'], story['to_date'], story['_id'], story['load_count'], story['click_count']))
 		return stories
+
+	def get_all_stories(self):
+		return self.get_stories(self.collection.find().sort("date", -1))
 
 	def get_stories_on_date(self, date):
 		cursor = self.collection.find({"date": date})
