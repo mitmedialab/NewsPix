@@ -1,9 +1,16 @@
+
+var requestRandom = false;
+
 chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
 	if (sender.tab) {
 		var forms;
 		var xhr = new XMLHttpRequest();
-		xhr.open("GET", SERVER_URL + "/random_story", true);
+		if (requestRandom) {
+			xhr.open("GET", SERVER_URL + "/random_story", true);
+		} else {
+			xhr.open("GET", SERVER_URL + "/get_story/" + request.id, true);
+		}
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
 				forms = JSON.parse(xhr.responseText);

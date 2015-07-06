@@ -4,9 +4,14 @@ var story;
 
 document.addEventListener('DOMContentLoaded', function() {
 	
-	chrome.runtime.sendMessage({msg: "requestStory"}, function(response) {
-		story = response.story;
-		buildPage (story["headline"], story["url"], story["image"]);
+	chrome.storage.sync.get('previousStoryId', function(obj) {
+		
+		var prevId = (obj.previousStoryId == null) ? "0" : obj.previousStoryId.$oid;
+		chrome.runtime.sendMessage({msg: "requestStory", id: prevId}, function(response) {
+			story = response.story;
+			chrome.storage.sync.set({'previousStoryId': story["_id"]});
+			buildPage (story["headline"], story["url"], story["image"]);
+		});
 	});
 
 	document.getElementById('uninstall').addEventListener('click', function() {

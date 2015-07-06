@@ -11,6 +11,7 @@ app.debug = True
 app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
 app.config['CORS_RESOURCES'] = {
 	r"/random_story/*": {"origins": "*"},
+	r"/get_story/*": {"origins": "*"},
 	r"/register_click/*": {"origins": "*"}
 }
 
@@ -39,8 +40,6 @@ def oninstall():
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
 	
-	dateHandler = Date()
-	mongoHandler = MongoHandler()
 	active_stories = None
 	upcoming_stories = None
 	tomorrows_stories = None
@@ -52,17 +51,16 @@ def admin():
 		story.headline = request.form.get('headline', None)
 		story.storyURL = request.form.get('storyURL', None)
 		story.imageURL = request.form.get('imageURL', None)
-		story.fromDate = dateHandler.date_to_datetime(request.form.get('date', None))
-		story.toDate = dateHandler.date_to_datetime(request.form.get('to_date', None))
-		mongoHandler.save_story(story)
+		story.fromDate = date_handler.date_to_datetime(request.form.get('date', None))
+		story.toDate = date_handler.date_to_datetime(request.form.get('to_date', None))
+		mongo_handler.save_story(story)
 		
 	return render_admin_panel()
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
-	
-	mongo_handler = MongoHandler()
-	stories = mongo_handler.get_active_stories(Date().today)
+
+	stories = mongo_handler.get_active_stories(date_handler.today)
 	
 	if not stories:
 		return "no stories"
@@ -70,32 +68,37 @@ def random_story():
 		random_index = random.randint(0, len(stories)-1)
 		result = stories[random_index].get_story_object()
 		mongo_handler.register_load(result['_id'])
+		return json.dumps(result, default=json_util.default)
 
-	return json.dumps(result, default=json_util.default)
+@app.route('/get_story/<storyID>', methods=['GET', 'POST'])
+def get_story(storyID):
+	result = mongo_handler.get_next_active_story(storyID)
+	if result is None:
+		return "no stories"
+	else:
+		mongo_handler.register_load(result['_id'])
+		return json.dumps(result, default=json_util.default)
 
 @app.route('/delete_story/<storyID>', methods=['GET', 'POST'])
 def delete_story(storyID):
-	MongoHandler().remove_story(storyID)
+	mongo_handler.remove_story(storyID)
 	return render_admin_panel()
 
 @app.route('/register_click/<storyID>', methods=['GET', 'POST'])
 def register_click(storyID):
-	MongoHandler().register_click(storyID)
+	mongo_handler.register_click(storyID)
 	return render_template('register_click.html')
 
 def render_admin_panel():
-	mongoHandler = MongoHandler()
-	dateHandler = Date()
-	today = dateHandler.format_date(dateHandler.today)
-	tomorrow = dateHandler.format_date(dateHandler.tomorrow)
-	upcoming_stories = mongoHandler.get_stories_after_date(dateHandler.today)
-	active_stories = mongoHandler.get_active_stories(dateHandler.today)
+	today = date_handler.format_date(date_handler.today)
+	tomorrow = date_handler.format_date(date_handler.tomorrow)
+	upcoming_stories = mongo_handler.get_stories_after_date(date_handler.today)
+	active_stories = mongo_handler.get_active_stories(date_handler.today)
 	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow)
 
 class Story:
 
 	def __init__(self, headline="", storyURL="", imageURL="", fromDate=None, toDate=None, _id=None):
-		dateHandler = Date()
 		self.headline = headline
 		self.storyURL = storyURL
 		self.imageURL = imageURL
@@ -103,9 +106,9 @@ class Story:
 		self.toDate = toDate
 		self._id = _id
 		if fromDate is not None:
-			self.formatedFromDate = dateHandler.format_date(fromDate)
+			self.formatedFromDate = date_handler.format_date(fromDate)
 		if toDate is not None:
-			self.formatedToDate = dateHandler.format_date(toDate)
+			self.formatedToDate = date_handler.format_date(toDate)
 
 	def get_story_object(self):
 		story = {}
@@ -178,6 +181,26 @@ class MongoHandler:
 		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}})
 		return self.get_stories(cursor)
 
+	def get_next_active_story(self, storyID):
+		
+		active_stories = self.get_active_stories(date_handler.today)
+		if not active_stories:
+			return None
+
+		last_index = len(active_stories)-1
+		
+		if storyID is None or storyID == "0":
+			return active_stories[last_index].get_story_object()
+
+		position = last_index
+		while position > 0:
+			if active_stories[position].get_story_object()['_id'] == ObjectId(storyID):
+				return active_stories[position-1].get_story_object()
+			else:
+				position -= 1
+
+		return active_stories[last_index].get_story_object()
+
 	def remove_story(self, storyID):
 		self.collection.remove({"_id": ObjectId(storyID)})
 		print "REMOVE STORY"
@@ -189,7 +212,10 @@ class MongoHandler:
 		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"click_count": 1}})
 
 if __name__ == '__main__':
-    app.run()
+	mongo_handler = MongoHandler()
+	date_handler = Date()
+	app.run()
+	
 
 
 
