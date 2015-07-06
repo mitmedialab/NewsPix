@@ -22,6 +22,8 @@ body.bs-cover {
 	z-index: -99999;
 	width: 100%;
 	height: 100%;	
+	background-repeat: no-repeat;
+	background-color: black;
 	background-position: center;
 	background-size: cover;
 	-webkit-background-size: cover;

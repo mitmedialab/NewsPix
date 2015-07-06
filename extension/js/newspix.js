@@ -22,7 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function buildPage(headline, url, image) {
 
 	document.title = headline;
+	
 	$('#backstretch').css('background-image', 'url(' + image + ')');
+	if (!imageIsLandscape (image)) {
+		$('#backstretch').css('background-size', 'contain');
+		$('#backstretch').css('-webkit-background-size', 'contain');
+	}
+
 	$('#bs-url').attr ("href", url);
 	var headlineLink = '<a href="' + url + '">';
 	var headlineContent = headlineLink + headline + '</a>';
@@ -47,4 +53,10 @@ function sendClick () {
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", SERVER_URL + "/register_click/" + id, true);
 	xhr.send();
+}
+
+function imageIsLandscape(imageUrl) {
+	var img = new Image();
+	img.src = imageUrl;
+	return img.width > img.height;
 }
