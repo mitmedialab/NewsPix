@@ -25,10 +25,32 @@
 			</div>
 		</div>
 
-		<div class="content-section-a">
+		<div class="content-section-b">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
+						<h2>Aggregate data</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<p class="lead">Total loads: {{analytics.loads}}</p>
+					</div>
+					<div class="col-md-4">
+						<p class="lead">Total clicks: {{analytics.clicks}}</p>
+					</div>
+					<div class="col-md-4">
+						<p class="lead">Average clickthrough rate: {{analytics.clickthrough}}%</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="content-section-b">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2>Clickthrough rates for each story</h2>
 						<div class="table-responsive">
 							<table class="table table-striped">
 								<colgroup>

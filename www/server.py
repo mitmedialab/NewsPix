@@ -63,7 +63,7 @@ def admin():
 @app.route('/analytics', methods=['GET', 'POST'])
 def analytics():
 	all_stories = mongo_handler.get_all_stories()
-	return render_template('analytics.html', stories=all_stories)
+	return render_template('analytics.html', stories=all_stories, analytics=analytics)
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
@@ -231,9 +231,37 @@ class MongoHandler:
 	def register_click(self, storyID):
 		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"click_count": 1}})
 
+class Analytics:
+
+	def __init__(self):
+		self.stories = mongo_handler.get_all_stories()
+		self.loads = self.get_aggregate_load_count()
+		self.clicks = self.get_aggregate_click_count()
+		self.clickthrough = self.get_average_clickthrough_rate()
+
+	def get_aggregate_load_count(self):
+		load_count = 0
+		for story in self.stories:
+			load_count += story.loadCount
+		return load_count
+
+	def get_aggregate_click_count(self):
+		click_count = 0
+		for story in self.stories:
+			click_count += story.clickCount
+		return click_count;
+
+	def get_average_clickthrough_rate(self):
+		if self.loads == 0 or self.clicks == 0:
+			return 0
+		else:
+			return self.loads / self.clicks
+
+
 if __name__ == '__main__':
 	mongo_handler = MongoHandler()
 	date_handler = Date()
+	analytics = Analytics()
 	app.run()
 	
 
