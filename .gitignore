@@ -1,3 +1,11 @@
 .DS_Store
 *.sublime-*
 venv
+
+*.pyc
+
+.DS_Store
+
+.DS_Store
+
+*.pyc

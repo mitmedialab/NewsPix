@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from story import Story
+from date import Date
 
 class MongoHandler:
 
@@ -7,6 +8,7 @@ class MongoHandler:
 		self.client = MongoClient("localhost", 27017)
 		self.db = self.client.stories
 		self.collection = self.db.collection
+		self.date_handler = Date()
 
 	def save_story(self, story):
 		self.collection.save(story.get_story_object())
@@ -41,7 +43,7 @@ class MongoHandler:
 
 	def get_next_active_story(self, storyID):
 		
-		active_stories = self.get_active_stories(date_handler.today)
+		active_stories = self.get_active_stories(self.date_handler.today)
 		if not active_stories:
 			return None
 
