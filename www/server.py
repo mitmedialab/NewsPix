@@ -119,7 +119,7 @@ class Story:
 			self.formatedToDate = date_handler.format_date(toDate)
 		self.loadCount = loadCount
 		self.clickCount = clickCount
-		if loadCount == 0 or clickCount == 0:
+		if loadCount == 0 or loadCount == None or clickCount == 0 or clickCount == None:
 			self.clickthrough = 0
 		else:
 			self.clickthrough = loadCount / clickCount
@@ -179,7 +179,7 @@ class MongoHandler:
 		if cursor.count() == 0:
 			return stories
 		for story in cursor:
-			stories.append(Story(story['headline'], story['url'], story['image'], story['date'], story['to_date'], story['_id'], story['load_count'], story['click_count']))
+			stories.append(Story(story.get('headline'), story.get('url'), story.get('image'), story.get('date'), story.get('to_date'), story.get('_id'), story.get('load_count'), story.get('click_count')))
 		return stories
 
 	def get_all_stories(self):
@@ -242,13 +242,15 @@ class Analytics:
 	def get_aggregate_load_count(self):
 		load_count = 0
 		for story in self.stories:
-			load_count += story.loadCount
+			if story.loadCount is not None:
+				load_count += story.loadCount
 		return load_count
 
 	def get_aggregate_click_count(self):
 		click_count = 0
 		for story in self.stories:
-			click_count += story.clickCount
+			if story.clickCount is not None:
+				click_count += story.clickCount
 		return click_count;
 
 	def get_average_clickthrough_rate(self):
