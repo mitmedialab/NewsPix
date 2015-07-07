@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from story import Story
 from date import Date
+from bson.objectid import ObjectId
 
 class MongoHandler:
 
