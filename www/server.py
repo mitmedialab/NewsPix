@@ -10,6 +10,13 @@ from date import Date
 from analytics import Analytics
 from story import Story
 
+# constants
+CONFIG_FILENAME = 'app.config'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+config = ConfigParser.ConfigParser()
+config.read(os.path.join(BASE_DIR, CONFIG_FILENAME))
+
 app = Flask(__name__)
 app.debug = True
 app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
@@ -20,14 +27,13 @@ app.config['CORS_RESOURCES'] = {
 }
 
 cors = CORS(app)
-
-mongo_handler = MongoHandler()
+mongo_handler = MongoHandler(
+	config.get('db','host'), 
+	config.get('db','port'), 
+	config.get('db', 'db'), 
+	config.get('db', 'collection'))
 date_handler = Date()
 analytics = Analytics(mongo_handler)
-
-# constants
-CONFIG_FILENAME = 'app.config'
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # MongoDB & links to each collection
 '''uri = "mongodb://"+ config.get('db','user')+ ":"+ config.get('db','pass')+"@" +config.get('db','host') + ":" + config.get('db','port')+"/?authSource="+config.get('db','auth_db')
@@ -48,11 +54,6 @@ def oninstall():
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
 	
-	active_stories = None
-	upcoming_stories = None
-	tomorrows_stories = None
-	todays_stories = None
-	
 	if request.method == 'POST':
 		# get new story
 		story = Story (
@@ -69,7 +70,7 @@ def admin():
 	return render_admin_panel()
 
 @app.route('/analytics', methods=['GET', 'POST'])
-def analytics():
+def analytics_page():
 	all_stories = mongo_handler.get_all_stories()
 	return render_template('analytics.html', stories=all_stories, analytics=analytics)
 
@@ -111,8 +112,6 @@ def render_admin_panel():
 	upcoming_stories = mongo_handler.get_stories_after_date(date_handler.today)
 	active_stories = mongo_handler.get_active_stories(date_handler.today)
 	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow)
-
-
 
 if __name__ == '__main__':
 	app.debug = True

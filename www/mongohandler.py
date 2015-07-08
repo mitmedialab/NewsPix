@@ -5,10 +5,10 @@ from bson.objectid import ObjectId
 
 class MongoHandler:
 
-	def __init__(self):
-		self.client = MongoClient("localhost", 27017)
-		self.db = self.client.stories
-		self.collection = self.db.collection
+	def __init__(self, host, port, db, collection):
+		self.client = MongoClient(host, int(port))
+		self.db = self.client[db]
+		self.collection = self.db[collection]
 		self.date_handler = Date()
 
 	def save_story(self, story):

@@ -30,3 +30,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+.list-thumbnail {
+	max-height: 60px;
+}

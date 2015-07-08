@@ -50,19 +50,23 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h2>Clickthrough rates for each story</h2>
+						<h2>Stories</h2>
 						<div class="table-responsive">
 							<table class="table table-striped">
 								<colgroup>
-									<col class="col-md-6">
-									<col class="col-md-4">
+									<col class="col-md-5">
+									<col class="col-md-3">
+									<col class="col-md-1">
+									<col class="col-md-1">
 									<col class="col-md-2">
 								</colgroup>
 								<thead>
 									<tr>
 										<th>Caption</th>
 										<th>Active Dates</th>
-										<th>Clickthrough rate</th>
+										<th>Loads</th>
+										<th>Clicks</th>
+										<th>Clickthrough Rate</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -70,6 +74,8 @@
 									<tr>
 										<td><a href="{{story.storyURL}}">{{story.headline}}</a></td>
 										<td>{{story.formatedFromDate}} - {{story.formatedToDate}}</td>
+										<td>{{story.loadCount}}</td>
+										<td>{{story.clickCount}}</td>
 										<td>{{story.clickthrough}}%</td>
 									</tr>
 									{% endfor %}

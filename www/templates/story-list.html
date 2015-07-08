@@ -17,7 +17,7 @@
 					<tr>
 						<th>Headline</th>
 						<th>Active dates</th>
-						<th class="col-overflow">Image URL</th>
+						<th>Image</th>
 						<th>Delete</th>
 					</tr>
 				</thead>
@@ -26,7 +26,7 @@
 					<tr>
 						<td><a href="{{story.storyURL}}">{{story.headline}}</a></td>
 						<td>{{story.formatedFromDate}} - {{story.formatedToDate}}</td>
-						<td class="col-overflow"><a href="{{story.imageURL}}">{{story.imageURL}}</a></td>
+						<td><a href="{{story.imageURL}}"><img src="{{story.imageURL}}" class="list-thumbnail"></a></td>
 						<td>
 							<form name='Delete Story', method='POST' action='/delete_story/{{story._id}}' onsubmit='return confirm("Are you sure you want to delete this story?");'>
 							<button type='submit'>delete</button>

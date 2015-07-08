@@ -4,6 +4,7 @@
 	"description": "A news engagement project with the Future of News Initiative at the MIT Media Lab and the Emerson Engagement Lab",
 	"version": "1.0",
 	"permissions": [
+		"https://www.google-analytics.com/",
 		"activeTab",
 		"tabs",
 		"storage"
