@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"name": "NewsPix",
+	"name": "NewsPix for the Keene Sentinel",
 	"description": "A news engagement project with the Future of News Initiative at the MIT Media Lab and the Emerson Engagement Lab",
 	"version": "1.0",
 	"permissions": [
