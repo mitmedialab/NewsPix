@@ -22,6 +22,7 @@ pip install pymongo
 pip install virtualenv
 pip install requests
 pip install flask-cors
+pip install Pillow
 ```
 
 ## Run locally

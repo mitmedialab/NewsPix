@@ -9,6 +9,8 @@ from mongohandler import MongoHandler
 from date import Date
 from analytics import Analytics
 from story import Story
+from PIL import Image
+from StringIO import StringIO
 
 # constants
 CONFIG_FILENAME = 'app.config'
@@ -89,11 +91,16 @@ def random_story():
 
 @app.route('/get_story/<storyID>', methods=['GET', 'POST'])
 def get_story(storyID):
+	
 	result = mongo_handler.get_next_active_story(storyID)
 	if result is None:
 		return "no stories"
 	else:
+		result["isLandscape"] = 0
 		mongo_handler.register_load(result['_id'])
+		imageURL = result.get('image')
+		if imageURL is not None:
+			result["isLandscape"] = int(isLandscape(imageURL))
 		return json.dumps(result, default=json_util.default)
 
 @app.route('/delete_story/<storyID>', methods=['GET', 'POST'])
@@ -112,6 +119,14 @@ def render_admin_panel():
 	upcoming_stories = mongo_handler.get_stories_after_date(date_handler.today)
 	active_stories = mongo_handler.get_active_stories(date_handler.today)
 	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow)
+
+def isLandscape(url):
+	response = requests.get(url)
+	print url
+	img = Image.open(StringIO(response.content))
+	width = img.size[0]
+	height = img.size[1]
+	return width > height
 
 if __name__ == '__main__':
 	app.debug = True

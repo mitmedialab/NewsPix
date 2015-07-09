@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		chrome.runtime.sendMessage({msg: "requestStory", id: prevId}, function(response) {
 			story = response.story;
 			chrome.storage.sync.set({'previousStoryId': story["_id"]});
-			buildPage (story["headline"], story["url"], story["image"]);
+			buildPage (story["headline"], story["url"], story["image"], story["isLandscape"]);
 		});
 	});
 
@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }, false);
 
-function buildPage(headline, url, image) {
+function buildPage(headline, url, image, imageIsLandscape) {
 
 	document.title = headline;
 	
 	$('#backstretch').css('background-image', 'url(' + image + ')');
-	if (!imageIsLandscape (image)) {
+	if (!imageIsLandscape) {
 		$('#backstretch').css('background-size', 'contain');
 		$('#backstretch').css('-webkit-background-size', 'contain');
 	}
@@ -55,8 +55,14 @@ function sendClick () {
 	xhr.send();
 }
 
+/*
+Commented out because extension is sandboxed and can't access external content once it's deployed 
+so I moved this logic to the server
 function imageIsLandscape(imageUrl) {
 	var img = new Image();
 	img.src = imageUrl;
+	console.log(imageUrl)
+	console.log(img.width + "is width")
+	console.log(img.height + "is height")
 	return img.width > img.height;
-}
+}*/
