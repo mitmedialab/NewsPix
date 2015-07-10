@@ -55,7 +55,6 @@ def oninstall():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
-	
 	if request.method == 'POST':
 		# get new story
 		story = Story (
@@ -66,7 +65,8 @@ def admin():
 			date_handler.date_to_datetime(request.form.get('to_date', None)),
 			None,
 			0,
-			0)
+			0,
+			mongo_handler.get_story_count ())
 		mongo_handler.save_story(story)
 		
 	return render_admin_panel()
@@ -78,9 +78,7 @@ def analytics_page():
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story():
-
 	stories = mongo_handler.get_active_stories(date_handler.today)
-	
 	if not stories:
 		return "no stories"
 	else:
@@ -91,7 +89,6 @@ def random_story():
 
 @app.route('/get_story/<storyID>', methods=['GET', 'POST'])
 def get_story(storyID):
-	
 	result = mongo_handler.get_next_active_story(storyID)
 	if result is None:
 		return "no stories"
@@ -121,8 +118,8 @@ def render_admin_panel():
 	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow)
 
 def isLandscape(url):
-	response = requests.get(url)
 	print url
+	response = requests.get(url)
 	img = Image.open(StringIO(response.content))
 	width = img.size[0]
 	height = img.size[1]

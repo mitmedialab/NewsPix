@@ -54,7 +54,8 @@
 						<div class="table-responsive">
 							<table class="table table-striped">
 								<colgroup>
-									<col class="col-md-5">
+									<col class="col-md-3">
+									<col class="col-md-2">
 									<col class="col-md-3">
 									<col class="col-md-1">
 									<col class="col-md-1">
@@ -63,6 +64,7 @@
 								<thead>
 									<tr>
 										<th>Caption</th>
+										<th>Image</th>
 										<th>Active Dates</th>
 										<th>Loads</th>
 										<th>Clicks</th>
@@ -73,6 +75,7 @@
 									{% for story in stories %}
 									<tr>
 										<td><a href="{{story.storyURL}}">{{story.headline}}</a></td>
+										<td><a href="{{story.imageURL}}"><img src="{{story.imageURL}}" class="list-thumbnail"></a></td>
 										<td>{{story.formatedFromDate}} - {{story.formatedToDate}}</td>
 										<td>{{story.loadCount}}</td>
 										<td>{{story.clickCount}}</td>

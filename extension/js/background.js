@@ -9,6 +9,8 @@ function(request, sender, sendResponse) {
 		if (requestRandom) {
 			xhr.open("GET", SERVER_URL + "/random_story", true);
 		} else {
+			if (request.id == undefined) 
+				return false;
 			xhr.open("GET", SERVER_URL + "/get_story/" + request.id, true);
 		}
 		xhr.onreadystatechange = function() {
@@ -29,3 +31,16 @@ chrome.runtime.onInstalled.addListener(function(details){
     	});
     }
 });
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	if (request.msg == "registerClick") {
+		sendClick (request.story);
+	}
+});
+
+function sendClick (story) {
+	var id = story["_id"]["$oid"];
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", SERVER_URL + "/register_click/" + id, true);
+	xhr.send();
+}

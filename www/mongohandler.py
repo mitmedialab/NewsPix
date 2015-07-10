@@ -20,7 +20,16 @@ class MongoHandler:
 		if cursor.count() == 0:
 			return stories
 		for story in cursor:
-			stories.append(Story(story.get('headline'), story.get('url'), story.get('image'), story.get('date'), story.get('to_date'), story.get('_id'), story.get('load_count'), story.get('click_count')))
+			stories.append(Story(
+				story.get('headline'), 
+				story.get('url'), 
+				story.get('image'), 
+				story.get('date'), 
+				story.get('to_date'), 
+				story.get('_id'), 
+				story.get('load_count'), 
+				story.get('click_count'),
+				story.get('position')))
 		return stories
 
 	def get_all_stories(self):
@@ -36,11 +45,11 @@ class MongoHandler:
 
 	def get_stories_after_date(self, date):
 		cursor = self.collection.find({"date": {"$gt": date}})
-		return self.get_stories(cursor)
+		return self.get_stories(cursor.sort("position", -1))
 
 	def get_active_stories(self, date):
 		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}})
-		return self.get_stories(cursor)
+		return self.get_stories(cursor.sort("position", -1))
 
 	def get_next_active_story(self, storyID):
 		
@@ -48,19 +57,43 @@ class MongoHandler:
 		if not active_stories:
 			return None
 
-		last_index = len(active_stories)-1
-		
 		if storyID is None or storyID == "0":
-			return active_stories[last_index].get_story_object()
+			return active_stories[self.get_story_count()-1].get_story_object()
 
-		position = last_index
-		while position > 0:
-			if active_stories[position].get_story_object()['_id'] == ObjectId(storyID):
-				return active_stories[position-1].get_story_object()
-			else:
-				position -= 1
+		current_position = self.get_story_position(storyID, active_stories)
+		return self.get_next_story_from_position(current_position, active_stories)
 
-		return active_stories[last_index].get_story_object()
+	def get_story_position(self, storyID, active_stories):
+		for story in active_stories:
+			if story._id == ObjectId(storyID):
+				return story.position
+		return 0
+
+	def get_next_story_from_position(self, position, active_stories):
+		
+		if position == 0:
+			return self.get_story_at_position(self.get_highest_position(active_stories), active_stories)
+
+		highest_position = 0
+		for story in active_stories:
+			story_position = story.position
+			if story_position > highest_position and story_position < position:
+				highest_position = story_position
+
+		return self.get_story_at_position(highest_position, active_stories)
+
+	def get_story_at_position(self, position, active_stories):
+		for story in active_stories:
+			if story.position == position:
+				return story.get_story_object()
+		return active_stories[0].get_story_object()
+
+	def get_highest_position(self, active_stories):
+		highest_position = 0
+		for story in active_stories:
+			if story.position > highest_position:
+				story.position = highest_position
+		return highest_position
 
 	def remove_story(self, storyID):
 		self.collection.remove({"_id": ObjectId(storyID)})
@@ -71,3 +104,11 @@ class MongoHandler:
 
 	def register_click(self, storyID):
 		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"click_count": 1}})
+
+	def get_story_count(self):
+		cursor = self.collection.aggregate([{"$group": { "_id": None, "count": { "$sum": 1 }}}])
+		if len(cursor["result"]) == 0:
+			return 0
+		return cursor["result"][0]["count"]
+
+		

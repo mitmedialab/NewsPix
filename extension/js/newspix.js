@@ -1,5 +1,4 @@
-// TODO: why isn't this working from extension.config.js?
-var SERVER_URL = "http://127.0.0.1:5000"; 
+
 var story;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -38,31 +37,12 @@ function buildPage(headline, url, image, imageIsLandscape) {
 
 $(document).ready(function() {
 	$('.headline').click(function () {
-		sendClick ();
+		chrome.runtime.sendMessage({msg: "registerClick", story: story});
 	});
 	$('#bs-url').click(function () {
-		sendClick ();
+		chrome.runtime.sendMessage({msg: "registerClick", story: story});
 	});
 	$('.help').click(function () {
 		$('.help-box').toggle(200);
 	});
 });
-
-function sendClick () {
-	var id = story["_id"]["$oid"];
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", SERVER_URL + "/register_click/" + id, true);
-	xhr.send();
-}
-
-/*
-Commented out because extension is sandboxed and can't access external content once it's deployed 
-so I moved this logic to the server
-function imageIsLandscape(imageUrl) {
-	var img = new Image();
-	img.src = imageUrl;
-	console.log(imageUrl)
-	console.log(img.width + "is width")
-	console.log(img.height + "is height")
-	return img.width > img.height;
-}*/

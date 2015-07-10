@@ -2,7 +2,7 @@ from date import Date
 
 class Story:
 
-	def __init__(self, headline, storyURL, imageURL, fromDate, toDate, _id, loadCount, clickCount):
+	def __init__(self, headline, storyURL, imageURL, fromDate, toDate, _id, loadCount, clickCount, position):
 		self.headline = headline
 		self.storyURL = storyURL
 		self.imageURL = imageURL
@@ -20,6 +20,7 @@ class Story:
 			self.clickthrough = 0
 		else:
 			self.clickthrough = loadCount / clickCount
+		self.position = position
 
 	def get_story_object(self):
 		story = {}
@@ -31,6 +32,7 @@ class Story:
 		story['load_count'] = self.loadCount
 		story['click_count'] = self.clickCount
 		story['clickthrough'] = self.clickthrough
+		story['position'] = self.position
 		if not self._id:
 			return story
 		else:
