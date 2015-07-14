@@ -36,7 +36,7 @@ mongo_handler = MongoHandler(
 	config.get('db', 'db'), 
 	config.get('db', 'collection'))
 date_handler = Date()
-analytics = Analytics(mongo_handler)
+
 
 # MongoDB & links to each collection
 '''uri = "mongodb://"+ config.get('db','user')+ ":"+ config.get('db','pass')+"@" +config.get('db','host') + ":" + config.get('db','port')+"/?authSource="+config.get('db','auth_db')
@@ -76,6 +76,7 @@ def admin():
 @app.route('/analytics', methods=['GET', 'POST'])
 @requires_auth
 def analytics_page():
+	analytics = Analytics(mongo_handler)
 	all_stories = mongo_handler.get_all_stories()
 	print analytics.clickthrough
 	return render_template('analytics.html', stories=all_stories, analytics=analytics)

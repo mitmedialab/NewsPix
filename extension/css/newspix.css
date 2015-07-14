@@ -79,6 +79,7 @@ body.bs-cover {
 }
 
 .headline > a {
+	line-height: 60px;
 	color: #fff;
 	font-size: 4.5em;
 	text-shadow: 2px 2px 3px rgba(1,1,1,0.6);
