@@ -16,9 +16,10 @@ APACHE
 -----------------------------------------------------
 
 sudo /etc/init.d/apache2 reload
+
 DEPLOY
 -----------------------------------------------------
 - Get latest from Git
 - manually update app.config file if has changed
-- rm *.pyc files in www/ directory to prevent caching issues
+- sudo rm *.pyc files in www/ directory to prevent caching issues
 - reload apache
