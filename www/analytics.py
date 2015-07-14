@@ -27,4 +27,4 @@ class Analytics:
 		if self.loads == 0 or self.clicks == 0:
 			return 0
 		else:
-			return self.loads / self.clicks
+			return round((float(self.clicks) / float(self.loads)) * 100, 2)

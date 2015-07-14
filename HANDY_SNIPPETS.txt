@@ -14,8 +14,8 @@ sudo git reset --hard origin/master
 
 APACHE
 -----------------------------------------------------
-sudo /etc/init.d/apache2 reload
 
+sudo /etc/init.d/apache2 reload
 DEPLOY
 -----------------------------------------------------
 - Get latest from Git

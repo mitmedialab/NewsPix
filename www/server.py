@@ -77,6 +77,7 @@ def admin():
 @requires_auth
 def analytics_page():
 	all_stories = mongo_handler.get_all_stories()
+	print analytics.clickthrough
 	return render_template('analytics.html', stories=all_stories, analytics=analytics)
 
 @app.route('/random_story', methods=['GET', 'POST'])
