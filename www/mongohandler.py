@@ -106,7 +106,7 @@ class MongoHandler:
 		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"click_count": 1}})
 
 	def get_story_count(self):
-		#cursor = self.collection.group(["_id"], { 'y': { '$gt': 3 } })
+		#NOTE FROM CATHERINE - server using Mongo 2.0.4 so doesn't support the aggregate command
 		#cursor = self.collection.aggregate([{"$group": { "_id": None, "count": { "$sum": 1 }}}])
 		#if len(cursor["result"]) == 0:
 		#	return 0

@@ -33,6 +33,9 @@ function buildPage(headline, url, image, imageIsLandscape) {
 	var headlineContent = headlineLink + headline + '</a>';
 
 	$(headlineContent).appendTo('.headline');
+
+	$('.facebook-share').attr('href', $('.facebook-share').attr('href') + url);
+	$('.twitter-share-button').attr('href', $('.twitter-share-button').attr('href') + headline + " " + url + " via %23NewsPix for the @sentinelsource");
 }
 
 $(document).ready(function() {
