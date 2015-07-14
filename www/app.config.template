@@ -1,9 +1,12 @@
+[app]
+admin_username:
+admin_password:
+
 [db]
 host: 
 user: 
 pass: 
 name: newspix_boston_herald
 port: 27017
-auth_db:newspix_boston_herald
-pix_collection:newspix
-
+auth_db:
+collection:stories
