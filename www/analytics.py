@@ -6,7 +6,6 @@ class Analytics:
 	def __init__(self, mongo_handler):
 		self.stories = mongo_handler.get_all_stories()
 		self.loads = self.get_aggregate_load_count()
-		print self.loads
 		self.clicks = self.get_aggregate_click_count()
 		self.clickthrough = self.get_average_clickthrough_rate()
 

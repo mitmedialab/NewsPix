@@ -58,7 +58,7 @@ class MongoHandler:
 			return None
 
 		if storyID is None or storyID == "0":
-			return active_stories[self.get_story_count()-1].get_story_object()
+			return active_stories[len(active_stories)-1].get_story_object()
 
 		current_position = self.get_story_position(storyID, active_stories)
 		return self.get_next_story_from_position(current_position, active_stories)
@@ -106,9 +106,15 @@ class MongoHandler:
 		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"click_count": 1}})
 
 	def get_story_count(self):
-		cursor = self.collection.aggregate([{"$group": { "_id": None, "count": { "$sum": 1 }}}])
-		if len(cursor["result"]) == 0:
+		#cursor = self.collection.group(["_id"], { 'y': { '$gt': 3 } })
+		#cursor = self.collection.aggregate([{"$group": { "_id": None, "count": { "$sum": 1 }}}])
+		#if len(cursor["result"]) == 0:
+		#	return 0
+		#return cursor["result"][0]["count"]
+		active_stories = self.get_active_stories(self.date_handler.today)
+		if not active_stories:
 			return 0
-		return cursor["result"][0]["count"]
+		else:	
+			return len(active_stories)
 
 		
