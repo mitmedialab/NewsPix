@@ -11,6 +11,7 @@ from analytics import Analytics
 from story import Story
 from PIL import Image
 from StringIO import StringIO
+from auth import check_auth,authenticate,requires_auth
 
 # constants
 CONFIG_FILENAME = 'app.config'
@@ -54,6 +55,7 @@ def oninstall():
 	return render_template('oninstall.html')
 
 @app.route('/admin', methods=['GET', 'POST'])
+@requires_auth
 def admin():
 	if request.method == 'POST':
 		# get new story
@@ -72,6 +74,7 @@ def admin():
 	return render_admin_panel()
 
 @app.route('/analytics', methods=['GET', 'POST'])
+@requires_auth
 def analytics_page():
 	all_stories = mongo_handler.get_all_stories()
 	return render_template('analytics.html', stories=all_stories, analytics=analytics)
