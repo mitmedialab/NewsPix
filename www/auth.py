@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import request, Response
-import ConfigParser
+import os,ConfigParser
 
 
 CONFIG_FILENAME = 'app.config'
