@@ -21,3 +21,5 @@ extension/Archive.zip
 www/.DS_Store
 
 *.config
+
+*.pyc

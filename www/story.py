@@ -19,7 +19,7 @@ class Story:
 		if loadCount == 0 or loadCount == None or clickCount == 0 or clickCount == None:
 			self.clickthrough = 0
 		else:
-			self.clickthrough = loadCount / clickCount
+			self.clickthrough = round((float(clickCount) / float(loadCount)) * 100, 2)
 		self.position = position
 
 	def get_story_object(self):
