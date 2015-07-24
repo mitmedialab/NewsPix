@@ -70,28 +70,37 @@ class MongoHandler:
 		return 0
 
 	def get_next_story_from_position(self, position, active_stories, isNextStory):
-		print "YOYOYO" + str(position)
-		print isNextStory
+		print "Current position: " + str(position)
+		print "isNextStory: " + str(isNextStory)
+		
+		position_changed = False
+		
 		if position == 0 and isNextStory:
 			return self.get_story_at_position(self.get_highest_position(active_stories), active_stories)
 
 		position_to_get = 0
 		
 		for story in active_stories:
+
 			story_position = story.position
-			
+			print "Current iterating position: " + str(story_position)
+
 			#we want the next story
 			if isNextStory:
 				if story_position > position_to_get and story_position < position:
 					position_to_get = story_position
+					position_changed = True
 					
 			#we want the previous story
 			else:
 				if story_position > position:
 					position_to_get = story_position
+					position_changed = True
+					print "Position changed"
+		
+		if isNextStory == False and position_changed == False:
+			return self.get_story_at_position(self.get_lowest_position(active_stories), active_stories)
 					
-					
-
 		return self.get_story_at_position(position_to_get, active_stories)
 
 	def get_story_at_position(self, position, active_stories):
@@ -106,6 +115,16 @@ class MongoHandler:
 			if story.position > highest_position:
 				story.position = highest_position
 		return highest_position
+
+	def get_lowest_position(self, active_stories):
+		lowest_position = None
+		for story in active_stories:
+			if lowest_position == None:
+				lowest_position = story.position 
+			elif story.position < lowest_position:
+				lowest_position = story.position
+		print "lowest position is " + str(lowest_position)
+		return lowest_position
 
 	def remove_story(self, storyID):
 		self.collection.remove({"_id": ObjectId(storyID)})
