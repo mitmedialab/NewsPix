@@ -13,19 +13,24 @@ document.addEventListener('DOMContentLoaded', function() {
 function buildPage(headline, url, image, imageIsLandscape) {
 
 	document.title = headline;
-	
+	$('#backstretch').hide()
+	$( ".headline" ).hide()
+
 	$('#backstretch').css('background-image', 'url(' + image + ')');
 	if (!imageIsLandscape) {
 		$('#backstretch').css('background-size', 'contain');
 		$('#backstretch').css('-webkit-background-size', 'contain');
 	}
+	$( "#backstretch" ).fadeIn( "slow");
 
 	$('#bs-url').attr ("href", url);
 	var headlineLink = '<a href="' + url + '">';
 	var headlineContent = headlineLink + headline + '</a>';
 
+	
 	$('.headline').text("");
 	$(headlineContent).appendTo('.headline');
+	$( ".headline" ).fadeIn( "slow");
 
 	$('.facebook-share').attr('href', $('.facebook-share').attr('href') + url);
 	$('.twitter-share-button').attr('href', $('.twitter-share-button').attr('href') + headline + " " + url + " via %23NewsPix for the @sentinelsource");
@@ -53,9 +58,17 @@ $(document).ready(function() {
 		$('.help-box').toggle(200);
 	});
 	$('.forward').click(function () {
-		getStory("requestNextStory");
+		$( ".headline" ).fadeOut("slow");
+		$( "#backstretch" ).fadeOut( "slow", function() {
+		    getStory("requestNextStory");
+		});
+		
 	});
 	$('.backward').click(function () {
-		getStory("requestPreviousStory");
+		$( ".headline" ).fadeOut("slow");
+		$( "#backstretch" ).fadeOut( "slow", function() {
+		    getStory("requestPreviousStory");
+		});
+		
 	});
 });
