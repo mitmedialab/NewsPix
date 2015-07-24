@@ -20,6 +20,9 @@ function buildPage(headline, url, image, imageIsLandscape) {
 	if (!imageIsLandscape) {
 		$('#backstretch').css('background-size', 'contain');
 		$('#backstretch').css('-webkit-background-size', 'contain');
+	} else {
+		$('#backstretch').css('background-size', 'cover');
+		$('#backstretch').css('-webkit-background-size', 'cover');
 	}
 	$( "#backstretch" ).fadeIn( "slow");
 
