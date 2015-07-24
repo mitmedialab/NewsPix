@@ -23,3 +23,7 @@ www/.DS_Store
 *.config
 
 *.pyc
+
+www/.DS_Store
+
+*.pyc

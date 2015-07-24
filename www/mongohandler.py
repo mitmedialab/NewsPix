@@ -51,7 +51,7 @@ class MongoHandler:
 		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}})
 		return self.get_stories(cursor.sort("position", -1))
 
-	def get_next_active_story(self, storyID):
+	def get_active_story(self, storyID, isNextStory=True):
 		
 		active_stories = self.get_active_stories(self.date_handler.today)
 		if not active_stories:
@@ -61,7 +61,7 @@ class MongoHandler:
 			return active_stories[len(active_stories)-1].get_story_object()
 
 		current_position = self.get_story_position(storyID, active_stories)
-		return self.get_next_story_from_position(current_position, active_stories)
+		return self.get_next_story_from_position(current_position, active_stories, isNextStory)
 
 	def get_story_position(self, storyID, active_stories):
 		for story in active_stories:
@@ -69,18 +69,30 @@ class MongoHandler:
 				return story.position
 		return 0
 
-	def get_next_story_from_position(self, position, active_stories):
-		
-		if position == 0:
+	def get_next_story_from_position(self, position, active_stories, isNextStory):
+		print "YOYOYO" + str(position)
+		print isNextStory
+		if position == 0 and isNextStory:
 			return self.get_story_at_position(self.get_highest_position(active_stories), active_stories)
 
-		highest_position = 0
+		position_to_get = 0
+		
 		for story in active_stories:
 			story_position = story.position
-			if story_position > highest_position and story_position < position:
-				highest_position = story_position
+			
+			#we want the next story
+			if isNextStory:
+				if story_position > position_to_get and story_position < position:
+					position_to_get = story_position
+					
+			#we want the previous story
+			else:
+				if story_position > position:
+					position_to_get = story_position
+					
+					
 
-		return self.get_story_at_position(highest_position, active_stories)
+		return self.get_story_at_position(position_to_get, active_stories)
 
 	def get_story_at_position(self, position, active_stories):
 		for story in active_stories:

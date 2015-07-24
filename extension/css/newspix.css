@@ -79,12 +79,14 @@ body.bs-cover {
 }
 
 .headline > a {
-	line-height: 60px;
+	line-height: 80px;
 	color: #fff;
 	font-size: 4.5em;
 	text-shadow: 2px 2px 3px rgba(1,1,1,0.6);
 }
-
+.headline > a:hover{
+	color:#aaa;
+}
 #social-media {
 	/*padding-top: 15px;*/
 }
@@ -135,4 +137,24 @@ body.bs-cover {
 .org-logo {
 	margin: 10px 10px 0;
 	height: 80px;
+}
+.forward,.backward{
+	width:100px;
+	position:absolute;
+	top:35%;
+	right:20px;
+	font-family: 'News Cycle', sans-serif;
+	font-weight: 400;
+	font-size:90px;
+	color: #fff;
+	text-shadow: 2px 2px 3px rgba(1,1,1,0.6);
+}
+.backward {
+	left:20px;
+}
+.forward > a,.backward > a{
+	color: #fff;
+}
+.forward > a:hover,.backward > a:hover{
+	color:#aaa;
 }

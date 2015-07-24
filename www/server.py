@@ -25,7 +25,8 @@ app.debug = True
 app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
 app.config['CORS_RESOURCES'] = {
 	r"/random_story/*": {"origins": "*"},
-	r"/get_story/*": {"origins": "*"},
+	r"/get_next_story/*": {"origins": "*"},
+	r"/get_previous_story/*": {"origins": "*"},
 	r"/register_click/*": {"origins": "*"}
 }
 
@@ -92,9 +93,19 @@ def random_story():
 		mongo_handler.register_load(result['_id'])
 		return json.dumps(result, default=json_util.default)
 
-@app.route('/get_story/<storyID>', methods=['GET', 'POST'])
-def get_story(storyID):
-	result = mongo_handler.get_next_active_story(storyID)
+@app.route('/get_previous_story/<storyID>', methods=['GET', 'POST'])
+def get_previous_story(storyID):
+	result = mongo_handler.get_active_story(storyID,False)
+	handleNextOrPrevious(result)
+	return json.dumps(result, default=json_util.default)
+
+@app.route('/get_next_story/<storyID>', methods=['GET', 'POST'])
+def get_next_story(storyID):
+	result = mongo_handler.get_active_story(storyID,True)
+	handleNextOrPrevious(result)
+	return json.dumps(result, default=json_util.default)
+
+def handleNextOrPrevious(result):
 	if result is None:
 		return "no stories"
 	else:
@@ -103,7 +114,8 @@ def get_story(storyID):
 		imageURL = result.get('image')
 		if imageURL is not None:
 			result["isLandscape"] = int(isLandscape(imageURL))
-		return json.dumps(result, default=json_util.default)
+	return result
+		
 
 @app.route('/delete_story/<storyID>', methods=['GET', 'POST'])
 def delete_story(storyID):
