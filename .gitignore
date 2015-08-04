@@ -29,3 +29,5 @@ www/.DS_Store
 *.pyc
 
 *.pyc
+
+www/mongohandler.pyc

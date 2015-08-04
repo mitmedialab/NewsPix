@@ -15,8 +15,13 @@ class MongoHandler:
 		self.collection.save(story.get_story_object())
 		print "SAVE STORY"
 
+	# NOTE FROM CATHERINE - that we are always recomputing the story position - 
+	# this is to ensure that it is calculated in relation to the set of 
+	# stories rather than coming from being stored in the DB
+
 	def get_stories(self, cursor):
 		stories = []
+		idx = cursor.count()
 		if cursor.count() == 0:
 			return stories
 		for story in cursor:
@@ -29,7 +34,8 @@ class MongoHandler:
 				story.get('_id'), 
 				story.get('load_count'), 
 				story.get('click_count'),
-				story.get('position')))
+				position=idx))
+			idx-=1
 		return stories
 
 	def get_all_stories(self):
@@ -44,12 +50,12 @@ class MongoHandler:
 		return self.get_stories(cursor)
 
 	def get_stories_after_date(self, date):
-		cursor = self.collection.find({"date": {"$gt": date}})
-		return self.get_stories(cursor.sort("position", -1))
+		cursor = self.collection.find({"date": {"$gt": date}}).sort("date", -1)
+		return self.get_stories(cursor)
 
 	def get_active_stories(self, date):
-		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}})
-		return self.get_stories(cursor.sort("position", -1))
+		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}}).sort("date", -1)
+		return self.get_stories(cursor)
 
 	def get_active_story(self, storyID, isNextStory=True):
 		
@@ -96,7 +102,6 @@ class MongoHandler:
 				if story_position > position:
 					position_to_get = story_position
 					position_changed = True
-					print "Position changed"
 		
 		if isNextStory == False and position_changed == False:
 			return self.get_story_at_position(self.get_lowest_position(active_stories), active_stories)
@@ -113,7 +118,7 @@ class MongoHandler:
 		highest_position = 0
 		for story in active_stories:
 			if story.position > highest_position:
-				story.position = highest_position
+				highest_position = story.position
 		return highest_position
 
 	def get_lowest_position(self, active_stories):
@@ -123,12 +128,10 @@ class MongoHandler:
 				lowest_position = story.position 
 			elif story.position < lowest_position:
 				lowest_position = story.position
-		print "lowest position is " + str(lowest_position)
 		return lowest_position
 
 	def remove_story(self, storyID):
 		self.collection.remove({"_id": ObjectId(storyID)})
-		print "REMOVE STORY"
 
 	def register_load(self, storyID):
 		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"load_count": 1}})
