@@ -1,5 +1,7 @@
 
 var story;
+var twitter_share_url = "https://twitter.com/intent/tweet?text=";
+var facebook_share_url = "https://www.facebook.com/sharer/sharer.php?u=";
 
 document.addEventListener('DOMContentLoaded', function() {
 	
@@ -35,8 +37,9 @@ function buildPage(headline, url, image, imageIsLandscape) {
 	$(headlineContent).appendTo('.headline');
 	$( ".headline" ).fadeIn( "slow");
 
-	$('.facebook-share').attr('href', $('.facebook-share').attr('href') + url);
-	$('.twitter-share-button').attr('href', $('.twitter-share-button').attr('href') + headline + " " + url + " via %23NewsPix for the @sentinelsource");
+	$('.facebook-share').attr('href', facebook_share_url + url);
+	$('.twitter-share-button').attr('href', twitter_share_url + headline + " " + url + " via %23NewsPix for the @sentinelsource");
+	console.log("BUILD PAGE DONE");
 }
 function getStory(msg){
 	chrome.storage.sync.get('previousStoryId', function(obj) {
@@ -44,8 +47,9 @@ function getStory(msg){
 		var prevId = (obj.previousStoryId == null) ? "0" : obj.previousStoryId.$oid;
 		chrome.runtime.sendMessage({msg: msg, id: prevId}, function(response) {
 			story = response.story;
+			console.log("STORY: " + story.headline);
 			chrome.storage.sync.set({'previousStoryId': story["_id"]});
-			buildPage (story["headline"], story["url"], story["image"], story["isLandscape"]);
+			buildPage(story["headline"], story["url"], story["image"], story["isLandscape"]);
 		});
 	});
 }
