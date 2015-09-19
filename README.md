@@ -31,15 +31,15 @@ Navigate to Newspix/www, copy the contents of app.config.template, create a new 
 
 ```
 [app]
-admin_username: [your admin username e.g. newspix]
-admin_password: [your password e.g. mypassword]
+admin_username: (your admin username e.g. newspix)
+admin_password: (your password e.g. mypassword)
 
 [db]
-db: [database name eg mydatabase]
-host: localhost
-user: [leave blank]
-pass: [leave blank]
-name: newspix_boston_herald
+db: (database name eg mydatabase)
+host: (your host url)
+user: (database username if any)
+pass: (database password if any)
+name: (organization name)
 port: 27017
 auth_db:
 collection:stories
