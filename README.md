@@ -25,6 +25,26 @@ pip install flask-cors
 pip install Pillow
 ```
 
+**3.** Create app.config file
+
+Navigate to Newspix/www, copy the contents of app.config.template, create a new file (in the same directory) called app.config and paste the contents of app.config.template into it. The app.config file should look like this:
+
+```
+[app]
+admin_username: [your admin username e.g. newspix]
+admin_password: [your password e.g. mypassword]
+
+[db]
+db: [database name eg mydatabase]
+host: localhost
+user: [leave blank]
+pass: [leave blank]
+name: newspix_boston_herald
+port: 27017
+auth_db:
+collection:stories
+```
+
 ## Run locally
 
 **1.** In Terminal, navigate to the NewsPix server directory:
