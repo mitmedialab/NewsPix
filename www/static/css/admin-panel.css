@@ -34,3 +34,12 @@
 .list-thumbnail {
 	max-height: 60px;
 }
+
+.sortable_header {
+	color: #58A4DD;
+}
+
+.sortable_header:hover {
+	cursor: pointer;
+	opacity: 0.6;
+}
