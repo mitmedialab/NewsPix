@@ -47,9 +47,12 @@ function getStory(msg){
 		var prevId = (obj.previousStoryId == null) ? "0" : obj.previousStoryId.$oid;
 		chrome.runtime.sendMessage({msg: msg, id: prevId}, function(response) {
 			story = response.story;
-			console.log("STORY: " + story.headline);
-			chrome.storage.sync.set({'previousStoryId': story["_id"]});
-			buildPage(story["headline"], story["url"], story["image"], story["isLandscape"]);
+			if (story == null){
+				buildPage("No New Stories", "", "../images/logos/newspixlogo.png", true);
+			} else {
+				chrome.storage.sync.set({'previousStoryId': story["_id"]});
+				buildPage(story["headline"], story["url"], story["image"], story["isLandscape"]);
+			}
 		});
 	});
 }
@@ -78,4 +81,20 @@ $(document).ready(function() {
 		});
 		
 	});
+	$(document).keydown(function(e){
+		// left arrow key
+		if (e.which == 37){
+			$( ".headline" ).fadeOut("slow");
+			$( "#backstretch" ).fadeOut( "slow", function() {
+		    	getStory("requestPreviousStory");
+			});
+		}
+		// right arrow key
+		if (e.which == 39){
+			$( ".headline" ).fadeOut("slow");
+			$( "#backstretch" ).fadeOut( "slow", function() {
+		    	getStory("requestNextStory");
+			});
+		}
+	})
 });
