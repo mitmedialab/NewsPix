@@ -39,7 +39,6 @@ function buildPage(headline, url, image, imageIsLandscape) {
 
 	$('.facebook-share').attr('href', facebook_share_url + url);
 	$('.twitter-share-button').attr('href', twitter_share_url + headline + " " + url + " via %23NewsPix for the @sentinelsource");
-	console.log("BUILD PAGE DONE");
 }
 function getStory(msg){
 	chrome.storage.sync.get('previousStoryId', function(obj) {
