@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function buildPage(headline, url, image, imageIsLandscape) {
 
+	url = url + "?src=newspix";
+
 	document.title = headline;
 	$('#backstretch').hide()
 	$( ".headline" ).hide()
