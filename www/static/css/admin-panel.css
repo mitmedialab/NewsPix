@@ -43,3 +43,7 @@
 	cursor: pointer;
 	opacity: 0.6;
 }
+
+.logo {
+	border-radius: 10px;
+}

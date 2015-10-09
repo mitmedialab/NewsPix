@@ -48,8 +48,12 @@ function getStory(msg){
 			story = response.story;
 			if (story == null){
 				buildPage("No New Stories", "", "../images/logos/newspixlogo.png", true);
+				$('.facebook-share').hide();
+				$('.twitter-share-button').hide();
 			} else {
 				chrome.storage.sync.set({'previousStoryId': story["_id"]});
+				$('.facebook-share').show();
+				$('.twitter-share-button').show();
 				buildPage(story["headline"], story["url"], story["image"], story["isLandscape"]);
 			}
 		});
