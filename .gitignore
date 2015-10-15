@@ -33,3 +33,5 @@ www/.DS_Store
 www/mongohandler.pyc
 
 www/app.config
+
+*.pyc
