@@ -3,7 +3,7 @@ from story import Story
 from date import Date
 from bson.objectid import ObjectId
 
-class MongoHandler:
+class MongoHandlerStories:
 
 	def __init__(self, host, port, db, collection):
 		self.client = MongoClient(host, int(port))

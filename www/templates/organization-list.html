@@ -1,0 +1,42 @@
+{% macro list(organizations) -%}
+<div class="row">
+	<div class="col-md-12">
+		<h2>News Organizations</h2>
+		{% if organizations|length == 0 %}
+		<p>No news organizations to display</p>
+		{% else %}
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<colgroup>
+					<col class="col-md-2">
+					<col class="col-md-2">
+					<col class="col-md-3">
+					<col class="col-md-1">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Logo</th>
+						<th>Name</th>
+						<th>Number of Installations</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for organization in organizations %}
+					<tr>
+						<td><a href="{{organization.url}}"><img src="{{organization.logo_url}}" class="list-thumbnail"></a></td>
+						<td>{{organization.name}}</td>
+						<td>{{organization.number_of_installations}}</td>
+						<td>
+							<form name='delete_organization', method='POST' action='/delete_organization/{{organization._id}}' onsubmit='return confirm("Are you sure you want to delete this news organization?");'>
+							<button type='submit'>Delete</button>
+							</form>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endif %}
+	</div>
+</div>
+{%- endmacro %}
