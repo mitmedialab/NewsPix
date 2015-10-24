@@ -10,6 +10,7 @@ class MongoHandlerStories:
 		self.db = self.client[db]
 		self.collection = self.db[collection]
 		self.date_handler = Date()
+		self.organization = None
 
 	def save_story(self, story):
 		self.collection.save(story.get_story_object())
@@ -26,6 +27,7 @@ class MongoHandlerStories:
 			return stories
 		for story in cursor:
 			stories.append(Story(
+				story.get("news_organization"),
 				story.get('headline'), 
 				story.get('url'), 
 				story.get('image'), 
@@ -39,22 +41,22 @@ class MongoHandlerStories:
 		return stories
 
 	def get_all_stories(self):
-		return self.get_stories(self.collection.find().sort("date", -1))
+		return self.get_stories(self.collection.find({"news_organization": self.organization}).sort("date", -1))
 
 	def get_stories_on_date(self, date):
-		cursor = self.collection.find({"date": date})
+		cursor = self.collection.find({"news_organization": self.organization, "date": date})
 		return self.get_stories(cursor)
 
 	def get_stories_before_date(self, date):
-		cursor = self.collection.find({"date": {"$lte": date}})
+		cursor = self.collection.find({"date": {"$lte": date}, "news_organization": self.organization})
 		return self.get_stories(cursor)
 
 	def get_stories_after_date(self, date):
-		cursor = self.collection.find({"date": {"$gt": date}}).sort("date", -1)
+		cursor = self.collection.find({"date": {"$gt": date}, "news_organization": self.organization}).sort("date", -1)
 		return self.get_stories(cursor)
 
 	def get_active_stories(self, date):
-		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}}).sort("date", -1)
+		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}, "news_organization": self.organization}).sort("date", -1)
 		return self.get_stories(cursor)
 
 	def get_active_story(self, storyID, isNextStory=True):
@@ -151,4 +153,9 @@ class MongoHandlerStories:
 		else:	
 			return len(active_stories)
 
+	def set_organization(self, organization_username):
+		self.organization = organization_username
+
+	def get_organization(self):
+		return self.organization
 		

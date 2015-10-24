@@ -84,6 +84,7 @@ def admin():
 	if request.method == 'POST':
 		# get new story
 		story = Story (
+			mongo_handler_stories.get_organization(),
 			request.form.get('headline', None),
 			request.form.get('storyURL', None),
 			request.form.get('imageURL', None),
@@ -143,6 +144,7 @@ def handleNextOrPrevious(result):
 @app.route('/delete_story/<storyID>', methods=['GET', 'POST'])
 def delete_story(storyID):
 	mongo_handler_stories.remove_story(storyID)
+
 	return redirect("/admin")
 
 @app.route('/delete_organization/<organizationID>', methods=['GET', 'POST'])
@@ -156,11 +158,20 @@ def register_click(storyID):
 	return render_template('register_click.html')
 
 def render_admin_panel():
+
+	config.read(os.path.join(BASE_DIR, "organizations.config"))
+	signed_in_organization = config.get("signed_in", "signed_in_organization")
+
+	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']
+
+	mongo_handler_stories.set_organization(signed_in_organization)
+
 	today = date_handler.format_date(date_handler.today)
 	tomorrow = date_handler.format_date(date_handler.tomorrow)
 	upcoming_stories = mongo_handler_stories.get_stories_after_date(date_handler.today)
 	active_stories = mongo_handler_stories.get_active_stories(date_handler.today)
-	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow)
+
+	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow, organization_logo=organization_logo)
 
 def render_organizations_panel():
 	organizations = mongo_handler_organizations.get_all_organizations()
