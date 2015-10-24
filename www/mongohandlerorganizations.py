@@ -11,7 +11,7 @@ class MongoHandlerOrganizations:
 		self.collection = self.db[collection]
 
 	def save_organization(self, organization):
-		self.collection.save(organization.get_organization_story())
+		self.collection.save(organization.get_organization_object())
 
 	def get_organizations(self, cursor):
 		organizations = []
@@ -21,8 +21,11 @@ class MongoHandlerOrganizations:
 		for organization in cursor:
 			organizations.append(Organization(
 				organization.get('name'),
+				organization.get('login_username'),
+				organization.get('login_password'),
 				organization.get('url'),
 				organization.get('logo_url'),
+				organization.get('_id'),
 				organization.get('number_of_installations')
 			))
 			idx-=1
@@ -30,3 +33,6 @@ class MongoHandlerOrganizations:
 
 	def get_all_organizations(self):
 		return self.get_organizations(self.collection.find())
+
+	def remove_organization(self, organizationID):
+		self.collection.remove({"_id": ObjectId(organizationID)})

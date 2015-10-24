@@ -3,7 +3,7 @@ from flask.ext.cors import CORS, cross_origin
 from bson import json_util
 from bson.json_util import dumps
 from bson.objectid import ObjectId
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request, redirect
 from pymongo import MongoClient
 from mongohandlerstories import MongoHandlerStories
 from mongohandlerorganizations import MongoHandlerOrganizations
@@ -65,7 +65,7 @@ def home():
 def oninstall():
 	return render_template('oninstall.html')
 
-@app.route('/admin_organizations', methods=['GET', 'POST'])
+@app.route('/organizations', methods=['GET', 'POST'])
 def admin_organizations():
 	if request.method == 'POST':
 		organization = Organization(
@@ -73,12 +73,10 @@ def admin_organizations():
 			request.form.get('loginUsername'),
 			request.form.get('loginPassword', None),
 			request.form.get('url', None),
-			request.form.get('logoURL', None),
-			None
+			request.form.get('logoURL', None)
 		)
 		mongo_handler_organizations.save_organization(organization)
-	organizations = mongo_handler_organizations.get_all_organizations()
-	return render_template('admin_organizations.html', organizations=organizations)
+	return render_organizations_panel()
 
 @app.route('/admin', methods=['GET', 'POST'])
 @requires_auth
@@ -145,7 +143,12 @@ def handleNextOrPrevious(result):
 @app.route('/delete_story/<storyID>', methods=['GET', 'POST'])
 def delete_story(storyID):
 	mongo_handler_stories.remove_story(storyID)
-	return render_admin_panel()
+	return redirect("/admin")
+
+@app.route('/delete_organization/<organizationID>', methods=['GET', 'POST'])
+def delete_organization(organizationID):
+	mongo_handler_organizations.remove_organization(organizationID)
+	return redirect("/organizations")
 
 @app.route('/register_click/<storyID>', methods=['GET', 'POST'])
 def register_click(storyID):
@@ -158,6 +161,10 @@ def render_admin_panel():
 	upcoming_stories = mongo_handler_stories.get_stories_after_date(date_handler.today)
 	active_stories = mongo_handler_stories.get_active_stories(date_handler.today)
 	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow)
+
+def render_organizations_panel():
+	organizations = mongo_handler_organizations.get_all_organizations()
+	return render_template('organizations.html', organizations=organizations)
 
 def isLandscape(url):
 	print url

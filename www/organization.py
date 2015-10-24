@@ -1,5 +1,5 @@
 class Organization:
-	def __init__(self, name, login_username, login_password, url, logo_url, _id):
+	def __init__(self, name, login_username, login_password, url, logo_url, _id=None, number_of_installations=0):
 		self._id = _id
 		self.name = name
 		self.login_username = login_username

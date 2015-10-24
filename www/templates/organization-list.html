@@ -10,22 +10,29 @@
 				<colgroup>
 					<col class="col-md-2">
 					<col class="col-md-2">
-					<col class="col-md-3">
-					<col class="col-md-1">
+					<col class="col-md-2">
+					<col class="col-md-2">
+					<col class="col-md-2">
+					<col class="col-md-2">
 				</colgroup>
 				<thead>
 					<tr>
 						<th>Logo</th>
 						<th>Name</th>
 						<th>Number of Installations</th>
+						<th>Login Username</th>
+						<th>Login Password</th>
+						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for organization in organizations %}
-					<tr>
+					<tr> 
 						<td><a href="{{organization.url}}"><img src="{{organization.logo_url}}" class="list-thumbnail"></a></td>
 						<td>{{organization.name}}</td>
 						<td>{{organization.number_of_installations}}</td>
+						<td>{{organization.login_username}}</td>
+						<td>{{organization.login_password}}</td>
 						<td>
 							<form name='delete_organization', method='POST' action='/delete_organization/{{organization._id}}' onsubmit='return confirm("Are you sure you want to delete this news organization?");'>
 							<button type='submit'>Delete</button>
