@@ -24,6 +24,7 @@ class MongoHandlerOrganizations:
 		result = self.collection.find_one({"login_username": organization.login_username})
 		if not result:
 			self.collection.save(organization.get_organization_object())
+			config.read(os.path.join(BASE_DIR, CONFIG_FILENAME))
 			config.set('organizations', organization.login_username, organization.login_password)
 			with open(os.path.join(BASE_DIR, CONFIG_FILENAME), 'w') as config_file:
 				config.write(config_file)
@@ -64,9 +65,7 @@ class MongoHandlerOrganizations:
 		result = self.collection.find_one({"login_username": username})
 		if not result:
 			return False
-		# print "RESULT: " + result['login_username']
 		if result['login_password'] == password:
-			self.set_organization(result['_id'])
 			return True
 		return False
 

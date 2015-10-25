@@ -96,7 +96,7 @@ def admin():
 			mongo_handler_stories.get_story_count ())
 		mongo_handler_stories.save_story(story)
 		
-	return render_admin_panel()
+	return render_admin_panel(request.authorization.username)
 
 @app.route('/analytics', methods=['GET', 'POST'])
 @requires_auth
@@ -157,10 +157,7 @@ def register_click(storyID):
 	mongo_handler_stories.register_click(storyID)
 	return render_template('register_click.html')
 
-def render_admin_panel():
-
-	config.read(os.path.join(BASE_DIR, "organizations.config"))
-	signed_in_organization = config.get("signed_in", "signed_in_organization")
+def render_admin_panel(signed_in_organization):
 
 	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']
 
