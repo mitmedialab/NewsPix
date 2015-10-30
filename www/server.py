@@ -4,7 +4,7 @@ from flask.ext.cors import CORS, cross_origin
 from bson import json_util
 from bson.json_util import dumps
 from bson.objectid import ObjectId
-from flask import Flask,render_template,request, redirect
+from flask import Flask,render_template,request,redirect, flash
 from pymongo import MongoClient
 from mongohandlerstories import MongoHandlerStories
 from mongohandlerorganizations import MongoHandlerOrganizations
@@ -73,6 +73,10 @@ def request_loader(request):
 	user.is_authenticated = mongo_handler_organizations.is_authorized(username, password)
 	return user
 
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+	return redirect('/login')
+
 # MongoDB & links to each collection
 '''uri = "mongodb://"+ config.get('db','user')+ ":"+ config.get('db','pass')+"@" +config.get('db','host') + ":" + config.get('db','port')+"/?authSource="+config.get('db','auth_db')
 print uri
@@ -95,8 +99,16 @@ def login():
 			user.id = username
 			flask_login.login_user(user)
 			return redirect('/admin')
+		else:
+			flash("Login failed!")
 
 	return app.send_static_file('login.html')
+
+@app.route('/logout')
+def logout():
+	flask_login.logout_user()
+	return redirect('/login')
+
 
 @app.route('/oninstall')
 def oninstall():
