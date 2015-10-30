@@ -10,7 +10,6 @@ class MongoHandlerStories:
 		self.db = self.client[db]
 		self.collection = self.db[collection]
 		self.date_handler = Date()
-		self.organization = None
 
 	def save_story(self, story):
 		self.collection.save(story.get_story_object())
@@ -40,28 +39,28 @@ class MongoHandlerStories:
 			idx-=1
 		return stories
 
-	def get_all_stories(self):
-		return self.get_stories(self.collection.find({"news_organization": self.organization}).sort("date", -1))
+	def get_all_stories(self, organization):
+		return self.get_stories(self.collection.find({"news_organization": organization}).sort("date", -1))
 
-	def get_stories_on_date(self, date):
-		cursor = self.collection.find({"news_organization": self.organization, "date": date})
+	def get_stories_on_date(self, date, organization):
+		cursor = self.collection.find({"news_organization": organization, "date": date})
 		return self.get_stories(cursor)
 
-	def get_stories_before_date(self, date):
-		cursor = self.collection.find({"date": {"$lte": date}, "news_organization": self.organization})
+	def get_stories_before_date(self, date, organization):
+		cursor = self.collection.find({"date": {"$lte": date}, "news_organization": organization})
 		return self.get_stories(cursor)
 
-	def get_stories_after_date(self, date):
-		cursor = self.collection.find({"date": {"$gt": date}, "news_organization": self.organization}).sort("date", -1)
+	def get_stories_after_date(self, date, organization):
+		cursor = self.collection.find({"date": {"$gt": date}, "news_organization": organization}).sort("date", -1)
 		return self.get_stories(cursor)
 
-	def get_active_stories(self, date):
-		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}, "news_organization": self.organization}).sort("date", -1)
+	def get_active_stories(self, date, organization):
+		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}, "news_organization": organization}).sort("date", -1)
 		return self.get_stories(cursor)
 
-	def get_active_story(self, storyID, isNextStory=True):
+	def get_active_story(self, storyID, organization, isNextStory=True):
 		
-		active_stories = self.get_active_stories(self.date_handler.today)
+		active_stories = self.get_active_stories(self.date_handler.today, organization)
 		if not active_stories:
 			return None
 
@@ -152,10 +151,4 @@ class MongoHandlerStories:
 			return 0
 		else:	
 			return len(active_stories)
-
-	def set_organization(self, organization_username):
-		self.organization = organization_username
-
-	def get_organization(self):
-		return self.organization
 		

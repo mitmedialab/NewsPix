@@ -44,8 +44,8 @@ function buildPage(headline, url, image, imageIsLandscape) {
 }
 function getStory(msg){
 	chrome.storage.sync.get('previousStoryId', function(obj) {
-		
 		var prevId = (obj.previousStoryId == null) ? "0" : obj.previousStoryId.$oid;
+		console.log("HERE");
 		chrome.runtime.sendMessage({msg: msg, id: prevId}, function(response) {
 			story = response.story;
 			if (story == null){

@@ -115,6 +115,7 @@ def oninstall():
 	return render_template('oninstall.html')
 
 @app.route('/organizations', methods=['GET', 'POST'])
+@requires_auth
 def admin_organizations():
 	if request.method == 'POST':
 		organization = Organization(
@@ -144,20 +145,22 @@ def admin():
 			0,
 			mongo_handler_stories.get_story_count ())
 		mongo_handler_stories.save_story(story)
-	current_user = flask_login.current_user.id
-	return render_admin_panel(current_user)
+	signed_in_organization = flask_login.current_user.id
+	return render_admin_panel(signed_in_organization)
 
 @app.route('/analytics', methods=['GET', 'POST'])
-@requires_auth
+@flask_login.login_required
 def analytics_page():
-	analytics = Analytics(mongo_handler_stories)
-	all_stories = mongo_handler_stories.get_all_stories()
+	signed_in_organization = flask_login.current_user.id
+	analytics = Analytics(mongo_handler_stories, signed_in_organization)
+	all_stories = mongo_handler_stories.get_all_stories(signed_in_organization)
 	print analytics.clickthrough
 	return render_template('analytics.html', stories=all_stories, analytics=analytics)
 
-@app.route('/random_story', methods=['GET', 'POST'])
-def random_story():
-	stories = mongo_handler_stories.get_active_stories(date_handler.today)
+@app.route('/random_story/<organization>', methods=['GET', 'POST'])
+def random_story(organization):
+	print organization
+	stories = mongo_handler_stories.get_active_stories(date_handler.today, organization)
 	if not stories:
 		return "no stories"
 	else:
@@ -166,15 +169,17 @@ def random_story():
 		mongo_handler_stories.register_load(result['_id'])
 		return json.dumps(result, default=json_util.default)
 
-@app.route('/get_previous_story/<storyID>', methods=['GET', 'POST'])
-def get_previous_story(storyID):
-	result = mongo_handler_stories.get_active_story(storyID,False)
+@app.route('/get_previous_story/<organization>/<storyID>', methods=['GET', 'POST'])
+def get_previous_story(storyID, organization):
+	print organization
+	result = mongo_handler_stories.get_active_story(storyID, organization, False)
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
-@app.route('/get_next_story/<storyID>', methods=['GET', 'POST'])
-def get_next_story(storyID):
-	result = mongo_handler_stories.get_active_story(storyID,True)
+@app.route('/get_next_story/<organization>/<storyID>', methods=['GET', 'POST'])
+def get_next_story(storyID, organization):
+	print organization
+	result = mongo_handler_stories.get_active_story(storyID, organization, True)
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
@@ -207,15 +212,11 @@ def register_click(storyID):
 	return render_template('register_click.html')
 
 def render_admin_panel(signed_in_organization):
-
 	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']
-
-	mongo_handler_stories.set_organization(signed_in_organization)
-
 	today = date_handler.format_date(date_handler.today)
 	tomorrow = date_handler.format_date(date_handler.tomorrow)
-	upcoming_stories = mongo_handler_stories.get_stories_after_date(date_handler.today)
-	active_stories = mongo_handler_stories.get_active_stories(date_handler.today)
+	upcoming_stories = mongo_handler_stories.get_stories_after_date(date_handler.today, signed_in_organization)
+	active_stories = mongo_handler_stories.get_active_stories(date_handler.today, signed_in_organization)
 
 	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow, organization_logo=organization_logo)
 

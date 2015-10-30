@@ -1,5 +1,6 @@
 
 var requestRandom = false;
+var organization = "boston_globe";
 
 chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
@@ -7,15 +8,18 @@ function(request, sender, sendResponse) {
 		var forms;
 		var xhr = new XMLHttpRequest();
 		if (requestRandom) {
-			xhr.open("GET", SERVER_URL + "/random_story", true);
+			//console.log("RANDOM: " + organization);
+			xhr.open("GET", SERVER_URL + "/random_story/new_york_times", true);
 		} else if(request.msg == "requestNextStory") {
 			if (request.id == undefined) 
 				return false;
-			xhr.open("GET", SERVER_URL + "/get_next_story/" + request.id, true);
+			//console.log("NEXT: " + organization);
+			xhr.open("GET", SERVER_URL + "/get_next_story/new_york_times/" + request.id, true);
 		} else {
 			if (request.id == undefined) 
 				return false;
-			xhr.open("GET", SERVER_URL + "/get_previous_story/" + request.id, true);
+			//console.log("PREV: " + organization);
+			xhr.open("GET", SERVER_URL + "/get_previous_story/new_york_times/" + request.id, true);
 		}
 
 		xhr.onreadystatechange = function() {
@@ -25,6 +29,7 @@ function(request, sender, sendResponse) {
 			}
 		}
 		xhr.send();
+		//console.log("THERE");
 		return true;
 	}
 });

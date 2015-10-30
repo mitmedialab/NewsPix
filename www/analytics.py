@@ -3,8 +3,8 @@ from story import Story
 
 class Analytics:
 
-	def __init__(self, mongo_handler):
-		self.stories = mongo_handler.get_all_stories()
+	def __init__(self, mongo_handler, organization):
+		self.stories = mongo_handler.get_all_stories(organization)
 		self.loads = self.get_aggregate_load_count()
 		self.clicks = self.get_aggregate_click_count()
 		self.clickthrough = self.get_average_clickthrough_rate()
