@@ -61,12 +61,19 @@ class MongoHandlerOrganizations:
 			safe_config.remove_option("organizations", result['login_username'])
 			config.read(os.path.join(BASE_DIR, CONFIG_FILENAME))
 
-	def login(self, username, password):
+	def is_valid_organization(self, username):
+		result = self.collection.find_one({"login_username": username})
+		if not result:
+			return False
+		return True
+
+	def is_authorized(self, username, password):
 		result = self.collection.find_one({"login_username": username})
 		if not result:
 			return False
 		if result['login_password'] == password:
 			return True
 		return False
+
 
 	

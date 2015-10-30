@@ -1,4 +1,5 @@
 import os, ConfigParser, random, requests, json, datetime
+import flask.ext.login as flask_login
 from flask.ext.cors import CORS, cross_origin
 from bson import json_util
 from bson.json_util import dumps
@@ -14,6 +15,7 @@ from organization import Organization
 from PIL import Image
 from StringIO import StringIO
 from auth import check_auth,authenticate,requires_auth
+from user import User
 
 # constants
 CONFIG_FILENAME = 'app.config'
@@ -23,6 +25,7 @@ config = ConfigParser.ConfigParser()
 config.read(os.path.join(BASE_DIR, CONFIG_FILENAME))
 
 app = Flask(__name__)
+app.secret_key = '?76GC0uSEGJ3J8t02511ghkk60^j9s'
 app.debug = True
 app.config['CORS_ALLOW_HEADERS'] = "Content-Type"
 app.config['CORS_RESOURCES'] = {
@@ -48,6 +51,27 @@ mongo_handler_organizations = MongoHandlerOrganizations(
 
 date_handler = Date()
 
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def user_loader(username):
+	if not mongo_handler_organizations.is_valid_organization(username):
+		return
+	user = User()
+	user.id = username
+	return user
+
+@login_manager.request_loader
+def request_loader(request):
+	username = request.form.get('username', None)
+	password = request.form.get('password', None)
+	if not mongo_handler_organizations.is_valid_organization(username):
+		return
+	user = User()
+	user.id = username
+	user.is_authenticated = mongo_handler_organizations.is_authorized(username, password)
+	return user
 
 # MongoDB & links to each collection
 '''uri = "mongodb://"+ config.get('db','user')+ ":"+ config.get('db','pass')+"@" +config.get('db','host') + ":" + config.get('db','port')+"/?authSource="+config.get('db','auth_db')
@@ -60,6 +84,19 @@ app.db_jokes_collection = app.db[config.get('db','jokes_collection')]
 @app.route('/')
 def home():
     return app.send_static_file('index.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+	if request.method == 'POST':
+		username = request.form.get('username', None)
+		password = request.form.get('password', None)
+		if mongo_handler_organizations.is_authorized(username, password):
+			user = User()
+			user.id = username
+			flask_login.login_user(user)
+			return redirect('/admin')
+
+	return app.send_static_file('login.html')
 
 @app.route('/oninstall')
 def oninstall():
@@ -79,7 +116,7 @@ def admin_organizations():
 	return render_organizations_panel()
 
 @app.route('/admin', methods=['GET', 'POST'])
-@requires_auth
+@flask_login.login_required
 def admin():
 	if request.method == 'POST':
 		# get new story
@@ -95,8 +132,8 @@ def admin():
 			0,
 			mongo_handler_stories.get_story_count ())
 		mongo_handler_stories.save_story(story)
-		
-	return render_admin_panel(request.authorization.username)
+	current_user = flask_login.current_user.id
+	return render_admin_panel(current_user)
 
 @app.route('/analytics', methods=['GET', 'POST'])
 @requires_auth
