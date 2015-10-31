@@ -2,31 +2,35 @@
 var requestRandom = false;
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-	var newspix_organization = (localStorage.getItem('newspix_organization') == null) ? "NONE" : localStorage.getItem('newspix_organization') ;
-	if (sender.tab) {
-		var forms;
-		var xhr = new XMLHttpRequest();
-		if (requestRandom) {
-			xhr.open("GET", SERVER_URL + "/random_story/" + newspix_organization, true);
-		} else if(request.msg == "requestNextStory") {
-			if (request.id == undefined) 
-				return false;
-			xhr.open("GET", SERVER_URL + "/get_next_story/" + newspix_organization + "/" + request.id, true);
-		} else {
-			if (request.id == undefined) 
-				return false;
-			xhr.open("GET", SERVER_URL + "/get_previous_story/" + newspix_organization + "/" + request.id, true);
-		}
-
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4) {
-				forms = JSON.parse(xhr.responseText);
-				sendResponse({story: forms});
+	//var newspix_organization = (localStorage.getItem('newspix_organization') == null) ? "NONE" : localStorage.getItem('newspix_organization') ;
+	chrome.storage.sync.get('newspix_organization', function(obj){
+		var newspix_organization = (obj.newspix_organization == null) ? "NONE" : obj.newspix_organization;
+		if (sender.tab) {
+			var forms;
+			var xhr = new XMLHttpRequest();
+			if (requestRandom) {
+				xhr.open("GET", SERVER_URL + "/random_story/" + newspix_organization, true);
+			} else if(request.msg == "requestNextStory") {
+				if (request.id == undefined) 
+					return false;
+				xhr.open("GET", SERVER_URL + "/get_next_story/" + newspix_organization + "/" + request.id, true);
+			} else {
+				if (request.id == undefined) 
+					return false;
+				xhr.open("GET", SERVER_URL + "/get_previous_story/" + newspix_organization + "/" + request.id, true);
 			}
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					forms = JSON.parse(xhr.responseText);
+					sendResponse({story: forms});
+				}
+			}
+			xhr.send();
+			return true;
 		}
-		xhr.send();
-		return true;
-	}	
+	})
+	return true;		
 });
 
 chrome.runtime.onInstalled.addListener(function(details){
@@ -38,7 +42,7 @@ chrome.runtime.onInstalled.addListener(function(details){
 
 chrome.runtime.onUninstalled.addListener(function(details){
     if (details.reason == "uninstall") {
-    	localStorage.removeItem('newspix_organization');
+    	chrome.storage.sync.set({'newspix_organization': null});
     }
 });
 

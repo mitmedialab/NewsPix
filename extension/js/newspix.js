@@ -4,7 +4,6 @@ var twitter_share_url = "https://twitter.com/intent/tweet?text=";
 var facebook_share_url = "https://www.facebook.com/sharer/sharer.php?u=";
 
 document.addEventListener('DOMContentLoaded', function() {
-	buildPage("Loading...", "", "../images/logos/newspixlogo.png", true);
 	getStory("requestNextStory");
 	document.getElementById('uninstall').addEventListener('click', function() {
         chrome.tabs.update({ url: 'chrome://chrome/extensions' });
@@ -64,11 +63,14 @@ function getStory(msg){
 
 $(document).ready(function() {
 
-	var newspix_organization = localStorage.getItem("newspix_organization");
-	if (newspix_organization !== null){
-		$("#organization_logo").attr('src', "images/logos/" + newspix_organization + ".png");
-		$("#organization_home").attr('href', url_map[newspix_organization]);
-	}
+	chrome.storage.sync.get('newspix_organization', function(obj){
+		var newspix_organization = obj.newspix_organization;
+		if (newspix_organization !== null){
+			$("#organization_logo").css({'visibility': 'visible'});
+			$("#organization_logo").attr('src', "images/logos/" + newspix_organization + ".png");
+			$("#organization_home").attr('href', url_map[newspix_organization]);
+		}
+	});
 
 	$('.headline').click(function () {
 		chrome.runtime.sendMessage({msg: "registerClick", story: story});
