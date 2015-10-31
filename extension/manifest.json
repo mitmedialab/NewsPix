@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
-	"name": "NewsPix for the Keene Sentinel",
-	"description": "A news engagement project with the Future of News Initiative at the MIT Media Lab and the Emerson Engagement Lab",
-	"version": "1.1.6",
+	"name": "NPT",
+	"description": "News",
+	"version": "1.1.7",
 	"permissions": [
 		"https://www.google-analytics.com/",
 		"activeTab",

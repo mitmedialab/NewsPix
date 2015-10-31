@@ -4,9 +4,8 @@ var twitter_share_url = "https://twitter.com/intent/tweet?text=";
 var facebook_share_url = "https://www.facebook.com/sharer/sharer.php?u=";
 
 document.addEventListener('DOMContentLoaded', function() {
-	
+	buildPage("Loading...", "", "../images/logos/newspixlogo.png", true);
 	getStory("requestNextStory");
-
 	document.getElementById('uninstall').addEventListener('click', function() {
         chrome.tabs.update({ url: 'chrome://chrome/extensions' });
     });

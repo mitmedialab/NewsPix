@@ -31,16 +31,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
 chrome.runtime.onInstalled.addListener(function(details){
     if (details.reason == "install") {
-    	localStorage.setItem('newspix_organization','boston_globe');
-    	chrome.tabs.create({url: SERVER_URL + "/oninstall"}, function(tab) {
-    		
+    	chrome.tabs.create({url: SERVER_URL + "/oninstall"}, function(tab) {	
     	});
     }
 });
 
 chrome.runtime.onUninstalled.addListener(function(details){
     if (details.reason == "uninstall") {
-    	console.log("UNINSTALLED");
     	localStorage.removeItem('newspix_organization');
     }
 });
