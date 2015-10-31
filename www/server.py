@@ -159,7 +159,6 @@ def analytics_page():
 
 @app.route('/random_story/<organization>', methods=['GET', 'POST'])
 def random_story(organization):
-	print organization
 	stories = mongo_handler_stories.get_active_stories(date_handler.today, organization)
 	if not stories:
 		return "no stories"
@@ -171,14 +170,12 @@ def random_story(organization):
 
 @app.route('/get_previous_story/<organization>/<storyID>', methods=['GET', 'POST'])
 def get_previous_story(storyID, organization):
-	print organization
 	result = mongo_handler_stories.get_active_story(storyID, organization, False)
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
 @app.route('/get_next_story/<organization>/<storyID>', methods=['GET', 'POST'])
 def get_next_story(storyID, organization):
-	print organization
 	result = mongo_handler_stories.get_active_story(storyID, organization, True)
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)

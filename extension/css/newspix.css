@@ -137,6 +137,7 @@ body.bs-cover {
 .org-logo {
 	margin: 10px 10px 0;
 	height: 80px;
+	border-radius: 5px;
 }
 .forward,.backward{
 	width:100px;

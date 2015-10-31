@@ -46,7 +46,8 @@ function getStory(msg){
 	chrome.storage.sync.get('previousStoryId', function(obj) {
 		var prevId = (obj.previousStoryId == null) ? "0" : obj.previousStoryId.$oid;
 		console.log("HERE");
-		chrome.runtime.sendMessage({msg: msg, id: prevId}, function(response) {
+		chrome.runtime.sendMessage({msg: msg, id: prevId}, function(response){
+			console.log("THERE");
 			story = response.story;
 			if (story == null){
 				buildPage("No New Stories", "", "../images/logos/newspixlogo.png", true);
@@ -63,6 +64,13 @@ function getStory(msg){
 }
 
 $(document).ready(function() {
+
+	var newspix_organization = localStorage.getItem("newspix_organization");
+	if (newspix_organization !== null){
+		$("#organization_logo").attr('src', "images/logos/" + newspix_organization + ".png");
+		$("#organization_home").attr('href', url_map[newspix_organization]);
+	}
+
 	$('.headline').click(function () {
 		chrome.runtime.sendMessage({msg: "registerClick", story: story});
 	});

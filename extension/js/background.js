@@ -1,25 +1,21 @@
 
 var requestRandom = false;
-var organization = "boston_globe";
 
-chrome.runtime.onMessage.addListener(
-function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+	var newspix_organization = (localStorage.getItem('newspix_organization') == null) ? "NONE" : localStorage.getItem('newspix_organization') ;
 	if (sender.tab) {
 		var forms;
 		var xhr = new XMLHttpRequest();
 		if (requestRandom) {
-			//console.log("RANDOM: " + organization);
-			xhr.open("GET", SERVER_URL + "/random_story/new_york_times", true);
+			xhr.open("GET", SERVER_URL + "/random_story/" + newspix_organization, true);
 		} else if(request.msg == "requestNextStory") {
 			if (request.id == undefined) 
 				return false;
-			//console.log("NEXT: " + organization);
-			xhr.open("GET", SERVER_URL + "/get_next_story/new_york_times/" + request.id, true);
+			xhr.open("GET", SERVER_URL + "/get_next_story/" + newspix_organization + "/" + request.id, true);
 		} else {
 			if (request.id == undefined) 
 				return false;
-			//console.log("PREV: " + organization);
-			xhr.open("GET", SERVER_URL + "/get_previous_story/new_york_times/" + request.id, true);
+			xhr.open("GET", SERVER_URL + "/get_previous_story/" + newspix_organization + "/" + request.id, true);
 		}
 
 		xhr.onreadystatechange = function() {
@@ -29,16 +25,23 @@ function(request, sender, sendResponse) {
 			}
 		}
 		xhr.send();
-		//console.log("THERE");
 		return true;
-	}
+	}	
 });
 
 chrome.runtime.onInstalled.addListener(function(details){
     if (details.reason == "install") {
+    	localStorage.setItem('newspix_organization','boston_globe');
     	chrome.tabs.create({url: SERVER_URL + "/oninstall"}, function(tab) {
     		
     	});
+    }
+});
+
+chrome.runtime.onUninstalled.addListener(function(details){
+    if (details.reason == "uninstall") {
+    	console.log("UNINSTALLED");
+    	localStorage.removeItem('newspix_organization');
     }
 });
 
