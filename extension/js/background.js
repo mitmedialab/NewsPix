@@ -1,11 +1,11 @@
 
 var requestRandom = false;
+var url_map = {"http://www.sentinelsource.com/": "new_york_times"};
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-	//var newspix_organization = (localStorage.getItem('newspix_organization') == null) ? "NONE" : localStorage.getItem('newspix_organization') ;
 	chrome.storage.sync.get('newspix_organization', function(obj){
 		var newspix_organization = (obj.newspix_organization == null) ? "NONE" : obj.newspix_organization;
-		if (sender.tab) {
+		if (sender.tab){
 			var forms;
 			var xhr = new XMLHttpRequest();
 			if (requestRandom) {
@@ -35,14 +35,17 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
 chrome.runtime.onInstalled.addListener(function(details){
     if (details.reason == "install") {
-    	chrome.tabs.create({url: SERVER_URL + "/oninstall"}, function(tab) {	
+    	chrome.tabs.create({url: SERVER_URL + "/oninstall"}, function(tab) {
+    		chrome.tabs.query({}, function(tabs){
+    			tabs.forEach(function(tab){
+    				if (tab.url in url_map){
+    					var organization = url_map[tab.url];
+    					chrome.storage.sync.set({'newspix_organization': organization});
+    					return;
+    				}
+    			})
+    		});	
     	});
-    }
-});
-
-chrome.runtime.onUninstalled.addListener(function(details){
-    if (details.reason == "uninstall") {
-    	chrome.storage.sync.set({'newspix_organization': null});
     }
 });
 

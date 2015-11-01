@@ -43,8 +43,9 @@ function buildPage(headline, url, image, imageIsLandscape) {
 function getStory(msg){
 	chrome.storage.sync.get('previousStoryId', function(obj) {
 		var prevId = (obj.previousStoryId == null) ? "0" : obj.previousStoryId.$oid;
-		console.log("HERE");
-		chrome.runtime.sendMessage({msg: msg, id: prevId}, function(response){
+		var newspix_organization = (localStorage.getItem('newspix_organization') == null) ? "NONE": localStorage.getItem('newspix_organization');
+		console.log("HERE: " + newspix_organization);
+		chrome.runtime.sendMessage({msg: msg, id: prevId, organization: newspix_organization}, function(response){
 			console.log("THERE");
 			story = response.story;
 			if (story == null){
