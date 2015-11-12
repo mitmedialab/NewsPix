@@ -7,7 +7,7 @@ a {
 	text-decoration: none;
 }
 
-a:hover {
+a:hover{
 	text-decoration: none;
 }
 
@@ -85,8 +85,9 @@ body.bs-cover {
 .headline > a {
 	line-height: 80px;
 	color: #fff;
-	font-size: 4.5em;
+	font-size: 4.0em;
 	text-shadow: 2px 2px 3px rgba(1,1,1,0.6);
+	text-decoration: none;
 }
 .headline > a:hover{
 	color:#aaa;
@@ -159,9 +160,11 @@ body.bs-cover {
 }
 .forward > a,.backward > a{
 	color: #fff;
+	text-decoration: none;
 }
 .forward > a:hover,.backward > a:hover{
 	color:#aaa;
+	text-decoration: none;
 }
 
 .organization_box {

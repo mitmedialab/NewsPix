@@ -8,10 +8,12 @@ from flask import Flask,render_template,request,redirect, flash
 from pymongo import MongoClient
 from mongohandlerstories import MongoHandlerStories
 from mongohandlerorganizations import MongoHandlerOrganizations
+from mongohandlerinstalls import MongoHandlerInstallations
 from date import Date
 from analytics import Analytics
 from story import Story
 from organization import Organization
+from installation import Installation
 from PIL import Image
 from StringIO import StringIO
 from auth import check_auth,authenticate,requires_auth
@@ -36,17 +38,26 @@ app.config['CORS_RESOURCES'] = {
 }
 
 cors = CORS(app)
+
 mongo_handler_stories = MongoHandlerStories(
 	config.get('db','host'), 
 	config.get('db','port'), 
 	config.get('db', 'db'), 
 	config.get('db', 'collection_stories')
 )
+
 mongo_handler_organizations = MongoHandlerOrganizations(
 	config.get('db','host'), 
 	config.get('db','port'), 
 	config.get('db', 'db'), 
 	config.get('db', 'collection_organizations')
+)
+
+mongo_handler_installations = MongoHandlerInstallations(
+	config.get('db','host'), 
+	config.get('db','port'), 
+	config.get('db', 'db'), 
+	config.get('db', 'collection_installations')
 )
 
 date_handler = Date()
@@ -154,8 +165,9 @@ def analytics_page():
 	signed_in_organization = flask_login.current_user.id
 	analytics = Analytics(mongo_handler_stories, signed_in_organization)
 	all_stories = mongo_handler_stories.get_all_stories(signed_in_organization)
+	total_chrome_installs = len(mongo_handler_installations.get_organization_installations(signed_in_organization))
 	print analytics.clickthrough
-	return render_template('analytics.html', stories=all_stories, analytics=analytics)
+	return render_template('analytics.html', stories=all_stories, analytics=analytics, installs=total_chrome_installs)
 
 @app.route('/random_story/<organization>', methods=['GET', 'POST'])
 def random_story(organization):
@@ -208,9 +220,11 @@ def register_click(storyID):
 	mongo_handler_stories.register_click(storyID)
 	return render_template('register_click.html')
 
-@app.route('/register_install/<organizationID>', methods=['GET', 'POST'])
+@app.route('/register_install/<organizationID>', methods=['POST'])
 def register_install(organizationID):
-	### TO-DO
+	installation = Installation(organizationID, Date().today)
+	mongo_handler_installations.register_installation(installation)
+	print "INSTALLED: " + organizationID
 
 def render_admin_panel(signed_in_organization):
 	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']
@@ -226,7 +240,7 @@ def render_organizations_panel():
 	return render_template('organizations.html', organizations=organizations)
 
 def isLandscape(url):
-	print url
+	#print url
 	response = requests.get(url)
 	img = Image.open(StringIO(response.content))
 	width = img.size[0]

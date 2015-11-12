@@ -9,4 +9,6 @@ pass:
 name: newspix_boston_herald
 port: 27017
 auth_db:
-collection:stories
+collection_stories: stories
+collection_organizations: organizations
+collection_installations: installations

@@ -80,7 +80,6 @@ $(document).ready(function() {
 		$( "#backstretch" ).fadeOut( "slow", function() {
 		    getStory("requestNextStory");
 		});
-		
 	});
 	$('.backward').click(function () {
 		$( ".headline" ).fadeOut("slow");
@@ -111,6 +110,10 @@ $(document).ready(function() {
 		chrome.storage.sync.set({"newspix_organization": organization});
 		$("#selectOrganizationModal").modal('show');
 		location.reload();
+	});
+
+	$("#selectOrganization").click(function(){
+		$("#selectOrganizationModal").modal('show');
 	});
 
 	$("#uninstall").click(function(){

@@ -65,6 +65,6 @@ function sendClick (story) {
 
 function sendInstall(newspix_organization){
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", SERVER_URL + "/register_install/" + id, true);
+	xhr.open("POST", SERVER_URL + "/register_install/" + newspix_organization, true);
 	xhr.send();
 }
