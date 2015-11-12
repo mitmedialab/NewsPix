@@ -131,10 +131,11 @@ def admin_organizations():
 @app.route('/admin', methods=['GET', 'POST'])
 @flask_login.login_required
 def admin():
+	signed_in_organization = flask_login.current_user.id
 	if request.method == 'POST':
 		# get new story
 		story = Story (
-			mongo_handler_stories.get_organization(),
+			signed_in_organization,
 			request.form.get('headline', None),
 			request.form.get('storyURL', None),
 			request.form.get('imageURL', None),
@@ -143,9 +144,8 @@ def admin():
 			None,
 			0,
 			0,
-			mongo_handler_stories.get_story_count ())
+			mongo_handler_stories.get_story_count(signed_in_organization))
 		mongo_handler_stories.save_story(story)
-	signed_in_organization = flask_login.current_user.id
 	return render_admin_panel(signed_in_organization)
 
 @app.route('/analytics', methods=['GET', 'POST'])
@@ -207,6 +207,10 @@ def delete_organization(organizationID):
 def register_click(storyID):
 	mongo_handler_stories.register_click(storyID)
 	return render_template('register_click.html')
+
+@app.route('/register_install/<organizationID>', methods=['GET', 'POST'])
+def register_install(organizationID):
+	### TO-DO
 
 def render_admin_panel(signed_in_organization):
 	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']

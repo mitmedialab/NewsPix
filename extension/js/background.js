@@ -41,6 +41,7 @@ chrome.runtime.onInstalled.addListener(function(details){
     				if (tab.url in url_map){
     					var organization = url_map[tab.url];
     					chrome.storage.sync.set({'newspix_organization': organization});
+    					sendInstall(organization);
     					return;
     				}
     			})
@@ -59,5 +60,11 @@ function sendClick (story) {
 	var id = story["_id"]["$oid"];
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", SERVER_URL + "/register_click/" + id, true);
+	xhr.send();
+}
+
+function sendInstall(newspix_organization){
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", SERVER_URL + "/register_install/" + id, true);
 	xhr.send();
 }

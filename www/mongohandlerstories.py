@@ -140,13 +140,13 @@ class MongoHandlerStories:
 	def register_click(self, storyID):
 		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"click_count": 1}})
 
-	def get_story_count(self):
+	def get_story_count(self, organization):
 		#NOTE FROM CATHERINE - server using Mongo 2.0.4 so doesn't support the aggregate command
 		#cursor = self.collection.aggregate([{"$group": { "_id": None, "count": { "$sum": 1 }}}])
 		#if len(cursor["result"]) == 0:
 		#	return 0
 		#return cursor["result"][0]["count"]
-		active_stories = self.get_active_stories(self.date_handler.today)
+		active_stories = self.get_active_stories(self.date_handler.today, organization)
 		if not active_stories:
 			return 0
 		else:	

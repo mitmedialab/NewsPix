@@ -3,13 +3,6 @@ var story;
 var twitter_share_url = "https://twitter.com/intent/tweet?text=";
 var facebook_share_url = "https://www.facebook.com/sharer/sharer.php?u=";
 
-document.addEventListener('DOMContentLoaded', function() {
-	getStory("requestNextStory");
-	document.getElementById('uninstall').addEventListener('click', function() {
-        chrome.tabs.update({ url: 'chrome://chrome/extensions' });
-    });
-}, false);
-
 function buildPage(headline, url, image, imageIsLandscape) {
 
 	url = url + "?src=newspix";
@@ -40,13 +33,11 @@ function buildPage(headline, url, image, imageIsLandscape) {
 	$('.facebook-share').attr('href', facebook_share_url + url);
 	$('.twitter-share-button').attr('href', twitter_share_url + headline + " " + url + " via %23NewsPix for the @sentinelsource");
 }
+
 function getStory(msg){
 	chrome.storage.sync.get('previousStoryId', function(obj) {
 		var prevId = (obj.previousStoryId == null) ? "0" : obj.previousStoryId.$oid;
-		var newspix_organization = (localStorage.getItem('newspix_organization') == null) ? "NONE": localStorage.getItem('newspix_organization');
-		console.log("HERE: " + newspix_organization);
-		chrome.runtime.sendMessage({msg: msg, id: prevId, organization: newspix_organization}, function(response){
-			console.log("THERE");
+		chrome.runtime.sendMessage({msg: msg, id: prevId}, function(response){
 			story = response.story;
 			if (story == null){
 				buildPage("No New Stories", "", "../images/logos/newspixlogo.png", true);
@@ -63,13 +54,15 @@ function getStory(msg){
 }
 
 $(document).ready(function() {
-
 	chrome.storage.sync.get('newspix_organization', function(obj){
 		var newspix_organization = obj.newspix_organization;
-		if (newspix_organization !== null){
+		console.log("ORG: " + newspix_organization);
+		if (newspix_organization){
 			$("#organization_logo").css({'visibility': 'visible'});
 			$("#organization_logo").attr('src', "images/logos/" + newspix_organization + ".png");
 			$("#organization_home").attr('href', url_map[newspix_organization]);
+		} else {
+			$("#selectOrganizationModal").modal('show');
 		}
 	});
 
@@ -112,4 +105,18 @@ $(document).ready(function() {
 			});
 		}
 	})
+
+	$(".organization_box").click(function(){
+		var organization = $(this).attr('id');
+		chrome.storage.sync.set({"newspix_organization": organization});
+		$("#selectOrganizationModal").modal('show');
+		location.reload();
+	});
+
+	$("#uninstall").click(function(){
+		chrome.tabs.update({ url: 'chrome://chrome/extensions' });
+	});
+
+    getStory("requestNextStory");
+
 });
