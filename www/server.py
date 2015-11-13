@@ -163,11 +163,18 @@ def admin():
 @flask_login.login_required
 def analytics_page():
 	signed_in_organization = flask_login.current_user.id
-	analytics = Analytics(mongo_handler_stories, signed_in_organization)
+	installations = mongo_handler_installations.get_organization_installations(signed_in_organization)
+	analytics = Analytics(mongo_handler_stories, signed_in_organization, installations)
 	all_stories = mongo_handler_stories.get_all_stories(signed_in_organization)
-	total_chrome_installs = len(mongo_handler_installations.get_organization_installations(signed_in_organization))
 	print analytics.clickthrough
-	return render_template('analytics.html', stories=all_stories, analytics=analytics, installs=total_chrome_installs)
+	return render_template('analytics.html', stories=all_stories, analytics=analytics)
+
+@app.route('/analytics/installations', methods=['GET'])
+def installations():
+	signed_in_organization = flask_login.current_user.id
+	installations = mongo_handler_installations.get_organization_installations(signed_in_organization)
+	analytics = Analytics(mongo_handler_stories, signed_in_organization, installations)
+	return json.dumps(analytics.installations, default=json_util.default)
 
 @app.route('/random_story/<organization>', methods=['GET', 'POST'])
 def random_story(organization):
@@ -222,7 +229,7 @@ def register_click(storyID):
 
 @app.route('/register_install/<organizationID>', methods=['POST'])
 def register_install(organizationID):
-	installation = Installation(organizationID, Date().today)
+	installation = Installation(organizationID, date_handler.format_date_for_chart(date_handler.today))
 	mongo_handler_installations.register_installation(installation)
 	print "INSTALLED: " + organizationID
 
