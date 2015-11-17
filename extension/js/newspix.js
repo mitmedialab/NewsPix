@@ -53,6 +53,30 @@ function getStory(msg){
 	});
 }
 
+function populate_popup(){
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", SERVER_URL + "/news_organizations", true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+		  response = JSON.parse(xhr.responseText);
+		  //console.log(response);
+		  for (var i = 0; i < response.length; i++){
+		  	var organization = response[i];
+		  	var organization_name = organization.name;
+		  	var organization_id = organization.login_username;
+
+		  	var column_div = $("<div class='col-md-6 organization_box' id='" + organization_id + "'>");
+		  	column_div.append($("<h3>" + organization_name + "</h3>"));
+		  	column_div.append($("<img class='organization_logo' src='images/logos/" + organization_id + ".png' height='200px' width='200px'>"));
+
+		  	$("#modal_body_div").append(column_div);
+
+		  }
+		}
+	}
+	xhr.send();
+}
+
 $(document).ready(function() {
 	chrome.storage.sync.get('newspix_organization', function(obj){
 		var newspix_organization = obj.newspix_organization;
@@ -119,6 +143,8 @@ $(document).ready(function() {
 	$("#uninstall").click(function(){
 		chrome.tabs.update({ url: 'chrome://chrome/extensions' });
 	});
+
+	populate_popup();
 
     getStory("requestNextStory");
 

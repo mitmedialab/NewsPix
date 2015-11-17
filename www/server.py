@@ -34,7 +34,8 @@ app.config['CORS_RESOURCES'] = {
 	r"/random_story/*": {"origins": "*"},
 	r"/get_next_story/*": {"origins": "*"},
 	r"/get_previous_story/*": {"origins": "*"},
-	r"/register_click/*": {"origins": "*"}
+	r"/register_click/*": {"origins": "*"},
+	r"/news_organizations/*": {"origins": "*"}
 }
 
 cors = CORS(app)
@@ -138,6 +139,15 @@ def admin_organizations():
 		)
 		mongo_handler_organizations.save_organization(organization)
 	return render_organizations_panel()
+
+@app.route('/news_organizations', methods=['GET'])
+def all_news_organizations():
+	all_news_organizations = mongo_handler_organizations.get_all_organizations()
+	result = []
+	for organization in all_news_organizations:
+		result.append(organization.get_organization_object())
+	
+	return json.dumps(result, default=json_util.default)
 
 @app.route('/admin', methods=['GET', 'POST'])
 @flask_login.login_required

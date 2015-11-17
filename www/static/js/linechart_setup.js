@@ -1,3 +1,5 @@
+var data = [{date: '2015-11-13', close: 20}, {date: '2015-11-15', close: 30}, {date: '2015-11-18', close: 4}, {date: '2015-12-1', close: 5}, {date: '2015-12-13', close: 25}, {date: '2015-12-25', close: 100} ]
+
 
 function linechart(data){
   // Set the dimensions of the canvas / graph
@@ -66,7 +68,7 @@ $(document).ready(function(){
     if (xhr.readyState == 4) {
       response = JSON.parse(xhr.responseText);
       console.log(response);
-      linechart(response)
+      linechart(data)
     }
   }
   xhr.send();
