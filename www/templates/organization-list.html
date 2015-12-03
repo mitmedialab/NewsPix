@@ -28,7 +28,7 @@
 				<tbody>
 					{% for organization in organizations %}
 					<tr> 
-						<td><a href="{{organization.url}}"><img src="{{organization.logo_url}}" class="list-thumbnail"></a></td>
+						<td><a href="/login" target='blank'><img src="{{organization.logo_url}}" class="list-thumbnail"></a></td>
 						<td>{{organization.name}}</td>
 						<td>{{organization.number_of_installations}}</td>
 						<td>{{organization.login_username}}</td>

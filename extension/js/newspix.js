@@ -1,11 +1,9 @@
 
 var story;
-var twitter_share_url = "https://twitter.com/intent/tweet?text=";
-var facebook_share_url = "https://www.facebook.com/sharer/sharer.php?u=";
 
 function buildPage(headline, url, image, imageIsLandscape) {
 
-	url = url + "?src=newspix";
+	url += "?src=newspix";
 
 	document.title = headline;
 	$('#backstretch').hide()
@@ -31,7 +29,7 @@ function buildPage(headline, url, image, imageIsLandscape) {
 	$( ".headline" ).fadeIn( "slow");
 
 	$('.facebook-share').attr('href', facebook_share_url + url);
-	$('.twitter-share-button').attr('href', twitter_share_url + headline + " " + url + " via %23NewsPix for the @sentinelsource");
+	$('.twitter-share-button').attr('href', twitter_share_url + headline + " " + url + " via %23NewsPix");
 }
 
 function getStory(msg){
@@ -59,7 +57,6 @@ function populate_popup(){
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 		  response = JSON.parse(xhr.responseText);
-		  //console.log(response);
 		  for (var i = 0; i < response.length; i++){
 		  	var organization = response[i];
 		  	var organization_name = organization.name;
@@ -77,10 +74,18 @@ function populate_popup(){
 	xhr.send();
 }
 
+function sendInstall(newspix_organization){
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", SERVER_URL + "/register_install/" + newspix_organization, true);
+	xhr.send();
+}
+
 $(document).ready(function() {
+
+	populate_popup();
+
 	chrome.storage.sync.get('newspix_organization', function(obj){
 		var newspix_organization = obj.newspix_organization;
-		console.log("ORG: " + newspix_organization);
 		if (newspix_organization){
 			$("#organization_logo").css({'visibility': 'visible'});
 			$("#organization_logo").attr('src', "images/logos/" + newspix_organization + ".png");
@@ -129,22 +134,21 @@ $(document).ready(function() {
 		}
 	})
 
-	$(".organization_box").click(function(){
+	$(document).on('click', '.organization_box', function(){
 		var organization = $(this).attr('id');
 		chrome.storage.sync.set({"newspix_organization": organization});
-		$("#selectOrganizationModal").modal('show');
+		sendInstall(organization);
+		$("#selectOrganizationModal").modal('hide');
 		location.reload();
-	});
+	})
 
-	$("#selectOrganization").click(function(){
+	$(document).on('click', '#selectOrganization', function(){
 		$("#selectOrganizationModal").modal('show');
-	});
+	})
 
-	$("#uninstall").click(function(){
+	$(document).on("click", "#uninstall", function(){
 		chrome.tabs.update({ url: 'chrome://chrome/extensions' });
-	});
-
-	populate_popup();
+	})
 
     getStory("requestNextStory");
 

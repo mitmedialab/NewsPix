@@ -28,7 +28,7 @@ class MongoHandlerInstallations:
 		return installations
 
 	def get_all_installations(self):
-		return self.get_installations(self.collection.find().sort("date", -1))
+		return self.get_installations(self.collection.find().sort("date", 1))
 
 	def get_organization_installations(self, organization):
-		return self.get_installations(self.collection.find({'organization': organization}).sort("date", -1))
+		return self.get_installations(self.collection.find({'organization': organization}).sort("date", 1))

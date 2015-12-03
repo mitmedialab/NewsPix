@@ -6,7 +6,7 @@ admin_password:
 host: 
 user: 
 pass: 
-name: newspix_boston_herald
+name: newspix
 port: 27017
 auth_db:
 collection_stories: stories

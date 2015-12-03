@@ -2,10 +2,20 @@ var data = [{date: '2015-11-13', close: 20}, {date: '2015-11-15', close: 30}, {d
 
 
 function linechart(data){
+
+  var today = new Date();
+  var todayString = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+  console.log("DATA: " + todayString);
+
+  if (data[data.length - 1]['date'] != todayString){
+    data.push({date: todayString, close: 0});
+  }
+
   // Set the dimensions of the canvas / graph
   var margin = {top: 40, right: 50, bottom: 40, left: 50},
-    width = 900 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    width = 650 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
   // Parse the date / time
   var parseDate = d3.time.format("%Y-%m-%d").parse;
@@ -40,8 +50,10 @@ function linechart(data){
         d.close = +d.close;
     });
 
+    
+
     // Scale the range of the data
-    x.domain(d3.extent(data, function(d) { return d.date; }));
+    x.domain(d3.extent(data, function(d) { return d.date}));
     y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
     // Add the valueline path.
@@ -59,6 +71,14 @@ function linechart(data){
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);
+
+    svg.selectAll("circle.line")
+      .data(data)
+      .enter().append("svg:circle")
+      .attr("class", "line")
+      .attr("cx", function(d) { return x(d.date)})
+      .attr("cy", function(d) { return y(d.close)})
+      .attr("r", 1.5);
 }
 
 $(document).ready(function(){
@@ -66,9 +86,8 @@ $(document).ready(function(){
   xhr.open("GET", "/analytics/installations", true);
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4) {
-      response = JSON.parse(xhr.responseText);
-      console.log(response);
-      linechart(data)
+      var response = JSON.parse(xhr.responseText);
+      linechart(response);
     }
   }
   xhr.send();
