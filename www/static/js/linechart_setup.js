@@ -6,8 +6,6 @@ function linechart(data){
   var today = new Date();
   var todayString = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-  console.log("DATA: " + todayString);
-
   if (data[data.length - 1]['date'] != todayString){
     data.push({date: todayString, close: 0});
   }
@@ -71,6 +69,21 @@ function linechart(data){
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);
+
+    // x-axis label
+    svg.append("text")
+        .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom) + ")")
+        .style("text-anchor", "middle")
+        .text("Date");
+
+    // y-axis label
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("# Installs");
 
     svg.selectAll("circle.line")
       .data(data)
