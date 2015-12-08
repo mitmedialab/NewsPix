@@ -82,19 +82,11 @@ function sendInstall(newspix_organization){
 
 $(document).ready(function() {
 
-	populate_popup();
-
-	chrome.storage.sync.get('newspix_organization', function(obj){
-		var newspix_organization = obj.newspix_organization;
-		if (newspix_organization){
-			$("#organization_logo").css({'visibility': 'visible'});
-			$("#organization_logo").attr('src', "images/logos/" + newspix_organization + ".png");
-			$("#organization_home").attr('href', url_map[newspix_organization]);
-		} else {
-			$("#selectOrganizationModal").modal('show');
-		}
-	});
-
+	// Setup organization logo
+	$("#organization_logo").css({'visibility': 'visible'});
+	$("#organization_logo").attr('src', "images/logos/" + newspix_organization + ".png");
+	$("#organization_home").attr('href', organization_url);
+	
 	$('.headline').click(function () {
 		chrome.runtime.sendMessage({msg: "registerClick", story: story});
 	});
@@ -132,18 +124,6 @@ $(document).ready(function() {
 		    	getStory("requestNextStory");
 			});
 		}
-	})
-
-	$(document).on('click', '.organization_box', function(){
-		var organization = $(this).attr('id');
-		chrome.storage.sync.set({"newspix_organization": organization});
-		sendInstall(organization);
-		$("#selectOrganizationModal").modal('hide');
-		location.reload();
-	})
-
-	$(document).on('click', '#selectOrganization', function(){
-		$("#selectOrganizationModal").modal('show');
 	})
 
 	$(document).on("click", "#uninstall", function(){

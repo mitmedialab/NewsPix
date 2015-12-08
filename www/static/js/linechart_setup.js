@@ -4,10 +4,11 @@ var data = [{date: '2015-11-13', close: 20}, {date: '2015-11-15', close: 30}, {d
 function linechart(data){
 
   var today = new Date();
-  var todayString = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  var todayDateString = today.getFullYear() + '-' + (String(today.getMonth() + 1).length == 1 ? "0" + today.getMonth() + 1 : today.getMonth() + 1) + '-' + (String(today.getDate()).length == 1 ? "0" + today.getDate() : today.getDate());
 
-  if (data[data.length - 1]['date'] != todayString){
-    data.push({date: todayString, close: 0});
+  // Make sure chart projected to current date
+  if (data[data.length - 1]['date'] != todayDateString){
+    data.push({date: todayDateString, close: 0});
   }
 
   // Set the dimensions of the canvas / graph
@@ -70,6 +71,15 @@ function linechart(data){
         .attr("class", "y axis")
         .call(yAxis);
 
+    // Chart title
+    svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .style("text-decoration", "underline")  
+        .text("Total Chrome Installations");
+
     // x-axis label
     svg.append("text")
         .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom) + ")")
@@ -91,7 +101,7 @@ function linechart(data){
       .attr("class", "line")
       .attr("cx", function(d) { return x(d.date)})
       .attr("cy", function(d) { return y(d.close)})
-      .attr("r", 1.5);
+      .attr("r", 4);
 }
 
 $(document).ready(function(){

@@ -45,8 +45,6 @@ class MongoHandlerOrganizations:
 		result = self.collection.find_one({"_id": ObjectId(organizationID)})
 		if result:
 			self.collection.remove({"_id": ObjectId(organizationID)})
-			safe_config.remove_option("organizations", result['login_username'])
-			config.read(os.path.join(BASE_DIR, CONFIG_FILENAME))
 
 	def is_valid_organization(self, username):
 		result = self.collection.find_one({"login_username": username})

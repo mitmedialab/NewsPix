@@ -186,6 +186,17 @@ def installations():
 	analytics = Analytics(mongo_handler_stories, signed_in_organization, installations)
 	return json.dumps(analytics.installations, default=json_util.default)
 
+@app.route('/random_story', methods=['GET', 'POST'])
+def random_story_old():
+	stories = mongo_handler_stories.get_active_stories(date_handler.today, "keene_sentinel")
+	if not stories:
+		return "no stories"
+	else:
+		random_index = random.randint(0, len(stories)-1)
+		result = stories[random_index].get_story_object()
+		mongo_handler_stories.register_load(result['_id'])
+		return json.dumps(result, default=json_util.default)
+
 @app.route('/random_story/<organization>', methods=['GET', 'POST'])
 def random_story(organization):
 	stories = mongo_handler_stories.get_active_stories(date_handler.today, organization)
@@ -197,14 +208,26 @@ def random_story(organization):
 		mongo_handler_stories.register_load(result['_id'])
 		return json.dumps(result, default=json_util.default)
 
+@app.route('/get_previous_story/<storyID>', methods=['GET', 'POST'])
+def get_previous_story_old(storyID):
+	result = mongo_handler_stories.get_active_story(storyID, "keene_sentinel", False)
+	handleNextOrPrevious(result)
+	return json.dumps(result, default=json_util.default)
+
 @app.route('/get_previous_story/<organization>/<storyID>', methods=['GET', 'POST'])
-def get_previous_story(storyID, organization):
+def get_previous_story(organization, storyID):	
 	result = mongo_handler_stories.get_active_story(storyID, organization, False)
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
+@app.route('/get_next_story/<storyID>', methods=['GET', 'POST'])
+def get_next_story_old(storyID):
+	result = mongo_handler_stories.get_active_story(storyID, "keene_sentinel", True)
+	handleNextOrPrevious(result)
+	return json.dumps(result, default=json_util.default)
+
 @app.route('/get_next_story/<organization>/<storyID>', methods=['GET', 'POST'])
-def get_next_story(storyID, organization):
+def get_next_story(organization, storyID):
 	result = mongo_handler_stories.get_active_story(storyID, organization, True)
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
@@ -239,9 +262,11 @@ def register_click(storyID):
 
 @app.route('/register_install/<organizationID>', methods=['POST'])
 def register_install(organizationID):
-	installation = Installation(organizationID, date_handler.format_date_for_chart(date_handler.today))
+	if (not organizationID):
+		installation = Installation("keene_sentinel", date_handler.format_date_for_chart(date_handler.today))
+	else:
+		installation = Installation(organizationID, date_handler.format_date_for_chart(date_handler.today))
 	mongo_handler_installations.register_installation(installation)
-	print "INSTALLED: " + organizationID
 
 def render_admin_panel(signed_in_organization):
 	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']
