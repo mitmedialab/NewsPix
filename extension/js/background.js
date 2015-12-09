@@ -47,7 +47,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 function sendClick (story) {
 	var id = story["_id"]["$oid"];
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", SERVER_URL + "/register_click/" + id, true);
+	xhr.open("POST", SERVER_URL + "/register_click/" + newspix_organization + "/" + id, true);
 	xhr.send();
 }
 

@@ -8,12 +8,12 @@ from flask import Flask,render_template,request,redirect, flash
 from pymongo import MongoClient
 from mongohandlerstories import MongoHandlerStories
 from mongohandlerorganizations import MongoHandlerOrganizations
-from mongohandlerinstalls import MongoHandlerInstallations
+from mongohandler_timestamps import MongoHandlerTimestamps
 from date import Date
 from analytics import Analytics
 from story import Story
 from organization import Organization
-from installation import Installation
+from event_timestamp import EventTimestamp
 from PIL import Image
 from StringIO import StringIO
 from auth import check_auth,authenticate,requires_auth
@@ -54,11 +54,18 @@ mongo_handler_organizations = MongoHandlerOrganizations(
 	config.get('db', 'collection_organizations')
 )
 
-mongo_handler_installations = MongoHandlerInstallations(
+mongo_handler_installations = MongoHandlerTimestamps(
 	config.get('db','host'), 
 	config.get('db','port'), 
 	config.get('db', 'db'), 
 	config.get('db', 'collection_installations')
+)
+
+mongo_handler_clicks = MongoHandlerTimestamps(
+	config.get('db','host'), 
+	config.get('db','port'), 
+	config.get('db', 'db'), 
+	config.get('db', 'collection_clicks')
 )
 
 date_handler = Date()
@@ -173,18 +180,20 @@ def admin():
 @flask_login.login_required
 def analytics_page():
 	signed_in_organization = flask_login.current_user.id
-	installations = mongo_handler_installations.get_organization_installations(signed_in_organization)
-	analytics = Analytics(mongo_handler_stories, signed_in_organization, installations)
+	installations = mongo_handler_installations.get_organization_events(signed_in_organization)
+	clicks = mongo_handler_clicks.get_organization_events(signed_in_organization)
+	analytics = Analytics(mongo_handler_stories, signed_in_organization, installations, clicks)
 	all_stories = mongo_handler_stories.get_all_stories(signed_in_organization)
 	print analytics.clickthrough
 	return render_template('analytics.html', stories=all_stories, analytics=analytics)
 
-@app.route('/analytics/installations', methods=['GET'])
-def installations():
+@app.route('/analytics/events', methods=['GET'])
+def events():
 	signed_in_organization = flask_login.current_user.id
-	installations = mongo_handler_installations.get_organization_installations(signed_in_organization)
-	analytics = Analytics(mongo_handler_stories, signed_in_organization, installations)
-	return json.dumps(analytics.installations, default=json_util.default)
+	installations = mongo_handler_installations.get_organization_events(signed_in_organization)
+	clicks = mongo_handler_clicks.get_organization_events(signed_in_organization)
+	analytics = Analytics(mongo_handler_stories, signed_in_organization, installations, clicks)
+	return json.dumps({'installations': analytics.installation_events, 'clicks': analytics.click_events}, default=json_util.default)
 
 @app.route('/random_story', methods=['GET', 'POST'])
 def random_story_old():
@@ -197,9 +206,9 @@ def random_story_old():
 		mongo_handler_stories.register_load(result['_id'])
 		return json.dumps(result, default=json_util.default)
 
-@app.route('/random_story/<organization>', methods=['GET', 'POST'])
-def random_story(organization):
-	stories = mongo_handler_stories.get_active_stories(date_handler.today, organization)
+@app.route('/random_story/<organizationID>', methods=['GET', 'POST'])
+def random_story(organizationID):
+	stories = mongo_handler_stories.get_active_stories(date_handler.today, organizationID)
 	if not stories:
 		return "no stories"
 	else:
@@ -214,9 +223,9 @@ def get_previous_story_old(storyID):
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
-@app.route('/get_previous_story/<organization>/<storyID>', methods=['GET', 'POST'])
-def get_previous_story(organization, storyID):	
-	result = mongo_handler_stories.get_active_story(storyID, organization, False)
+@app.route('/get_previous_story/<organizationID>/<storyID>', methods=['GET', 'POST'])
+def get_previous_story(organizationID, storyID):	
+	result = mongo_handler_stories.get_active_story(storyID, organizationID, False)
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
@@ -226,9 +235,9 @@ def get_next_story_old(storyID):
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
-@app.route('/get_next_story/<organization>/<storyID>', methods=['GET', 'POST'])
-def get_next_story(organization, storyID):
-	result = mongo_handler_stories.get_active_story(storyID, organization, True)
+@app.route('/get_next_story/<organizationID>/<storyID>', methods=['GET', 'POST'])
+def get_next_story(organizationID, storyID):
+	result = mongo_handler_stories.get_active_story(storyID, organizationID, True)
 	handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
@@ -256,17 +265,23 @@ def delete_organization(organizationID):
 	return redirect("/organizations")
 
 @app.route('/register_click/<storyID>', methods=['GET', 'POST'])
-def register_click(storyID):
+def register_click_old(storyID):
 	mongo_handler_stories.register_click(storyID)
+	click = EventTimestamp('keene_sentinel', date_handler.format_date_for_chart(date_handler.today))
+	mongo_handler_clicks.register_event(click)
+	return render_template('register_click.html')
+
+@app.route('/register_click/<organizationID>/<storyID>', methods=['GET', 'POST'])
+def register_click(organizationID, storyID):
+	mongo_handler_stories.register_click(storyID)
+	click = EventTimestamp(organizationID, date_handler.format_date_for_chart(date_handler.today))
+	mongo_handler_clicks.register_event(click)
 	return render_template('register_click.html')
 
 @app.route('/register_install/<organizationID>', methods=['POST'])
 def register_install(organizationID):
-	if (not organizationID):
-		installation = Installation("keene_sentinel", date_handler.format_date_for_chart(date_handler.today))
-	else:
-		installation = Installation(organizationID, date_handler.format_date_for_chart(date_handler.today))
-	mongo_handler_installations.register_installation(installation)
+	installation = EventTimestamp(organizationID, date_handler.format_date_for_chart(date_handler.today))
+	mongo_handler_installations.register_event(installation)
 
 def render_admin_panel(signed_in_organization):
 	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']

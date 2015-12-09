@@ -1,6 +1,6 @@
 from date import Date 
 
-class Installation:
+class EventTimestamp:
 
 	def __init__(self, organization, date):
 		self.organization = organization
