@@ -44,6 +44,9 @@ name: (organization name)
 port: 27017
 auth_db:
 collection:stories
+collection_organizations:organizations
+collection_installations:installations
+collection_clicks:clicks
 ```
 
 ## Run locally
