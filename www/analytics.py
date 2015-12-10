@@ -1,4 +1,3 @@
-from mongohandler import MongoHandler
 from story import Story
 
 class Analytics:
