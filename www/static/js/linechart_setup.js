@@ -1,5 +1,6 @@
-var data = [{date: '2015-11-13', close: 20}, {date: '2015-11-15', close: 30}, {date: '2015-11-18', close: 4}, {date: '2015-12-1', close: 5}, {date: '2015-12-13', close: 25}, {date: '2015-12-25', close: 100} ]
-
+// Test data
+var dataClicks = [{date: '2015-11-13', close: 20}, {date: '2015-11-15', close: 30}, {date: '2015-11-18', close: 4}, {date: '2015-12-1', close: 5}, {date: '2015-12-13', close: 25}, {date: '2015-12-25', close: 100} ]
+var dataInstalls = [{date: '2015-11-13', close: 10}, {date: '2015-11-15', close: 5}, {date: '2015-11-18', close: 19}, {date: '2015-12-1', close: 30}, {date: '2015-12-13', close: 3}, {date: '2015-12-25', close: 11} ]
 
 function linechart(div_id, data, title, y_axis_label, line_class){
 
@@ -7,8 +8,13 @@ function linechart(div_id, data, title, y_axis_label, line_class){
   var todayDateString = today.getFullYear() + '-' + (String(today.getMonth() + 1).length == 1 ? "0" + today.getMonth() + 1 : today.getMonth() + 1) + '-' + (String(today.getDate()).length == 1 ? "0" + today.getDate() : today.getDate());
 
   // Make sure chart projected to current date
-  if (data.length != 0 && data[data.length - 1]['date'] != todayDateString){
-    data.push({date: todayDateString, close: 0});
+  if (data.length != 0){
+    var mostRecentDataPoint = data[data.length - 1]['date'];
+    var dateOfMostRecentPoint = new Date(mostRecentDataPoint);
+    dateOfMostRecentPoint.setDate(dateOfMostRecentPoint.getDate() + 1);
+    if (today > dateOfMostRecentPoint){
+        data.push({date: todayDateString, close: 0});
+    }
   }
 
   // Set the dimensions of the canvas / graph

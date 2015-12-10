@@ -5,6 +5,6 @@ var twitter_share_url = "https://twitter.com/intent/tweet?text=";
 var facebook_share_url = "https://www.facebook.com/sharer/sharer.php?u=";
 
 // Change to match news organization!
-var newspix_organization = 'boston_globe';
+var newspix_organization = 'keene_sentinel';
 var organization_url = "http://www.sentinelsource.com/";
 
