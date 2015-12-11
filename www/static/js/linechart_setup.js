@@ -12,7 +12,7 @@ function linechart(div_id, data, title, y_axis_label, line_class){
     var mostRecentDataPoint = data[data.length - 1]['date'];
     var dateOfMostRecentPoint = new Date(mostRecentDataPoint);
     dateOfMostRecentPoint.setDate(dateOfMostRecentPoint.getDate() + 1);
-    if (today > dateOfMostRecentPoint){
+    if ((today.getFullYear() > dateOfMostRecentPoint.getFullYear()) && (today.getMonth() > dateOfMostRecentPoint.getMonth()) && (today.getDate() > dateOfMostRecentPoint.getDate())) {
         data.push({date: todayDateString, close: 0});
     }
   }

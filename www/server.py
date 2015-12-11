@@ -44,7 +44,7 @@ mongo_handler_stories = MongoHandlerStories(
 	config.get('db','host'), 
 	config.get('db','port'), 
 	config.get('db', 'db'), 
-	config.get('db', 'collection_stories')
+	config.get('db', 'stories')
 )
 
 mongo_handler_organizations = MongoHandlerOrganizations(
