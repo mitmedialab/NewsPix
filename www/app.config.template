@@ -10,7 +10,7 @@ pass:
 name: 
 port: 27017
 auth_db:
-collection_stories: stories
+stories: stories
 collection_organizations: organizations
 collection_installations: installations
 collection_clicks: clicks
