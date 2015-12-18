@@ -6,8 +6,8 @@ from bson.json_util import dumps
 from bson.objectid import ObjectId
 from flask import Flask,render_template,request,redirect, flash
 from pymongo import MongoClient
-from mongohandlerstories import MongoHandlerStories
-from mongohandlerorganizations import MongoHandlerOrganizations
+from mongohandler_stories import MongoHandlerStories
+from mongohandler_organizations import MongoHandlerOrganizations
 from mongohandler_timestamps import MongoHandlerTimestamps
 from date import Date
 from analytics import Analytics
@@ -294,7 +294,12 @@ def render_admin_panel(signed_in_organization):
 
 def render_organizations_panel():
 	organizations = mongo_handler_organizations.get_all_organizations()
-	return render_template('organizations.html', organizations=organizations)
+	total_organization_clicks = {}
+	total_organization_installs = {}
+	for organization in organizations:
+		total_organization_installs[organization.login_username] = mongo_handler_installations.get_organization_event_count(organization.login_username)
+		total_organization_clicks[organization.login_username] = mongo_handler_clicks.get_organization_event_count(organization.login_username)
+	return render_template('organizations.html', organizations=organizations, total_organization_clicks=total_organization_clicks, total_organization_installs=total_organization_installs)
 
 def isLandscape(url):
 	#print url

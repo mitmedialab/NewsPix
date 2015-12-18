@@ -29,8 +29,7 @@ class MongoHandlerOrganizations:
 				organization.get('login_password'),
 				organization.get('url'),
 				organization.get('logo_url'),
-				organization.get('_id'),
-				organization.get('number_of_installations')
+				organization.get('_id')
 			))
 			idx-=1
 		return organizations

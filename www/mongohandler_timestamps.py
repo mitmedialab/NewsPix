@@ -14,6 +14,10 @@ class MongoHandlerTimestamps:
 	def register_event(self, event):
 		self.collection.save(event.get_installation_object())
 
+	def get_organization_event_count(self, organization):
+		result = self.get_organization_events(organization)
+		return len(result)
+
 	def get_events(self, cursor):
 		events = []
 		idx = cursor.count()

@@ -76,7 +76,7 @@
 		<div class="content-section-b">
 			<div class="container">
 				{% import 'organization-list.html' as organizationlist with context %}
-				{{ organizationlist.list (organizations) }}
+				{{ organizationlist.list (organizations, total_organization_installs, total_organization_clicks)}}
 			</div>
 		</div>
 
