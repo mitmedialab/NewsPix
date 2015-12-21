@@ -5,14 +5,16 @@ var dataInstalls = [{date: '2015-11-13', close: 10}, {date: '2015-11-15', close:
 function linechart(div_id, data, title, y_axis_label, line_class){
 
   var today = new Date();
-  var todayDateString = today.getFullYear() + '-' + (String(today.getMonth() + 1).length == 1 ? "0" + today.getMonth() + 1 : today.getMonth() + 1) + '-' + (String(today.getDate()).length == 1 ? "0" + today.getDate() : today.getDate());
+  today.setHours(0,0,0,0);
 
   // Make sure chart projected to current date
   if (data.length != 0){
     var mostRecentDataPoint = data[data.length - 1]['date'];
     var dateOfMostRecentPoint = new Date(mostRecentDataPoint);
     dateOfMostRecentPoint.setDate(dateOfMostRecentPoint.getDate() + 1);
-    if ((today.getFullYear() > dateOfMostRecentPoint.getFullYear()) && (today.getMonth() > dateOfMostRecentPoint.getMonth()) && (today.getDate() > dateOfMostRecentPoint.getDate())) {
+    dateOfMostRecentPoint.setHours(0,0,0,0);
+    if(today > dateOfMostRecentPoint){
+        var todayDateString = today.getFullYear() + '-' + (String(today.getMonth() + 1).length == 1 ? "0" + today.getMonth() + 1 : today.getMonth() + 1) + '-' + (String(today.getDate()).length == 1 ? "0" + today.getDate() : today.getDate());
         data.push({date: todayDateString, close: 0});
     }
   }
