@@ -14,7 +14,7 @@ function linechart(div_id, data, title, y_axis_label, line_class){
     dateOfMostRecentPoint.setDate(dateOfMostRecentPoint.getDate() + 1);
     dateOfMostRecentPoint.setHours(0,0,0,0);
     if(today > dateOfMostRecentPoint){
-        var todayDateString = today.getFullYear() + '-' + (String(today.getMonth() + 1).length == 1 ? "0" + today.getMonth() + 1 : today.getMonth() + 1) + '-' + (String(today.getDate()).length == 1 ? "0" + today.getDate() : today.getDate());
+        var todayDateString = today.getFullYear() + '-' + (String(today.getMonth() + 1).length == 1 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1) + '-' + (String(today.getDate()).length == 1 ? "0" + today.getDate() : today.getDate());
         data.push({date: todayDateString, close: 0});
     }
   }
