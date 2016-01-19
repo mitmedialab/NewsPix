@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import request, Response
 import os,ConfigParser
-from mongohandlerorganizations import MongoHandlerOrganizations
+from mongohandler_organizations import MongoHandlerOrganizations
 
 
 CONFIG_FILENAME = 'app.config'
