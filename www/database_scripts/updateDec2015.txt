@@ -1,0 +1,18 @@
+db.organizations.insert( {
+	"name" : "Keene Sentinel", 
+	"url" : "http://www.sentinelsource.com/", 
+	"number_of_installations" : 0, 
+	"login_password" : "future0fn3ws", 
+	"login_username" : "keene_sentinel", 
+	"logo_url" : "https://lh4.ggpht.com/JfS5cNmlbM9S75AbJ9NiSYek86bZXcVg3850gQ5PlL0Ls4VqzSj12VQsCShSl1sMhw=h900"
+	})
+
+db.stories.update(
+	{ },
+	{ $set:
+	  {
+		news_organization: "keene_sentinel",
+	  }
+	},
+	{ multi: true }
+)
