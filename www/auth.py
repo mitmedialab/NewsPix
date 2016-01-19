@@ -1,6 +1,5 @@
 from functools import wraps
 from flask import request, Response
-
 import os,ConfigParser
 from mongohandlerorganizations import MongoHandlerOrganizations
 
