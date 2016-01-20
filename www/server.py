@@ -142,7 +142,8 @@ def admin_organizations():
 			request.form.get('loginUsername'),
 			request.form.get('loginPassword', None),
 			request.form.get('url', None),
-			request.form.get('logoURL', None)
+			request.form.get('logoURL', None),
+			request.form.get('timeZone')
 		)
 		mongo_handler_organizations.save_organization(organization)
 	return render_organizations_panel()
@@ -285,6 +286,8 @@ def register_install(organizationID):
 
 def render_admin_panel(signed_in_organization):
 	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']
+	organization_timezone = mongo_handler_organizations.get_organization(signed_in_organization)['time_zone']
+	date_handler.set_to_local_timezone(organization_timezone)
 	today = date_handler.format_date(date_handler.today)
 	tomorrow = date_handler.format_date(date_handler.tomorrow)
 	upcoming_stories = mongo_handler_stories.get_stories_after_date(date_handler.today, signed_in_organization)

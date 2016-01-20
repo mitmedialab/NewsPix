@@ -29,6 +29,7 @@ class MongoHandlerOrganizations:
 				organization.get('login_password'),
 				organization.get('url'),
 				organization.get('logo_url'),
+				organization.get('time_zone'),
 				organization.get('_id')
 			))
 			idx-=1

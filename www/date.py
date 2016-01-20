@@ -1,11 +1,27 @@
-import datetime
+from datetime import datetime
+from datetime import timedelta
+from pytz import timezone
+from dateutil.tz import *
 
 class Date:
 
 	def __init__(self):
-		now = datetime.datetime.now()
-		self.today = datetime.datetime(now.year, now.month, now.day)
-		self.tomorrow = self.today + datetime.timedelta(days=1)
+		self.now = datetime.now()
+		self.today = datetime(self.now.year, self.now.month, self.now.day)
+		self.tomorrow = self.today + timedelta(days=1)
+
+	def set_to_local_timezone(self, time_zone):
+		local = tzlocal()
+		now = datetime.now()
+		now = now.replace(tzinfo = local)
+
+		tz = timezone(time_zone)
+		now = now.astimezone(tz)
+
+		self.now = now
+		self.today = datetime(self.now.year, self.now.month, self.now.day)
+		self.tomorrow = self.today + timedelta(days=1)
+
 
 	def format_date(self, date):
 		month = date.month
