@@ -1,0 +1,6 @@
+flask
+Flask-Login
+requests
+pymongo
+flask-cors
+Pillow

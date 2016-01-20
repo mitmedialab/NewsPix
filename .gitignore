@@ -35,3 +35,9 @@ www/mongohandler.pyc
 www/app.config
 
 www/organizations.config
+
+*.pyc
+
+*.pyc
+
+*.pyc

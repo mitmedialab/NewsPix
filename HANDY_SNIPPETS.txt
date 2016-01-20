@@ -10,7 +10,7 @@ DEACTIVATE: deactivate
 DEPLOY CHANGES TO civicdev
 -----------------------------------------------------
 sudo git fetch --all
-sudo git reset --hard origin/master
+sudo git reset --hard origin/multiple_organizations
 
 APACHE
 -----------------------------------------------------

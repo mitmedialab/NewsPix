@@ -292,7 +292,6 @@ def render_admin_panel(signed_in_organization):
 	tomorrow = date_handler.format_date(date_handler.tomorrow)
 	upcoming_stories = mongo_handler_stories.get_stories_after_date(date_handler.today, signed_in_organization)
 	active_stories = mongo_handler_stories.get_active_stories(date_handler.today, signed_in_organization)
-
 	return render_template('admin.html', tomorrows_stories=upcoming_stories, todays_stories=active_stories, todays_date=today, tomorrows_date=tomorrow, organization_logo=organization_logo)
 
 def render_organizations_panel():
