@@ -11,3 +11,11 @@ venv
 www/app.config
 
 www/organizations.config
+
+*.pyc
+
+*.pyc
+
+*.pyc
+
+*.pyc

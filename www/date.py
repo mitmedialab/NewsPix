@@ -15,7 +15,10 @@ class Date:
 		now = datetime.now()
 		now = now.replace(tzinfo = local)
 
-		tz = timezone(time_zone)
+		if time_zone is None:
+			tz = local
+		else:
+			tz = timezone(time_zone)
 		now = now.astimezone(tz)
 
 		self.now = now

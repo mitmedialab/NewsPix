@@ -18,6 +18,8 @@ from PIL import Image
 from StringIO import StringIO
 from auth import check_auth,authenticate,requires_auth
 from user import User
+from pytz import timezone
+import pytz
 
 # constants
 CONFIG_FILENAME = 'app.config'
@@ -298,8 +300,17 @@ def register_install(organizationID):
 	mongo_handler_installations.register_event(installation)
 
 def render_admin_panel(signed_in_organization):
-	organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']
-	organization_timezone = mongo_handler_organizations.get_organization(signed_in_organization)['time_zone']
+	if 'time_zone' not in mongo_handler_organizations.get_organization(signed_in_organization):
+		organization_timezone = None
+	else:
+		organization_timezone = mongo_handler_organizations.get_organization(signed_in_organization)['time_zone']
+
+	if 'logo_url' not in mongo_handler_organizations.get_organization(signed_in_organization):
+		organization_logo = ""
+	else:
+		organization_logo = mongo_handler_organizations.get_organization(signed_in_organization)['logo_url']
+	
+	print organization_logo
 	date_handler.set_to_local_timezone(organization_timezone)
 	today = date_handler.format_date(date_handler.today)
 	tomorrow = date_handler.format_date(date_handler.tomorrow)
