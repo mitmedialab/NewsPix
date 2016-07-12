@@ -220,18 +220,18 @@ def random_story(organizationID):
 		mongo_handler_stories.register_load(result['_id'])
 		return json.dumps(result, default=json_util.default)
 		
-@app.route('/get_all_stories', methods=['GET', 'POST'])
-def get_all_stories():
-    story_list = [] 
-    stories = mongo_handler.get_active_stories(date_handler.today)
-    if not stories:
-        return "no stories"
-    else:
-       for index in range(len(stories)):
-           result = stories[index].get_story_object()
-           mongo_handler.register_load(result['_id'])
-           story_list.append(result)
-       return json.dumps(story_list, default=json_util.default)
+@app.route('/get_all_stories/<organizationID>', methods=['GET', 'POST'])
+def get_all_stories(organizationID):
+    	story_list = [] 
+    	stories = mongo_handler_stories.get_active_stories(date_handler.today, organizationID)
+    	if not stories:
+        	return "no stories"
+    	else:
+       		for index in range(len(stories)):
+           		result = stories[index].get_story_object()
+           		mongo_handler_stories.register_load(result['_id'])
+           		story_list.append(result)
+       		return json.dumps(story_list, default=json_util.default)
 
 @app.route('/get_previous_story/<storyID>', methods=['GET', 'POST'])
 def get_previous_story_old(storyID):
