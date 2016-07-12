@@ -2,7 +2,7 @@
 
 <html lang="en">
 	<head>
-		<title>NewsPix Admin</title>
+		<title>NewsPix Organizations</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="../static/css/datepicker3.css" />
@@ -13,7 +13,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-11">
-						<h1><img class='logo' src={{organization_logo}} height='100px' width='100px'> Admin Panel</h1>
+						<h1><img class='logo' src='../static/img/logos/newspix.png' height='100px' width='100px'> Organizations Panel</h1>
 					</div>
 				</div>
 			</div>
@@ -23,49 +23,47 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<a class="btn btn-primary btn-lg" href="/analytics" role="button">Analytics</a>
-						<a class="btn btn-danger btn-lg" href="/logout" role="button">Log Out</a>
+						<a class="btn btn-primary btn-lg" href="/admin" role="button">Admin Panel</a>	
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- Add new story -->
+		<!-- Add news organization -->
 		<div class="content-section-a">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<h2>Add a new story</h2>
+						<h2>Add a News Organization</h2>
 					</div>
-					<form action="/admin" method="POST" id="submit-story">
+					<form action="/organizations" method="POST" id="submit-story">
 					<div class="col-md-12">
-						<div class="form-group" for="inputHeadline">
-							<label for="inputHeadline">Headline</label>
-							<input type="text" name="headline" class="form-control input-lg" id="inputHeadline" placeholder="Enter Headline" required>
+						<div class="form-group" for="inputName">
+							<label for="inputName">Organization Name</label>
+							<input type="text" name="name" class="form-control input-lg" id="inputName" placeholder="Enter Name" required>
 						</div>
-						<div class="form-group" for="inputStory">
-							<label for="inputStory">Story</label>
-							<input type="url" name="storyURL" class="form-control input-lg" id="inputStory" placeholder="Enter Story URL" required>
+						<div class="form-group" for="inputName">
+							<label for="inputName">Organization URL</label>
+							<input type="text" name="url" class="form-control input-lg" id="inputURL" placeholder="Enter Name" required>
 						</div>
-						<div class="form-group" for="inputImage">
-							<label for="inputImage">Image</label>
-							<input type="url" name="imageURL" class="form-control input-lg" id="inputImage" placeholder="Enter Image URL" required>
+						<div class="form-group" for="inputLogo">
+							<label for="inputLogo">Logo URL</label>
+							<input type="url" name="logoURL" class="form-control input-lg" id="inputLogo" placeholder="Enter Logo URL" required>
 						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group" for="inputDate">
-							<label for="inputDate">From date</label>
-						    <div class="input-group date">
-							    <input type="text" name="date" class="form-control input-lg" id="inputDate" required value={{ todays_date }}><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-						    </div>
+						<div class="form-group" for="inputLogo">
+							<label for="inputLogo">Time Zone</label>
+						  	<select class="form-control" name="timeZone">
+							    <option>US/Eastern</option>
+							    <option>Asia/Kolkata</option>
+						  	</select>
 						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group" for="inputDate">
-							<label for="inputDate">To date</label>
-						    <div class="input-group date">
-							    <input type="text" name="to_date" class="form-control input-lg" id="inputDate" required value={{ tomorrows_date }}><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-						    </div>
+						<div class="form-group" for="inputLoginUsername">
+							<label for="inputLoginUsername">Log In Username</label>
+							<input type="text" name="loginUsername" class="form-control input-lg" id="inputLoginUsername" placeholder="Enter Login Username" required>
+						</div>
+						<div class="form-group" for="inputLoginPassword">
+							<label for="inputLoginPassword">Log In Password</label>
+							<input type="text" name="loginPassword" class="form-control input-lg" id="inputLoginPassword" placeholder="Enter Login Password" required>
 						</div>
 					</div>
 					<div class="col-md-12">
@@ -81,16 +79,13 @@
 			</div>
 		</div>
 
-		<!-- Review & edit stories -->
+		<!-- Review News Organizations -->
 		<div class="content-section-b">
 			<div class="container">
-				{% import 'story-list.html' as storylist with context %}
-				{{ storylist.list ("Active", todays_stories, todays_date) }}
-				{{ storylist.list ("Upcoming", tomorrows_stories, tomorrows_date) }}
+				{% import 'organization-list.html' as organizationlist with context %}
+				{{ organizationlist.list (organizations, total_organization_installs, total_organization_clicks)}}
 			</div>
 		</div>
-
-		
 
 		<div class="content-section-d">
 			<div class="container">
@@ -122,12 +117,5 @@
 				}
 			});
 		</script>
-		<script type="text/javascript" src="../static/lib/bootstrap-datepicker.js"></script>
-		<script type="text/javascript">
-		    $('.input-group.date').datepicker({
-		    	autoclose: true,
-		    	todayHighlight: true
-		    });
-	    </script>
 	</body>
 </html>

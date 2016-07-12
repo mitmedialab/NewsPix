@@ -4,34 +4,10 @@ venv
 
 *.pyc
 
-.DS_Store
-
-.DS_Store
-
-*.pyc
-
-*.pyc
-
-*.pyc
-
-*.pyc
-
-extension/Archive.zip
-
-www/.DS_Store
+*.zip
 
 *.config
 
-*.pyc
-
-www/.DS_Store
-
-*.pyc
-
-*.pyc
-
-www/mongohandler.pyc
-
 www/app.config
 
-*.pyc
+www/organizations.config

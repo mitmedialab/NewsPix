@@ -7,6 +7,10 @@ a {
 	text-decoration: none;
 }
 
+a:hover{
+	text-decoration: none;
+}
+
 body.bs-cover {
 	background-color: #000;
 	/**height: 100%;**/
@@ -81,8 +85,9 @@ body.bs-cover {
 .headline > a {
 	line-height: 80px;
 	color: #fff;
-	font-size: 4.5em;
+	font-size: 4.0em;
 	text-shadow: 2px 2px 3px rgba(1,1,1,0.6);
+	text-decoration: none;
 }
 .headline > a:hover{
 	color:#aaa;
@@ -137,6 +142,7 @@ body.bs-cover {
 .org-logo {
 	margin: 10px 10px 0;
 	height: 80px;
+	border-radius: 5px;
 }
 .forward,.backward{
 	width:100px;
@@ -154,7 +160,22 @@ body.bs-cover {
 }
 .forward > a,.backward > a{
 	color: #fff;
+	text-decoration: none;
 }
 .forward > a:hover,.backward > a:hover{
 	color:#aaa;
+	text-decoration: none;
+}
+
+.organization_box {
+	text-align: center;
+}
+
+.organization_box:hover {
+	cursor: pointer;
+	opacity: 0.7;
+}
+
+.organization_logo {
+	border-radius: 5px;
 }

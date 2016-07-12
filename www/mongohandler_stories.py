@@ -3,7 +3,7 @@ from story import Story
 from date import Date
 from bson.objectid import ObjectId
 
-class MongoHandler:
+class MongoHandlerStories:
 
 	def __init__(self, host, port, db, collection):
 		self.client = MongoClient(host, int(port))
@@ -26,6 +26,7 @@ class MongoHandler:
 			return stories
 		for story in cursor:
 			stories.append(Story(
+				story.get("news_organization"),
 				story.get('headline'), 
 				story.get('url'), 
 				story.get('image'), 
@@ -38,28 +39,28 @@ class MongoHandler:
 			idx-=1
 		return stories
 
-	def get_all_stories(self):
-		return self.get_stories(self.collection.find().sort("date", -1))
+	def get_all_stories(self, organization):
+		return self.get_stories(self.collection.find({"news_organization": organization}).sort("date", -1))
 
-	def get_stories_on_date(self, date):
-		cursor = self.collection.find({"date": date})
+	def get_stories_on_date(self, date, organization):
+		cursor = self.collection.find({"news_organization": organization, "date": date})
 		return self.get_stories(cursor)
 
-	def get_stories_before_date(self, date):
-		cursor = self.collection.find({"date": {"$lte": date}})
+	def get_stories_before_date(self, date, organization):
+		cursor = self.collection.find({"date": {"$lte": date}, "news_organization": organization})
 		return self.get_stories(cursor)
 
-	def get_stories_after_date(self, date):
-		cursor = self.collection.find({"date": {"$gt": date}}).sort("date", -1)
+	def get_stories_after_date(self, date, organization):
+		cursor = self.collection.find({"date": {"$gt": date}, "news_organization": organization}).sort("date", -1)
 		return self.get_stories(cursor)
 
-	def get_active_stories(self, date):
-		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}}).sort("date", -1)
+	def get_active_stories(self, date, organization):
+		cursor = self.collection.find({"date": {"$lte": date}, "to_date": {"$gte": date}, "news_organization": organization}).sort("date", -1)
 		return self.get_stories(cursor)
 
-	def get_active_story(self, storyID, isNextStory=True):
+	def get_active_story(self, storyID, organization, isNextStory=True):
 		
-		active_stories = self.get_active_stories(self.date_handler.today)
+		active_stories = self.get_active_stories(self.date_handler.today, organization)
 		if not active_stories:
 			return None
 
@@ -139,16 +140,15 @@ class MongoHandler:
 	def register_click(self, storyID):
 		self.collection.update({"_id": ObjectId(storyID)}, {"$inc": {"click_count": 1}})
 
-	def get_story_count(self):
+	def get_story_count(self, organization):
 		#NOTE FROM CATHERINE - server using Mongo 2.0.4 so doesn't support the aggregate command
 		#cursor = self.collection.aggregate([{"$group": { "_id": None, "count": { "$sum": 1 }}}])
 		#if len(cursor["result"]) == 0:
 		#	return 0
 		#return cursor["result"][0]["count"]
-		active_stories = self.get_active_stories(self.date_handler.today)
+		active_stories = self.get_active_stories(self.date_handler.today, organization)
 		if not active_stories:
 			return 0
 		else:	
 			return len(active_stories)
-
 		

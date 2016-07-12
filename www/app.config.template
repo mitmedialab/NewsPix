@@ -3,10 +3,15 @@ admin_username:
 admin_password:
 
 [db]
+db:
 host: 
 user: 
 pass: 
-name: newspix_boston_herald
+name: 
 port: 27017
 auth_db:
-collection:stories
+stories: stories
+collection_organizations: organizations
+collection_installations: installations
+collection_clicks: clicks
+

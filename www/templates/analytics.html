@@ -33,14 +33,29 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
+						<p class="lead">Total Chrome installs: {{analytics.number_of_installations}}</p>
+					</div>
+					<div class="col-md-3">
 						<p class="lead">Total views: {{analytics.loads}}</p>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-2">
 						<p class="lead">Total clicks: {{analytics.clicks}}</p>
 					</div>
 					<div class="col-md-4">
 						<p class="lead">Average clickthrough rate: {{analytics.clickthrough}}%</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- INSTALLS CHART -->		
+		<div>
+			<div class='container'>
+				<div class='row'>
+					<div class='col-md-6' id='svg_div_installs'>
+					</div>
+					<div class='col-md-6' id='svg_div_clicks'>
 					</div>
 				</div>
 			</div>
@@ -94,6 +109,8 @@
 		<script type="text/javascript" src="../static/lib/jquery-2.0.3.min.js"></script>
 		<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src='../static/js/stupidtable.js'></script>
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script type="text/javascript" src='../static/js/linechart_setup.js'></script>
 		<script type="text/javascript">
 			$("#analytics_table").stupidtable();
 		</script>

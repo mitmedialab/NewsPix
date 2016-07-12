@@ -1,8 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="en">
 	<head>
 		<title>NewsPix</title>
+		<script type="text/javascript" src="lib/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src='lib/bootstrap.min.js'></script>
+		<script type="text/javascript" src='extension.config.js'></script>
+		<script type="text/javascript" src="js/newspix.js"></script>
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap-theme.min.css">
 		<link rel="stylesheet" type="text/css" href="css/newspix.css" />
 		<link href='http://fonts.googleapis.com/css?family=News+Cycle:400,700' rel='stylesheet' type='text/css'>
 	</head>
@@ -17,7 +22,7 @@
 		<div class="container">
 			<div class="content-top">
 				<div class="page-header">
-					<a href="http://www.sentinelsource.com/"><img src="images/logos/sentinelsource.png" class="org-logo"></a>
+					<a id="organization_home" href=""><img id='organization_logo' src="" class="org-logo" style='visibility: hidden'></a>
 					<div id="controls">
 						<ul>
 							<li><a href="#" class="help">Help</a></li>
@@ -30,12 +35,11 @@
 				<h2>Help</h2>
 				<p style="font-size:18px">Thanks for using <a href="http://dev.newspix.today">NewsPix!</a></p>
 				<div style="font-size:18px;clear:both">
-				
 				<ul>
 					<li>To search the internet, use your URL bar </li>
 					<li>Click the page background or headline to go to the story</li>
 					<li>To uninstall, go to your <a href="#" id="uninstall">extensions</a> and disable the NewsPix extension</li>
-				</ul>
+				</ul> 
 				</div>
 			</div>
 			<div class="content-bottom">
@@ -53,12 +57,5 @@
 			</div>
 		</div>
 		<a href="#" id="bs-url"><div id="backstretch"></div></a>
-
-		<!-- Scripts -->
-
-		<script type="text/javascript" src="lib/jquery-2.0.3.min.js"></script>
-		<script type="text/javascript" src="js/newspix.js"></script>
-		
-
 	</body>
 </html>

@@ -47,3 +47,44 @@
 .logo {
 	border-radius: 10px;
 }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.y.axis .tick line {
+	stroke: lightgrey;
+    opacity: 0.7;
+}
+
+.x.axis .tick line {
+	stroke: lightgrey;
+    opacity: 0.7;
+}
+
+.y.axis path {
+  display: none;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line_installs {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.line_clicks {
+  fill: none;
+  stroke: red;
+  stroke-width: 1.5px;
+}
+
+.center {
+	text-align: center;
+}

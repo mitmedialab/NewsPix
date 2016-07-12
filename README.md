@@ -22,6 +22,7 @@ pip install pymongo
 pip install virtualenv
 pip install requests
 pip install flask-cors
+pip install flask-login
 pip install Pillow
 ```
 
@@ -42,7 +43,10 @@ pass: (database password if any)
 name: (organization name)
 port: 27017
 auth_db:
-collection:stories
+collection_stories:stories
+collection_organizations:organizations
+collection_installations:installations
+collection_clicks:clicks
 ```
 
 ## Run locally

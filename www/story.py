@@ -2,7 +2,8 @@ from date import Date
 
 class Story:
 
-	def __init__(self, headline, storyURL, imageURL, fromDate, toDate, _id, loadCount, clickCount, position):
+	def __init__(self, news_organization, headline, storyURL, imageURL, fromDate, toDate, _id, loadCount, clickCount, position):
+		self.news_organization = news_organization
 		self.headline = headline
 		self.storyURL = storyURL
 		self.imageURL = imageURL
@@ -24,6 +25,7 @@ class Story:
 
 	def get_story_object(self):
 		story = {}
+		story['news_organization'] = self.news_organization
 		story['headline'] = self.headline
 		story['url'] = self.storyURL
 		story['image'] = self.imageURL
