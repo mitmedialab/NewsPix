@@ -47,7 +47,5 @@ class Date:
 		return str(year) + "-" + str(month) + "-" + str(day)
 
 	def date_to_datetime(self, date):
-		month = int(date[:2])
-		day = int(date[3:5])
-		year = int(date[6:])
-		return datetime.datetime(year, month, day)
+		dateObj = datetime.strptime(date, '%m/%d/%Y')
+		return datetime.combine(dateObj, datetime.min.time())

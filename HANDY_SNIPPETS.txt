@@ -10,7 +10,7 @@ DEACTIVATE: deactivate
 DEPLOY CHANGES TO civicdev
 -----------------------------------------------------
 sudo git fetch --all
-sudo git reset --hard origin/multiple_organizations
+sudo git reset --hard origin/master
 
 APACHE
 -----------------------------------------------------
@@ -21,5 +21,5 @@ DEPLOY
 -----------------------------------------------------
 - Get latest from Git
 - manually update app.config file if has changed
-- sudo rm *.pyc files in www/ directory to prevent caching issues
+- sudo rm *.pyc files in www/ directory to prevent caching issues -- sudo rm -R www/*.pyc
 - reload apache
