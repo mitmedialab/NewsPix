@@ -21,3 +21,5 @@ www/organizations.config
 *.pyc
 
 *.pyc
+
+www/date.pyc
