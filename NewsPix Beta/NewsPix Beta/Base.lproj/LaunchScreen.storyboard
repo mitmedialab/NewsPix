@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" userInteractionEnabled="NO" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6I-uJ-DmH">
+                                <rect key="frame" x="128" y="508" width="345" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="345" id="w6B-61-iAu"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="Powered by ">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="22" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="NewsPix">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="40" name="HelveticaNeue"/>
+                                            <font key="NSOriginalFont" size="40" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SS Simple" translatesAutoresizingMaskIntoConstraints="NO" id="RNb-3W-eeg">
+                                <rect key="frame" x="117" y="88" width="366" height="366"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="RNb-3W-eeg" secondAttribute="height" multiplier="1:1" id="jr9-PE-eVk"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.63921568627450975" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="RNb-3W-eeg" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="68" id="Fab-9u-69j"/>
+                            <constraint firstItem="RNb-3W-eeg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="McT-vg-NO4"/>
+                            <constraint firstItem="RNb-3W-eeg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-29" id="ZB8-gj-oGj"/>
+                            <constraint firstItem="j6I-uJ-DmH" firstAttribute="top" secondItem="RNb-3W-eeg" secondAttribute="bottom" constant="54" id="ed8-F8-OA7"/>
+                            <constraint firstItem="j6I-uJ-DmH" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="kXJ-Bc-c1d"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-83" y="383"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="SS Simple" width="366" height="366"/>
+    </resources>
+</document>
