@@ -21,5 +21,6 @@ DEPLOY
 -----------------------------------------------------
 - Get latest from Git
 - manually update app.config file if has changed
-- sudo rm *.pyc files in www/ directory to prevent caching issues -- sudo rm -R www/*.pyc
+- sudo rm *.pyc files in www/ directory to prevent caching issues -- 
+sudo rm -R www/*.pyc
 - reload apache
