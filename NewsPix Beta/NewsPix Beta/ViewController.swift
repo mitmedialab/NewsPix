@@ -16,7 +16,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var pictureTitle: UIButton!
     
-    
     @IBOutlet weak var imageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var imageViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewLeadingConstraint: NSLayoutConstraint!
@@ -28,34 +27,19 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         return UIStatusBarStyle.LightContent
     }
 
+    var index: Int = 0
     var lastZoomScale: CGFloat = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initial_frame = view.frame
-        
-        //Download content from server
-        if images.count == 0 {
-            altParseJSON(getData("http://dev.newspix.today/get_all_stories/keene_sentinel")!)
-        }
-        //Provide default images if server connection fails
-        if images.count == 0 {
-            names = ["Newspix", "Keene Sentinel"]
-            images = [UIImage(named: "newspixlogo.png")!, UIImage(named: "Keene Sentinel.png")!]
-            urls = [NSURL(string: "http://dev.newspix.today")!, NSURL(string: "http://www.sentinelsource.com/")!]
-        }
-
+                
         //Initialize Display
         self.pictureTitle.setTitle(names[index],forState: UIControlState.Normal)
         self.imageView.image = images[index]
         
         //Always make pictureTitle fit in one line
         self.pictureTitle.titleLabel?.adjustsFontSizeToFitWidth = true
-        
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        navigationItem.title = "Sentinel Source"
     }
     
     override func viewDidLayoutSubviews() {
@@ -68,55 +52,13 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         scrollView.decelerationRate = UIScrollViewDecelerationRateFast
     }
     
+    //Function for activating hyperlink
     @IBAction func didPressTitle() {
         let url = urls[index];
         UIApplication.sharedApplication().openURL(url);
     }
     
-    @IBAction func handleSwipe(recognizer:UISwipeGestureRecognizer) {
-        if (recognizer.direction == UISwipeGestureRecognizerDirection.Right) {
-            index -= 1
-            if index < 0 {index = names.count-1}
-        }
-        if (recognizer.direction == UISwipeGestureRecognizerDirection.Left) {
-            index += 1
-            if index > names.count-1 {index = 0}
-        }
-        
-        self.imageView.fadeOut()
-        self.pictureTitle.fadeOut()
-        
-        //Transitionary code
-        self.imageView.image = images[index]
-        self.pictureTitle.setTitle(names[index],forState: UIControlState.Normal)
-        scrollView.zoomScale = 1.0
-
-        self.pictureTitle.fadeIn()
-        self.imageView.fadeIn()
-    }
-
-    @IBAction func shareButtonClicked(sender: UIBarButtonItem) {
-        let textToShare = self.pictureTitle.currentTitle!
-        let myWebsite = urls[index]
-        let objectsToShare = [textToShare, myWebsite]
-        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        
-        activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo,
-            UIActivityTypeMessage,
-            UIActivityTypeMail,
-            UIActivityTypePrint,
-            UIActivityTypeCopyToPasteboard,
-            UIActivityTypeAssignToContact,
-            UIActivityTypeSaveToCameraRoll,
-            UIActivityTypeAddToReadingList,
-            UIActivityTypePostToFlickr,
-            UIActivityTypePostToVimeo,
-            UIActivityTypePostToTencentWeibo,
-            UIActivityTypeAirDrop]
-        
-        self.presentViewController(activityVC, animated: true, completion: nil)
-        }
-    
+    //ScrollView Functions
     override func viewWillTransitionToSize(size: CGSize,
         withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
             
@@ -164,9 +106,9 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
-    // Zoom to show as much image as possible unless image is smaller than the scroll view
-    // **Called only upon view initialization and upon device rotation**
     private func updateZoom() {
+        // Zoom to show as much image as possible unless image is smaller than the scroll view
+            // **Called only upon view initialization and upon device rotation**
         if let image = imageView.image {
             var minZoom = min(scrollView.bounds.size.width / image.size.width,
                 scrollView.bounds.size.height / image.size.height)

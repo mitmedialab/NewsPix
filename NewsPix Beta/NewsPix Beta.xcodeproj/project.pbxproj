@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		898B70FE1CBE7B980060D286 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898B70FD1CBE7B980060D286 /* UIViewExtensions.swift */; };
+		892D3AD31D46876000B81FE9 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 892D3AD21D46876000B81FE9 /* Social.framework */; };
+		892D3AD71D4902A600B81FE9 /* PhotoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892D3AD61D4902A600B81FE9 /* PhotoPageViewController.swift */; };
 		899E0D351C94CBB300110FC4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E0D341C94CBB300110FC4 /* AppDelegate.swift */; };
 		899E0D371C94CBB300110FC4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E0D361C94CBB300110FC4 /* ViewController.swift */; };
 		899E0D3A1C94CBB300110FC4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 899E0D381C94CBB300110FC4 /* Main.storyboard */; };
@@ -36,7 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		898B70FD1CBE7B980060D286 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		892D3AD21D46876000B81FE9 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		892D3AD61D4902A600B81FE9 /* PhotoPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPageViewController.swift; sourceTree = "<group>"; };
 		899E0D311C94CBB300110FC4 /* NewsPix Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NewsPix Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		899E0D341C94CBB300110FC4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		899E0D361C94CBB300110FC4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				892D3AD31D46876000B81FE9 /* Social.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +84,7 @@
 		899E0D281C94CBB300110FC4 = {
 			isa = PBXGroup;
 			children = (
+				892D3AD21D46876000B81FE9 /* Social.framework */,
 				899E0D331C94CBB300110FC4 /* NewsPix Beta */,
 				899E0D481C94CBB300110FC4 /* NewsPix BetaTests */,
 				899E0D531C94CBB300110FC4 /* NewsPix BetaUITests */,
@@ -102,7 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				899E0D341C94CBB300110FC4 /* AppDelegate.swift */,
-				898B70FD1CBE7B980060D286 /* UIViewExtensions.swift */,
+				892D3AD61D4902A600B81FE9 /* PhotoPageViewController.swift */,
 				899E0D361C94CBB300110FC4 /* ViewController.swift */,
 				899E0D621CAA476000110FC4 /* Module.swift */,
 				899E0D381C94CBB300110FC4 /* Main.storyboard */,
@@ -264,7 +268,7 @@
 			files = (
 				899E0D371C94CBB300110FC4 /* ViewController.swift in Sources */,
 				899E0D351C94CBB300110FC4 /* AppDelegate.swift in Sources */,
-				898B70FE1CBE7B980060D286 /* UIViewExtensions.swift in Sources */,
+				892D3AD71D4902A600B81FE9 /* PhotoPageViewController.swift in Sources */,
 				899E0D631CAA476000110FC4 /* Module.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

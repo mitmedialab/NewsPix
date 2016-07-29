@@ -6,18 +6,28 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Page View Controller-->
+        <!--Photo Page View Controller-->
         <scene sceneID="4t4-5t-DeJ">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="Nfk-FD-jm7" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="PhotoPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" pageSpacing="30" navigationOrientation="horizontal" spineLocation="none" id="Nfk-FD-jm7" customClass="PhotoPageViewController" customModule="NewsPix_Beta" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems>
+                        <barButtonItem systemItem="action" id="Xdx-kd-qsg">
+                            <connections>
+                                <action selector="shareButtonClicked:" destination="Nfk-FD-jm7" id="yNI-dN-4JP"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="aW7-mk-drv"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kpj-aw-AIx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1983" y="271"/>
+            <point key="canvasLocation" x="1244" y="348"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="ViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="NewsPix_Beta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="NewsPix_Beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -53,13 +63,13 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="Eta-WE-1JH"/>
                                 </connections>
                             </scrollView>
-                            <imageView opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blk_grad" translatesAutoresizingMaskIntoConstraints="NO" id="PHB-M2-tSy">
+                            <imageView opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="blk_grad" translatesAutoresizingMaskIntoConstraints="NO" id="PHB-M2-tSy">
                                 <rect key="frame" x="-6" y="534" width="387" height="89"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="89" id="EJE-sT-hqY"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="q7d-eg-NnK">
+                            <button opaque="NO" contentMode="scaleAspectFit" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="q7d-eg-NnK">
                                 <rect key="frame" x="16" y="575" width="343" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="18f-Yg-eeB"/>
@@ -89,8 +99,6 @@
                             <constraint firstItem="PHB-M2-tSy" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="x9o-2N-AKL"/>
                         </constraints>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="I8O-pT-Fdc" appends="YES" id="gWn-ku-8d4"/>
-                            <outletCollection property="gestureRecognizers" destination="tYW-kW-Hgc" appends="YES" id="s7q-ML-Adt"/>
                             <outletCollection property="gestureRecognizers" destination="ucp-qB-pbP" appends="YES" id="UBg-gn-X15"/>
                         </connections>
                     </view>
@@ -113,28 +121,16 @@
                         <outlet property="imageViewTrailingConstraint" destination="ncR-Sq-vey" id="Lg3-d0-vMw"/>
                         <outlet property="pictureTitle" destination="q7d-eg-NnK" id="yGB-NU-xUD"/>
                         <outlet property="scrollView" destination="1Ju-bU-AGc" id="01n-dp-ewD"/>
-                        <outlet property="swipeLeft" destination="tYW-kW-Hgc" id="X1T-UP-Xm9"/>
-                        <outlet property="swipeRight" destination="I8O-pT-Fdc" id="zBu-7V-kr5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="I8O-pT-Fdc">
-                    <connections>
-                        <action selector="handleSwipe:" destination="BYZ-38-t0r" id="bg5-RX-H00"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="left" id="tYW-kW-Hgc">
-                    <connections>
-                        <action selector="handleSwipe:" destination="BYZ-38-t0r" id="UTL-K8-CiJ"/>
-                    </connections>
-                </swipeGestureRecognizer>
                 <tapGestureRecognizer id="ucp-qB-pbP">
                     <connections>
                         <action selector="didPressTitle" destination="BYZ-38-t0r" id="EtY-mY-RSJ"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1192.5" y="270.5"/>
+            <point key="canvasLocation" x="1915.5" y="347.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="vzg-QO-xSw">
@@ -154,12 +150,12 @@
                         <color key="barTintColor" red="0.0" green="0.63921568630000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                     </toolbar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="pNQ-JF-Vx1"/>
+                        <segue destination="Nfk-FD-jm7" kind="relationship" relationship="rootViewController" id="hrt-jB-ibu"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nME-gO-D07" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="380" y="270"/>
+            <point key="canvasLocation" x="365" y="348"/>
         </scene>
     </scenes>
     <resources>

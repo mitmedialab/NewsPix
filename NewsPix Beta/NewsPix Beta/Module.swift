@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 //Carousel Lists
-public var index: Int = 0
+//public var index: Int = 0
 //Bank of images
 public var images: [UIImage!] = []
 //Bank of headlines
