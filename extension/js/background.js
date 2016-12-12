@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
 chrome.runtime.onInstalled.addListener(function(details){
     if (details.reason == "install") {
-    	chrome.tabs.create({url: SERVER_URL + "/oninstall"}, function(tab) {
+    	chrome.tabs.create({}, function(tab) {
     		sendInstall(newspix_organization);
     	});
     }
@@ -44,6 +44,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 });
 
+function showAStory(newspix_organization, request, sender, sendResponse){
+	
+
+}
 function sendClick (story) {
 	var id = story["_id"]["$oid"];
 	var xhr = new XMLHttpRequest();
