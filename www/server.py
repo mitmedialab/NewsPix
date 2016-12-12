@@ -20,6 +20,7 @@ from auth import check_auth,authenticate,requires_auth
 from user import User
 from pytz import timezone
 import pytz
+import httplib
 
 # constants
 CONFIG_FILENAME = 'app.config'
@@ -236,25 +237,25 @@ def get_all_stories(organizationID):
 @app.route('/get_previous_story/<storyID>', methods=['GET', 'POST'])
 def get_previous_story_old(storyID):
 	result = mongo_handler_stories.get_active_story(storyID, "keene_sentinel", False)
-	handleNextOrPrevious(result)
+	result = handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
 @app.route('/get_previous_story/<organizationID>/<storyID>', methods=['GET', 'POST'])
 def get_previous_story(organizationID, storyID):	
 	result = mongo_handler_stories.get_active_story(storyID, organizationID, False)
-	handleNextOrPrevious(result)
+	result = handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
 @app.route('/get_next_story/<storyID>', methods=['GET', 'POST'])
 def get_next_story_old(storyID):
 	result = mongo_handler_stories.get_active_story(storyID, "keene_sentinel", True)
-	handleNextOrPrevious(result)
+	result = handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
 @app.route('/get_next_story/<organizationID>/<storyID>', methods=['GET', 'POST'])
 def get_next_story(organizationID, storyID):
 	result = mongo_handler_stories.get_active_story(storyID, organizationID, True)
-	handleNextOrPrevious(result)
+	result = handleNextOrPrevious(result)
 	return json.dumps(result, default=json_util.default)
 
 def handleNextOrPrevious(result):
@@ -298,6 +299,7 @@ def register_click(organizationID, storyID):
 def register_install(organizationID):
 	installation = EventTimestamp(organizationID, date_handler.format_date_for_chart(date_handler.today))
 	mongo_handler_installations.register_event(installation)
+	return ('', httplib.NO_CONTENT)
 
 def render_admin_panel(signed_in_organization):
 	if 'time_zone' not in mongo_handler_organizations.get_organization(signed_in_organization):

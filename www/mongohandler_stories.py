@@ -77,8 +77,8 @@ class MongoHandlerStories:
 		return 0
 
 	def get_next_story_from_position(self, position, active_stories, isNextStory):
-		print "Current position: " + str(position)
-		print "isNextStory: " + str(isNextStory)
+		#print "Current position: " + str(position)
+		#print "isNextStory: " + str(isNextStory)
 		
 		position_changed = False
 		
@@ -90,7 +90,7 @@ class MongoHandlerStories:
 		for story in active_stories:
 
 			story_position = story.position
-			print "Current iterating position: " + str(story_position)
+			#print "Current iterating position: " + str(story_position)
 
 			#we want the next story
 			if isNextStory:
