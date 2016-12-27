@@ -11,12 +11,11 @@ import Social
 
 class PhotoPageViewController: UIPageViewController {
     
+    let defaults = UserDefaults.standard
     var orderedViewControllers: [UIViewController] = []
-    var isFirstTimeClickingShare: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         dataSource = self
         
         //Download content from server
@@ -27,12 +26,12 @@ class PhotoPageViewController: UIPageViewController {
         if images.count == 0 {
             names = ["Newspix", "Keene Sentinel"]
             images = [UIImage(named: "newspixlogo.png")!, UIImage(named: "Keene Sentinel.png")!]
-            urls = [NSURL(string: "http://dev.newspix.today")!, NSURL(string: "http://www.sentinelsource.com/")!]
+            urls = [URL(string: "http://dev.newspix.today")!, URL(string: "http://www.sentinelsource.com/")!]
         }
         
         //Populate orderedViewController with controllers corresponding to each photo
         for num in 0...images.count - 1 {
-            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainViewController") as! ViewController
+            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainViewController") as! ViewController
             controller.index = num
             orderedViewControllers.append(controller)
         }
@@ -40,7 +39,7 @@ class PhotoPageViewController: UIPageViewController {
         //Initialize first ViewController
         if let firstViewController = orderedViewControllers.first {
             setViewControllers([firstViewController],
-                direction: .Forward,
+                direction: .forward,
                 animated: true,
                 completion: nil)
         }
@@ -48,50 +47,55 @@ class PhotoPageViewController: UIPageViewController {
     }
     
     //Set title displayed on the Navigation Bar to the name of the news organization
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         navigationItem.title = "Sentinel Source"
     }
     
-    //Sharing Functions
-    @IBAction func shareButtonClicked(sender: UIBarButtonItem) {
-        let myWebsite = urls[(self.viewControllers![0] as! ViewController).index]
-        let objectsToShare = [myWebsite]
-        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo,
-            UIActivityTypeMessage,
-            UIActivityTypeMail,
-            UIActivityTypePrint,
-            UIActivityTypeCopyToPasteboard,
-            UIActivityTypeAssignToContact,
-            UIActivityTypeSaveToCameraRoll,
-            UIActivityTypePostToFlickr,
-            UIActivityTypePostToVimeo,
-            UIActivityTypePostToTencentWeibo]
+    //Sharing Function
+    @IBAction func shareButtonClicked(_ sender: UIBarButtonItem) {
+        let urlToShare = urls[(self.viewControllers![0] as! ViewController).index]
+        let actionSheetController: UIAlertController = UIAlertController(title: "Share", message: nil, preferredStyle: .actionSheet)
         
-        self.presentViewController(activityVC, animated: true, completion: nil)
-        
-        //Check if user is logged into Twitter/Facebook, prompt them to sign in if not.
-        if isFirstTimeClickingShare {
-            let twitterLoggedIn = SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
-            let facebookLoggedIn = SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
-            if !twitterLoggedIn && !facebookLoggedIn {
-                self.showAlertMessage("Log into Facebook/Twitter in Settings to enable sharing.", underlyingView: activityVC)
-            }
-            else if !twitterLoggedIn {
-                self.showAlertMessage("Log into Twitter in Settings to enable sharing on Twitter.", underlyingView: activityVC)
-            }
-            else if !facebookLoggedIn {
-                self.showAlertMessage("Log into Facebook in Settings to enable sharing on Facebook.", underlyingView: activityVC)
-            }
-            isFirstTimeClickingShare = false
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+            //Dismiss the action sheet
         }
+        actionSheetController.addAction(cancelAction)
+
+        let shareFacebookAction: UIAlertAction = UIAlertAction(title: "Facebook", style: .default) { action -> Void in
+            //Check if user is logged in for Facebook
+            if !SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook) {
+                self.showAlertMessage("Log into Facebook in Settings to enable sharing on Facebook.", underlyingView: self)
+            }
+            else {
+                let fbShare: SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+                fbShare.add(urlToShare)
+                self.present(fbShare, animated: true, completion: nil)
+            }
+        }
+//        shareFacebookAction.setValue(UIImage(named: "Facebook Filled.png"), forKey: "image")
+        actionSheetController.addAction(shareFacebookAction)
+
+        let shareTwitterAction: UIAlertAction = UIAlertAction(title: "Twitter", style: .default) { action -> Void in
+            //Check if user is logged in for Twitter
+            if !SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter) {
+                self.showAlertMessage("Log into Twitter in Settings to enable sharing on Twitter.", underlyingView: self)
+            }
+            else {
+                let tShare: SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+                
+                self.present(tShare, animated: true, completion: nil)
+            }
+        }
+//        shareTwitterAction.setValue(UIImage(named: "Twitter Filled.png"), forKey: "image")
+        actionSheetController.addAction(shareTwitterAction)
         
+        self.present(actionSheetController, animated: true, completion: nil)
     }
     
-    func showAlertMessage(message: String!, underlyingView: UIViewController) {
-        let alertController = UIAlertController(title: "Not Logged In", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
-        underlyingView.presentViewController(alertController, animated: true, completion: nil)
+    func showAlertMessage(_ message: String!, underlyingView: UIViewController) {
+        let alertController = UIAlertController(title: "Not Logged In", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+        underlyingView.present(alertController, animated: true, completion: nil)
     }
 
 }
@@ -101,9 +105,9 @@ class PhotoPageViewController: UIPageViewController {
 
 extension PhotoPageViewController: UIPageViewControllerDataSource {
     
-    func pageViewController(pageViewController: UIPageViewController,
-        viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-            guard let viewControllerIndex = orderedViewControllers.indexOf(viewController) else {
+    func pageViewController(_ pageViewController: UIPageViewController,
+        viewControllerBefore viewController: UIViewController) -> UIViewController? {
+            guard let viewControllerIndex = orderedViewControllers.index(of: viewController) else {
                 return nil
             }
             
@@ -122,9 +126,9 @@ extension PhotoPageViewController: UIPageViewControllerDataSource {
             return orderedViewControllers[previousIndex]
     }
     
-    func pageViewController(pageViewController: UIPageViewController,
-        viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-            guard let viewControllerIndex = orderedViewControllers.indexOf(viewController) else {
+    func pageViewController(_ pageViewController: UIPageViewController,
+        viewControllerAfter viewController: UIViewController) -> UIViewController? {
+            guard let viewControllerIndex = orderedViewControllers.index(of: viewController) else {
                 return nil
             }
             

@@ -12,33 +12,33 @@ import UIKit
 //Carousel Lists
 //public var index: Int = 0
 //Bank of images
-public var images: [UIImage!] = []
+public var images: [UIImage?] = []
 //Bank of headlines
 public var names: [String] = []
 //Bank of URLs
-public var urls: [NSURL] = []
+public var urls: [URL] = []
 
 //Initial view frame from main viewController
-public var initial_frame: CGRect = CGRectZero
+public var initial_frame: CGRect = CGRect.zero
 
 //Functions for obtaining, parsing JSONs
 
-func getData(urlToRequest: String) -> NSData? {
+func getData(_ urlToRequest: String) -> Data? {
     //Retrieves NSData from a url
-    if let url = NSURL(string: urlToRequest) {
-        if let data = NSData(contentsOfURL: url) {
+    if let url = URL(string: urlToRequest) {
+        if let data = try? Data(contentsOf: url) {
             return data
         }
     }
     return nil
 }
 
-func parseJSON(inputData: NSData) {
+func parseJSON(_ inputData: Data) {
     //Parse the JSON - in this case, the JSON is a dictionary.
     var json: NSDictionary = [:]
     //The actual parsing must be done with try/catch because it can fail
     do {
-        json = try NSJSONSerialization.JSONObjectWithData(inputData, options: NSJSONReadingOptions()) as! NSDictionary
+        json = try JSONSerialization.jsonObject(with: inputData, options: JSONSerialization.ReadingOptions()) as! NSDictionary
     } catch {
         print(error)
     }
@@ -49,34 +49,34 @@ func parseJSON(inputData: NSData) {
     
     images.append(UIImage(data:(getData(jsonImage))!))
     names.append(jsonHeadline)
-    urls.append(NSURL(string: jsonURL)!)
+    urls.append(URL(string: jsonURL)!)
 
 }
 
-func altParseJSON(inputData: NSData) {
+func altParseJSON(_ inputData: Data) {
     //Parse the JSON
-    var json: NSMutableArray = []
+    var json: [[String:Any]] = []
     //The actual parsing must be done with try/catch because it can fail
     do {
-        json = try NSJSONSerialization.JSONObjectWithData(inputData, options: NSJSONReadingOptions()) as! NSMutableArray
+        json = try JSONSerialization.jsonObject(with: inputData, options: JSONSerialization.ReadingOptions()) as! [[String:Any]]
     } catch {
         print(error)
     }
     //Update the carousel lists
     for story in json {
-        let jsonHeadline: String! = story["headline"] as! String
+       let jsonHeadline: String! = story["headline"] as! String
         let jsonURL: String! = story["url"] as! String
         let jsonImage: String! = story["image"] as! String
     
         images.append(UIImage(data:(getData(jsonImage))!))
         names.append(jsonHeadline)
-        urls.append(NSURL(string: jsonURL)!)
+        urls.append(URL(string: jsonURL)!)
     }
     
 }
 
 //Method for managing aspect fit image sizes
-func imageSizeAfterAspectFit(imgview: UIImageView) -> CGSize {
+func imageSizeAfterAspectFit(_ imgview: UIImageView) -> CGSize {
     
     var newwidth: CGFloat
     var newheight: CGFloat
@@ -106,5 +106,5 @@ func imageSizeAfterAspectFit(imgview: UIImageView) -> CGSize {
 //    //adapt UIImageView size to image size
 //    imgview.frame = CGRectMake(imgview.frame.origin.x + (imgview.frame.size.width-newwidth)/2, imgview.frame.origin.y + (imgview.frame.size.height-newheight)/2, newwidth, newheight)
     
-    return CGSizeMake(newwidth, newheight);
+    return CGSize(width: newwidth, height: newheight);
 }

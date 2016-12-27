@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		892D3AD31D46876000B81FE9 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 892D3AD21D46876000B81FE9 /* Social.framework */; };
 		892D3AD71D4902A600B81FE9 /* PhotoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892D3AD61D4902A600B81FE9 /* PhotoPageViewController.swift */; };
+		892FE8BD1D736AA700811C0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 892FE8BC1D736AA700811C0F /* Assets.xcassets */; };
 		899E0D351C94CBB300110FC4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E0D341C94CBB300110FC4 /* AppDelegate.swift */; };
 		899E0D371C94CBB300110FC4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E0D361C94CBB300110FC4 /* ViewController.swift */; };
 		899E0D3A1C94CBB300110FC4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 899E0D381C94CBB300110FC4 /* Main.storyboard */; };
-		899E0D3C1C94CBB300110FC4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 899E0D3B1C94CBB300110FC4 /* Assets.xcassets */; };
 		899E0D3F1C94CBB300110FC4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 899E0D3D1C94CBB300110FC4 /* LaunchScreen.storyboard */; };
 		899E0D4A1C94CBB300110FC4 /* NewsPix_BetaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E0D491C94CBB300110FC4 /* NewsPix_BetaTests.swift */; };
 		899E0D551C94CBB300110FC4 /* NewsPix_BetaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E0D541C94CBB300110FC4 /* NewsPix_BetaUITests.swift */; };
@@ -39,11 +39,11 @@
 /* Begin PBXFileReference section */
 		892D3AD21D46876000B81FE9 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		892D3AD61D4902A600B81FE9 /* PhotoPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPageViewController.swift; sourceTree = "<group>"; };
+		892FE8BC1D736AA700811C0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		899E0D311C94CBB300110FC4 /* NewsPix Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NewsPix Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		899E0D341C94CBB300110FC4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		899E0D361C94CBB300110FC4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		899E0D391C94CBB300110FC4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		899E0D3B1C94CBB300110FC4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		899E0D3E1C94CBB300110FC4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		899E0D401C94CBB300110FC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		899E0D451C94CBB300110FC4 /* NewsPix BetaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NewsPix BetaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,8 +110,8 @@
 				899E0D361C94CBB300110FC4 /* ViewController.swift */,
 				899E0D621CAA476000110FC4 /* Module.swift */,
 				899E0D381C94CBB300110FC4 /* Main.storyboard */,
-				899E0D3B1C94CBB300110FC4 /* Assets.xcassets */,
 				899E0D3D1C94CBB300110FC4 /* LaunchScreen.storyboard */,
+				892FE8BC1D736AA700811C0F /* Assets.xcassets */,
 				899E0D401C94CBB300110FC4 /* Info.plist */,
 			);
 			path = "NewsPix Beta";
@@ -198,18 +198,22 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = UROP;
 				TargetAttributes = {
 					899E0D301C94CBB300110FC4 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = AA26CUQPG2;
+						LastSwiftMigration = 0800;
 					};
 					899E0D441C94CBB300110FC4 = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 899E0D301C94CBB300110FC4;
 					};
 					899E0D4F1C94CBB300110FC4 = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 899E0D301C94CBB300110FC4;
 					};
 				};
@@ -240,7 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				899E0D3F1C94CBB300110FC4 /* LaunchScreen.storyboard in Resources */,
-				899E0D3C1C94CBB300110FC4 /* Assets.xcassets in Resources */,
+				892FE8BD1D736AA700811C0F /* Assets.xcassets in Resources */,
 				899E0D3A1C94CBB300110FC4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,11 +341,14 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Matt Carroll (AA26CUQPG2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Matt Carroll (AA26CUQPG2)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -360,7 +367,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -382,11 +389,14 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Matt Carroll (AA26CUQPG2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Matt Carroll (AA26CUQPG2)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -399,9 +409,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -411,10 +422,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "NewsPix Beta/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.mit.media.ccliao.NewsPix-Beta";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -422,10 +438,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "NewsPix Beta/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.mit.media.ccliao.NewsPix-Beta";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -437,6 +458,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.mit.media.ccliao.NewsPix-BetaTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NewsPix Beta.app/NewsPix Beta";
 			};
 			name = Debug;
@@ -449,6 +471,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.mit.media.ccliao.NewsPix-BetaTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NewsPix Beta.app/NewsPix Beta";
 			};
 			name = Release;
@@ -461,6 +484,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.mit.media.ccliao.NewsPix-BetaUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "NewsPix Beta";
 				USES_XCTRUNNER = YES;
 			};
@@ -473,6 +497,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.mit.media.ccliao.NewsPix-BetaUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "NewsPix Beta";
 				USES_XCTRUNNER = YES;
 			};

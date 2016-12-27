@@ -15,6 +15,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var pictureTitle: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var imageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var imageViewBottomConstraint: NSLayoutConstraint!
@@ -23,8 +24,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var imageViewTrailingConstraint: NSLayoutConstraint!
     
     //Sets status bar to white
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
 
     var index: Int = 0
@@ -33,13 +34,15 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         initial_frame = view.frame
-                
-        //Initialize Display
-        self.pictureTitle.setTitle(names[index],forState: UIControlState.Normal)
-        self.imageView.image = images[index]
         
         //Always make pictureTitle fit in one line
         self.pictureTitle.titleLabel?.adjustsFontSizeToFitWidth = true
+        self.titleLabel.adjustsFontSizeToFitWidth = true
+                
+        //Initialize Display
+        self.pictureTitle.setTitle(names[index],for: UIControlState())
+        self.titleLabel.text = names[index]
+        self.imageView.image = images[index]
     }
     
     override func viewDidLayoutSubviews() {
@@ -55,16 +58,16 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     //Function for activating hyperlink
     @IBAction func didPressTitle() {
         let url = urls[index];
-        UIApplication.sharedApplication().openURL(url);
+        UIApplication.shared.openURL(url as URL);
     }
     
     //ScrollView Functions
-    override func viewWillTransitionToSize(size: CGSize,
-        withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+        with coordinator: UIViewControllerTransitionCoordinator) {
             
-            super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+            super.viewWillTransition(to: size, with: coordinator)
             
-            coordinator.animateAlongsideTransition({ [weak self] _ in
+            coordinator.animate(alongsideTransition: { [weak self] _ in
                 self?.updateZoom()
                 }, completion: nil)
     }
@@ -97,16 +100,16 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             
             //Disable scrolling if image is fully zoomed out
             if scrollView.zoomScale == 1.0 {
-                scrollView.scrollEnabled = false
+                scrollView.isScrollEnabled = false
             }
             else {
-                scrollView.scrollEnabled = true
+                scrollView.isScrollEnabled = true
             }
         }
         
     }
     
-    private func updateZoom() {
+    fileprivate func updateZoom() {
         // Zoom to show as much image as possible unless image is smaller than the scroll view
             // **Called only upon view initialization and upon device rotation**
         if let image = imageView.image {
@@ -116,7 +119,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             if minZoom > 1 { minZoom = 1 }
             
             scrollView.minimumZoomScale = 1
-            scrollView.maximumZoomScale = 8
+            scrollView.maximumZoomScale = 6
 
             // Force scrollViewDidZoom fire if zoom did not change
             if minZoom == lastZoomScale { minZoom += 0.000001 }
@@ -129,11 +132,16 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     // UIScrollViewDelegate
     // -----------------------
     
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         updateConstraints()
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        let contentScale: CGFloat = scale * UIScreen.main.scale
+        view!.contentScaleFactor = contentScale
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
         }
     
